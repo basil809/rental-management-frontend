@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="images/system Images/rental_image_logo.png" type="image/gif">
+
+
+  <title>La Maison - Find A House</title>
+
+  <!--link rel="stylesheet" href="css/responsive.css"-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=landscape" />
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .material-icons {
+      font-size: 50px;
+      color: blue;
+    }
+    .nav-links a.active {
+        color: #00a5fd; /* color of the link text */
+    }
+    .nav-links a:hover {
+        color: #007BFF;
+        text-decoration: underline;
+        text-underline-offset: 4px; /* space between the text and underline */
+    }
+    /* Keep hero text below overlay by default */
+    .hero-text {
+        position: relative; /* default */
+        z-index: 1; /* lower than overlay */
+    }
+
+    /* When overlay is active, optionally hide hero text to prevent flickering & visual clutter */
+    body.menu-active .hero-text {
+        display: none;
+    }
+    /* styling the navigation bar  for smaller screens*/
+    /* Hide menu toggle button on larger screens */
+    /* Styles for small screens */
+    @media (max-width: 768px) {
+        .navbar-top{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2000;
+        }
+        .menu-toggle {
+            display: block;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        /* Remove outline for the hamburger button when focused or active */
+        .menu-toggle:focus,
+        .menu-toggle:active {
+            outline: none;
+            box-shadow: none; /* if any shadows are applied */
+        }
+        .nav-links{
+            position: fixed; /* overlay over everything */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #011a33; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: transform 0.3s ease;
+            /* Start hidden off-screen or hidden */
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none; /* disable interaction when hidden */
+        }
+         .nav-links.show {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+         /* Optional: style links for better appearance */
+         .nav-links a {
+            font-size: 24px;
+            margin: 20px 0; /* space between links */
+         }
+
+        .navbar .close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            color: white;
+            right: 20px;
+            font-size: 30px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10000;
+         }
+         .close-btn:focus,
+        .close-btn:active {
+            outline: none;
+            box-shadow: none; /* if any shadows are applied */
+        }
+        /* Show when overlay is active */
+        body.overlay-active .close-btn {
+            display: block;
+        }
+        /* Hide hero text when overlay menu is active */
+        .hero-wrapper.hide-hero .hero-text {
+            display: none;
+            z-index: -1; /* send behind the overlay */
+
+        }
+        .cta-btn {
+            display: none; /* Hide the button on small screens */
+        }
+        #newsletter input[type="email"] {
+            width: 350px; /* Full width on small screens */
+        }
+        #newsletter button {
+            width: 350px; /* Full width on small screens */
+        }
+        /* Style for the search bar */
+        .search-bar {
+            display: flex;
+            flex-direction: column; /* stack inputs vertically */
+            align-items: center; /* center inputs */
+            padding: 20px;
+            background-color: #f8f9fa; /* light background for contrast */
+        }
+        .search-bar .input-container {
+            width: 100%; /* full width on small screens */
+            margin-bottom: 10px; /* space between inputs */
+        }
+        .search-bar .input-container select {
+            width: 100%; /* full width on small screens */
+            padding-left: 40px; /* space for the icon */
+            font-size: 16px; /* font size for the input */
+            border: 1px solid #00a5fd; /* border for the input */
+            border-radius: 5px; /* rounded corners */
+        }
+        
+        .search-bar .input-container .material-icons {
+            position: absolute;
+            top: 50%;
+            left: 10px;  
+            transform: translateY(-50%);
+            font-size: 20px; /* icon size */
+            color: #00a5fd; /* color of the icon */
+        }
+        /* Style for the search button */
+        .search-btn {
+            margin-top: 10px; /* space between inputs and button */
+            padding: 10px 20px; /* padding for the button */
+            background-color: #007BFF; /* button color */
+            color: white; /* text color */
+            border: none; /* no border */
+            border-radius: 5px; /* rounded corners */
+            cursor: pointer; /* pointer cursor on hover */
+            width: 100%; /* full width on small screens */
+        }
+    }
+     /*style for larger screens*/
+    @media (min-width: 769px) {
+        .nav-links {
+            display: flex; /* show links in a row */
+            position: static; /* reset position */
+            transform: none; /* reset transform */
+            flex-direction: row; /* keep links in a row */
+            align-items: center; /* center vertically */
+        }
+        .menu-toggle {
+            display: none; /* hide menu toggle on larger screens */
+        }
+        .close-btn {
+            display: none; /* hide close button on larger screens */
+        }
+        .cta-btn {
+            display: inline-block; /* show call to action button on larger screens */
+        }
+        }
+
+    /* Button to Open Modal */
+  .open-modal-btn {
+    margin: 100px auto;
+    display: block;
+    padding: 14px 24px;
+    font-size: 1.2em;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .open-modal-btn:hover {
+    background: #0056b3;
+  }
+  .open-modal-btn:focus {
+    outline: none;
+    border: none;
+  }
+  /* Modal Overlay */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* Modal Content */
+  .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Close Button */
+  .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5em;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .closebtn:hover {
+    color: #007BFF;
+  }
+    .closebtn:focus {
+        outline: none;
+        border: none;
+    }
+  /* Header */
+  .modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Toggle Buttons Container */
+  .toggle-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+
+  /* Toggle Buttons */
+  .toggle-btn {
+    background: transparent;
+    border: none;
+    font-size: 1em;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .toggle-btn:hover {
+    background: #007BFF19;
+    color: #007BFF;
+  }
+
+  .toggle-btn:focus{
+    border: none;
+    outline: none;
+  }
+  /* Active Toggle */
+  .toggle-active {
+    color: #fff;
+    background: #007BFF;
+  }
+
+  /* Form Styles */
+  form {
+    display: none;
+    flex-direction: column;
+  }
+
+  form.active {
+    display: flex;
+  }
+
+  #loginModal input[type="text"],
+  #loginModal input[type="password"],
+  #loginModal input[type="email"] {
+    padding: 12px;
+    margin: 8px 0 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+  }
+
+  #loginModal button[type="submit"] {
+    padding: 14px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  #loginModal button[type="submit"]:hover {
+    background: #0056b3;
+  }
+
+    #loginModal button[type="submit"]:focus {
+        outline: none;
+        border: none;
+    }
+    /* code for the search bar */
+    .input-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 10px;
+      margin-right: 10px;
+    }
+
+    /* Style the input to have some padding on the left for the icon */
+    .input-container select {
+        width: 200px;
+        padding-left: 40px;
+        padding-right: 20px;
+        height: 40px;
+        font-size: 14px;
+        border: 1px solid #00a5fd; /* border for the input */
+        border-radius: 5px; /* rounded corners */
+      
+    }
+     /*style the search bar section*/
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 80px;
+        background-color: white; /* light background for the search bar */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    /* Style for the icon inside the input */
+    .input-container .material-icons {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #00a5fd; /* color of the icon */
+      pointer-events: none; /* so clicking the icon does not block input focus */
+    }
+    /* Style for the styling the inputs */
+    .input-container select {
+      border: 1px solid #00a5fd;
+      border-radius: 4px;
+    }
+    /* Styling the focus state of the input */
+    .input-container select:focus {
+        border-width: 2px; /* thicker border on focus */
+        border-color: #007BFF; /* color of the border when focused */
+        outline: none; /* remove default outline */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Wrapper Start -->
+    <div class="hero-wrapper">
+        <!-- Navbar -->
+        <header class="navbar" style="z-index: 1000;">
+            <div class="logo"><i class="material-icons">landscape</i>La Maison</div>
+            <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+            </button>
+            <button class="close-btn" aria-label="Close menu">&times;</button>
+            <nav class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="property.html">Properties</a>
+                <a href="agents.html">Agents</a>
+                <a href="aboutUs.html">About Us</a>
+            </nav>
+            <button class="cta-btn">Find A House</button>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-text" style="z-index: 1;">
+                <h1>Find A House That Suits You</h1>
+                <p>Want to find a home? We are ready to help you find one that suits your lifestyle and needs</p><br>
+                <button id="get-started" class="get-started">Get Started</button>
+                
+                <div class="stats">
+                    <div><strong><span  class="counter">1200</span>+</strong><br>Listed Properties</div>
+                    <div><strong><span  class="counter">4500</span>+</strong><br>Happy Customers</div>
+                    <div><strong><span  class="counter">100</span>+</strong><br>Awards</div>
+                </div>
+            </div>
+        </section>
+    </div>
+   <!-- Hero Wrapper End -->
+
+    <!-- Search Bar -->
+    <section class="search-bar">
+        <div class="input-container">
+            <select id="locationDropdown">
+                <option value="">Location</option>
+            </select>
+            <span class="material-icons">location_on</span>
+        </div>
+
+        <div class="input-container">
+            <select id="propertyTypeDropdown">
+                <option value="">Property Type</option>
+            </select>
+            <span class="material-icons">home</span>
+        </div>
+
+        <div class="input-container">
+            <select id="budgetDropdown">
+                <option value="">Budget</option>
+            </select>
+            <span class="material-icons">attach_money</span>
+        </div>
+
+        <button class="search-btn">Search Now</button>
+        <button class="clear-btn">Clear Filters</button>
+    </section>
+
+
+  <!-- Popular Homes -->
+  <section class="popular" id="popular">
+    <div class="popular-header">
+      <h2>Recently Added</h2>
+      <a href="property.html">Explore All →</a>
+    </div>
+    <div class="homes fade-in-section" id="homes">
+      <!-- Properties will be loaded here dynamically -->
+    </div>
+  </section>
+    <!--End of Popular Homes-->
+
+    <!--Map-Section-->
+    <section class="map-section fade-in-section" id="map">
+        <h2>Explore Properties on the Map</h2>
+        <div id="map"></div>
+    </section>
+    <!--End of Map-Section-->
+  <!-- Agents Section -->
+    <section class="agents-section fade-in-section" id="agents">
+        <h2>Meet Our Agents</h2>
+        <div class="agent-cards">
+            <div class="agent-card">
+                <img src="images/system Images/Basil_img.jpeg" alt="Agent John">
+                <h3>Basil Onyango</h3>
+                <p>Senior Property Advisor</p>
+                <p><strong>Phone:</strong> +254 712 345678</p>
+                <p><strong>Email:</strong> john@lamaison.co.ke</p>
+            </div>
+            <div class="agent-card">
+                <img src="images/system Images/Mitchell Wanjiru.jpg" alt="Agent Jane">
+                <h3>Jane Wambui</h3>
+                <p>Property Consultant</p>
+                <p><strong>Phone:</strong> +254 712 987654</p>
+                <p><strong>Email:</strong>janebobo@gmail.com</p>
+            </div>
+            <div class="agent-card">
+                <img src="images/system Images/Henry Omondi.jpg" alt="Agent Mike">
+                <h3>Mike Otieno</h3>
+                <p>Real Estate Specialist</p>
+                <p><strong>Phone:</strong> +254 712 123456</p>
+                <p><strong>Email:</strong>OtisMike@gmail.com</p>
+            </div>
+            <div class="agent-card">
+                <img src="images/system Images/Sarah_njeri.jpg" alt="Agent Sarah">
+                <h3>Sarah Achieng</h3>
+                <p>Property Manager</p>
+                <p><strong>Phone:</strong> +254 712 654321</p>
+                <p><strong>Email:</strong>Chiengsara@gmail.com</p>
+            </div>
+            <!-- Repeat for more agents -->
+        </div>
+    </section>
+    <!--End of Agents Section-->
+
+    <!-- Testimonial -->
+    <section class="client_section layout_padding fade-in-section" id="testimonials">
+        <div class="carousel slide" id="carouselExampleControls" data-ride="carousel">
+            <div class="container">
+                <div class="heading_container heading_center">
+                    <h2 style="font-weight: bold;">Client Testimonials</h2>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="box">
+                            <div class="img-box">
+                                <img src="images/system Images/Mitchell Wanjiru.jpg" alt="client image">
+                            </div>
+                            <div class="detail-box">
+                                <h4>— Amina K., Individual Buyer</h4>
+                                <p>
+                                    "Finding our dream home felt effortless with La Maison. The listings were high-quality, and the team was incredibly helpful and responsive throughout the entire process. We couldn't be happier with our new property!"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="box">
+                            <div class="img-box">
+                                <img src="images/system Images/Basil_img.jpeg" alt="client image">
+                            </div>
+                            <div class="detail-box">
+                                <h4>— John D., Tenant</h4>
+                                <p>
+                                    "La Maison truly understands luxury and attention to detail. The apartments showcased on their website were stunning, and the virtual tours gave us a real sense of each space. A fantastic platform for finding premium properties."
+                                </p>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="carousel-item">
+                        <div class="box">
+                            <div class="img-box">
+                                <img src="images/system Images/Henry Omondi.jpg" alt="client">
+                            </div>
+                            <div class="detail-box">
+                                <h4>— Ali S., Investor</h4>
+                                <p>
+                                    "As an investor, La Maison has been an invaluable resource. Their diverse portfolio of properties and clear information made it easy to identify opportunities that aligned with my goals. Highly recommended!"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel_btn-box">
+                    <a href="#carouselExampleControls" class="carousel-control-prev" role="button" data-slide="prev">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a href="#carouselExampleControls" class="carousel-control-next" role="button" data-slide="next">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End of Testimonial-->
+
+    <!--tenant section-->
+    <section class="tenant-section fade-in-section" id="tenant">
+        <div class="tenant-overlay">
+            <div class="tenant-content">
+                <h2>Welcome Tenants, Admins & Landlords</h2>
+                <p>Manage your properties, communicate and stay updated through your dedicated portal.</p>
+                <!-- Button to open modal -->
+                <button class="open-modal-btn">Login</button>
+            </div>
+        </div>
+    </section>
+    <!--Code for the login modal for tenants, Admin and landlords-->
+    <!-- Instead of open modal button, modal is visible by default -->
+        <div class="modal" id="loginModal">
+            <div class="modal-content">
+                <button class="closebtn" id="closeModal" title="Close">&times;</button>
+                <div class="modal-header">
+                    <h2>Select Login Type</h2>
+                </div>
+
+                <!-- Toggle Buttons -->
+                <div class="toggle-container">
+                    <button class="toggle-btn" data-type="admin" id="adminBtn">Admin</button>
+                    <button class="toggle-btn" data-type="landlord" id="landlordBtn">Landlord</button>
+                    <button class="toggle-btn toggle-active" data-type="tenant" id="tenantBtn">Tenant</button>
+                </div>
+
+                <!-- Admin Login Form -->
+                <form id="adminForm">
+                    <h3>Admin Login</h3>
+                    <input type="text" placeholder="Username" required />
+                    <input type="password" placeholder="Password" required />
+                    <button type="submit">Login as Admin</button>
+                </form>
+
+                <!-- Landlord Login Form -->
+                <form id="landlordForm">
+                    <h3>Landlord Login</h3>
+                    <input type="email" placeholder="Email" required />
+                    <input type="password" placeholder="Password" required />
+                    <button type="submit">Login as Landlord</button>
+                </form>
+
+                <!-- Tenant Login Form (active by default) -->
+                <form id="tenantForm" class="active">
+                    <h3>Tenant Login</h3>
+                    <input type="text" placeholder="Tenant ID" required />
+                    <input type="password" placeholder="Password" required />
+                    <button type="submit">Login as Tenant</button>
+                </form>
+            </div>
+        </div>
+    <!--End of tenant section-->
+
+    <!--Blog Section-->
+    <section class="blog-section fade-in-section" id="blog">
+        <h2>Real Estate Tips & Advice</h2>
+        <div class="blog-posts">
+            <div class="post">
+                <a href="https://www.google.com/search?q=Top 5 Neighborhoods Near Kisumu"><h3>Top 5 Neighborhoods Near Kisumu<br></h3>
+                    Learn where to find the most convenient and affordable homes in the area.
+                </a>
+            </div>
+            <div class="post">
+                <a href="https://www.google.com/search?q=How to Choose the Right Property">
+                <h3>How to Choose the Right Property<br></h3>
+                    Discover tips on selecting the perfect property for your needs.
+                </a>
+            </div>
+            <div class="post">
+                <a href="https://www.google.com/search?q=Understanding Property Valuation">
+                <h3>Understanding Property Valuation<br></h3>
+                Get insights into how property valuation works and why it's important.
+                </a>
+            </div>
+            <div class="post">
+                <a href="https://www.google.com/search?=Home Maintenance Tips">
+                    <h3>Home Maintenance Tips<br></h3>
+                    <p>Learn how to keep your home in top condition with these maintenance tips.</p>
+                </a>
+            </div>
+             <!-- Add more posts -->
+        </div>
+    </section>
+    <!--End of Blog Section-->
+
+    <!--Faq Section-->
+    <section class="faq-section fade-in-section" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq">
+            <h4>How do I apply for a rental?</h4>
+            <p>Contact our agents directly or click "Find a House" to begin the process.</p>
+        </div>
+    </section>
+    <!--End of Faq Section-->
+
+    <!--Contact Section-->
+    <section class="contact-section  fade-in-section" id="contact">
+        <h2>Have Questions?</h2>
+        <form id="contact-form" class="contact-form" style="display: block;">
+            <input type="text" id="name" placeholder="Your Name" required />
+            <input type="number" id="phone" placeholder="Phone" required>
+            <input type="email" id="email" placeholder="Your Email" required />
+            <textarea id="message" placeholder="Your Message"></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+    <!--End of Contact Section-->
+
+    <!--newsletter Signup-->
+    <section class="newsletter fade-in-section" id="newsletter">
+        <h2>Stay Updated</h2>
+        <p>Get updates on new listings and offers</p>
+        <form>
+            <input type="email" placeholder="Your Email" required />
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+     <!--End of newsletter Signup-->
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" class="cookie-banner">
+        <p>
+            🍪 This website uses cookies to enhance your experience. 
+            By continuing to use La Maison, you agree to our 
+            <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
+        </p>
+        <div class="cookie-buttons">
+            <button id="accept-cookies">Accept</button>
+            <button id="reject-cookies">Reject</button>
+        </div>
+    </div>
+    <!--End of the Cookie consent banner-->
+   
+    <!-- Footer -->
+    <footer class="footer_section fade-in-section" id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-col">
+                    <!-- Contact Us section -->
+                    <div class="footer_content" style="display: flex; flex-direction: column;">
+                        <h4>Contact Us</h4>
+                        <div class="contact_link_box">
+                            <a href="https://maps.app.goo.gl/X5jKPCnbjW9TkLET7" target="_blank"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                <span>Location</span>
+                            </a>
+                            <a href="tel:+254742743059"><i class="fas fa-phone" aria-hidden="true"></i>
+                                <span>Call +254 742 743059</span>
+                            </a><br>
+                            <a href="mailto:baschelle5@gmail.com"><i class="fas fa-envelope" aria-hidden="true"></i>
+                                <span style="margin-left: 5px;">baschelle5@gmail.com</span>
+                            </a>        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 footer-col">
+                    <!-- Footer Detail section -->
+                    <div class="footer_detail">
+                        <a href="index.html" class="footer-logo">
+                            La Maison
+                        </a>
+                        <em>"Your Address to Exceptional Living."</em>
+                        <div class="footer_social">
+                            <a href="https://web.facebook.com/people/Basil/100023719690145/" target="_blank"><img src="images/social_logos/facebook_logo_icon.png" alt="Facebook"></a>
+                            <a href="https://wa.me/+254742743059" target="_blank"><img src="images/social_logos/WhatsApp_Logo.png" alt="WhatsApp"></a>
+                            <a href="https://twitter.com/baschelle5" target="_blank"><img src="images/social_logos/x_logo.jpeg" alt="Twitter"></a>
+                            <a href="https://www.linkedin.com/in/basil-onyango-61a081250/" target="_blank"><img src="images/social_logos/linkedin logo_icon.png" alt="linkedIn"></a>
+                            <a href="https://www.youtube.com/@basilonyango5160" target="_blank"><img src="images/social_logos/youtube_logo.png" alt="Youtube"></a>
+                            <a href="https://www.instagram.com/_.blu.berry.__/" target="_blank"><img src="images/social_logos/instagram_logo_icon.png" alt="Instragram"></a>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-4 footer-col mb-4">
+                    <!-- MagariSoko Icon section -->
+                    <div class="MagariSoko_icon">
+                        <div class="img_logo">
+                            <img src="images/landscape_1000dp_0000F5_FILL0_wght400_GRAD0_opsz48.png" alt="la maison logo"> 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 footer-col">
+                    <!-- Footer Info section -->
+                    <div class="footer-info">
+                        <p>&copy; <span id="displayYear"></span> All Rights Reserved By
+                            <a href="index.html">La Maison</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--End of Footer-->
+
+    <!--Jscode-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <!--js code controlling the corousel-->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        //code displaying the login and signup modal
+
+    </script>
+    <script>
+        //code to redirect the user to the properties page when the user clicks on the cta-btn
+        $(document).ready(function() {
+            $(".cta-btn").click(function() {
+                window.location.href = "property.html";
+            });
+        });
+    </script>
+    <script>
+        function initMap() {
+            const maseno = { lat: -0.0101, lng: 34.6100 }; // Example: Maseno
+            const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 14,
+            center: maseno,
+            });
+
+            new google.maps.Marker({
+            position: maseno,
+            map,
+            title: "Example Property Location",
+            });
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2qEY1cU1tgeAUMY1_UUMBiubF5V18ctQ&callback=initMap">
+    </script>
+    <script>
+        //code for displaying the hamburger menu for smaller screens
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const closebtn = document.querySelector('.close-btn');
+            const heroWrapper = document.querySelector('.hero-wrapper');
+            const heroText = document.querySelector('.hero-text');
+
+            // hide hero text when menu is active
+            menuBtn.addEventListener('click', () => {
+                document.body.classList.toggle('menu-active'); // toggle menu state
+                //prevent scroll on body when menu is active
+                document.body.style.overflow = 'hidden';
+                heroWrapper.classList.toggle('hide-hero'); // hide hero text
+                
+            });
+
+            
+            // Toggle navigation links visibility
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('show');
+                document.body.classList.toggle('overlay-active'); // prevent background scroll
+            });
+
+            const closeBtn = document.querySelector('.close-btn');
+            closeBtn.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+                document.body.classList.remove('overlay-active'); // allow background scroll
+                // reload the page to reset the menu state
+                window.location.reload();
+               
+            });
+
+        });
+    </script>
+    <script>
+        const faders = document.querySelectorAll('.fade-in-section');
+
+        const appearOnScroll = new IntersectionObserver(
+            (entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            });
+            },
+            {
+            threshold: 0.15, // Adjust as needed
+            }
+        );
+
+        faders.forEach(fader => appearOnScroll.observe(fader));
+    </script>
+    <script>
+        function animateCounter(el, target) {
+            let current = 0;
+            const increment = Math.ceil(target / 100); // speed control
+            const duration = 1000; // total duration in ms
+            const stepTime = Math.floor(duration / (target / increment));
+      
+            const counterInterval = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(counterInterval);
+                } else {
+                    el.textContent = current;
+                }
+            }, stepTime);
+        }
+      
+        const counters = document.querySelectorAll(".counter");
+        const options = {
+            root: null,
+            threshold: 0.5
+        };
+      
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.textContent);
+                    animateCounter(el, target);
+                    observer.unobserve(el); // stop observing once triggered
+                }
+            });
+        }, options);
+      
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    </script>
+    <script>
+        // Elements
+        const openBtn = document.querySelector('.open-modal-btn');
+        const modal = document.getElementById('loginModal');
+        const closeBtn = document.getElementById('closeModal');
+
+        const adminBtn = document.getElementById('adminBtn');
+        const landlordBtn = document.getElementById('landlordBtn');
+        const tenantBtn = document.getElementById('tenantBtn');
+
+        const adminForm = document.getElementById('adminForm');
+        const landlordForm = document.getElementById('landlordForm');
+        const tenantForm = document.getElementById('tenantForm');
+
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+        // Function to open modal
+        openBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        // Function to close modal
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+            modal.style.display = 'none';
+            }
+        });
+
+        // Helper: Remove active class from all toggle buttons
+        function clearActiveToggles() {
+            toggleButtons.forEach(btn => btn.classList.remove('toggle-active'));
+        }
+
+        // Show specific form
+        function showForm(formId) {
+            // Hide all forms
+            [adminForm, landlordForm, tenantForm].forEach(form => form.classList.remove('active'));
+            // Show selected form
+            document.getElementById(formId).classList.add('active');
+        }
+
+        // Toggle button event handlers
+        adminBtn.addEventListener('click', () => {
+            clearActiveToggles();
+            adminBtn.classList.add('toggle-active');
+            showForm('adminForm');
+        });
+
+        landlordBtn.addEventListener('click', () => {
+            clearActiveToggles();
+            landlordBtn.classList.add('toggle-active');
+            showForm('landlordForm');
+        });
+
+        tenantBtn.addEventListener('click', () => {
+            clearActiveToggles();
+            tenantBtn.classList.add('toggle-active');
+            showForm('tenantForm');
+        });
+    </script>
+    <script>
+        //code for checking the current year and displaying it in the footer
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearSpan = document.getElementById('displayYear');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        }); 
+    </script>
+    <script>
+       document.getElementById("adminForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            login("admin", this);
+        });
+
+        document.getElementById("landlordForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            login("landlord", this);
+        });
+
+        document.getElementById("tenantForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            login("tenant", this);
+        });
+
+        async function login(type, form) {
+            const inputs = form.querySelectorAll("input");
+            const identifier = inputs[0].value;
+            const password = inputs[1].value;
+
+            try {
+                let url = '';
+                let body = {};
+                
+                if (type === 'tenant') {
+                    url = '/api/tenants/login';
+                    body = { tenantID: identifier, password }; // tenantID instead of 'identifier'
+                } else {
+                    url = `/api/auth/login/${type}`;
+                    body = { identifier, password };
+                }
+
+                const res = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include", // ⬅️ Important for sending the cookie
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || "Login failed");
+
+                alert("Login successful!");
+
+                // ✅ Redirect user to the appropriate dashboard
+                if (type === "admin") {
+                    window.location.href = "/sidebar.html";
+                } else if (type === "landlord") {
+                    window.location.href = "/landlord.html";
+                } else if (type === "tenant") {
+                    window.location.href = "/tenant.html";
+                }
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        }
+
+    </script>
+    <script>
+        // code submittng the form carrying the user's questions 
+        document.getElementById('contact-form').addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = event.target;
+
+            //Create an object with form data
+            const formData = {
+                name: form.name.value,
+                phone: form.phone.value,
+                email: form.email.value,
+                message: form.message.value
+            };
+
+            //simulate sending the form data 
+            fetch('/api/Quiz/genQuiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Message sent successfully');
+                    form.reset();
+                } else {
+                    alert('Failed to send message. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                alert('An error occurre. Please try again.');
+            });
+        });
+    </script>
+    <script>
+        //code for displaying the cookie consent banner and handling user choice
+        document.addEventListener('DOMContentLoaded', () => {
+            const banner = document.getElementById('cookie-banner');
+            const acceptBtn = document.getElementById('accept-cookies');
+            const rejectBtn = document.getElementById('reject-cookies');
+
+            // Check if user has already made a choice
+            const cookieChoice = localStorage.getItem('cookieConsent');
+
+            if (!cookieChoice) {
+                banner.classList.add('show');
+            }
+
+            acceptBtn.addEventListener('click', () => {
+                localStorage.setItem('cookieConsent', 'accepted');
+                banner.classList.remove('show');
+                // Optional: enable analytics or tracking cookies here
+            });
+
+            rejectBtn.addEventListener('click', () => {
+                localStorage.setItem('cookieConsent', 'rejected');
+                banner.classList.remove('show');
+                // Optional: disable tracking cookies or analytics
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let allProperties = [];
+            const popularSection = document.querySelector('.homes');
+            const locationDropdown = document.getElementById('locationDropdown');
+            const propertyTypeDropdown = document.getElementById('propertyTypeDropdown');
+            const budgetDropdown = document.getElementById('budgetDropdown');
+            const searchBtn = document.querySelector('.search-btn');
+            const clearBtn = document.querySelector('.clear-btn');
+
+            clearBtn.style.display = 'none';
+
+            // ✅ Function to fetch & render 3 recent properties
+            async function fetchRecentProperties() {
+                try {
+                const response = await fetch('/api/properties/recent');
+                const properties = await response.json();
+                renderProperties(properties);
+                } catch (error) {
+                console.error('Error fetching recent properties:', error);
+                popularSection.innerHTML = '<p>Error fetching properties.</p>';
+                }
+            }
+
+            // ✅ Function to render property cards
+            function renderProperties(properties) {
+                popularSection.innerHTML = '';
+                popularSection.style.display = 'flex';
+                popularSection.style.flexWrap = 'wrap';
+                popularSection.style.gap = '20px';
+                popularSection.style.justifyContent = 'space-between';
+
+                if (properties.length === 0) {
+                popularSection.innerHTML = `<p style="text-align:center;">No properties found matching your search.</p>`;
+                return;
+                }
+
+                properties.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'home-card';
+                card.innerHTML = `
+                    <img src="${p.images[0]}" alt="${p.title}">
+                    <div class="card-body">
+                        <h3 class="card-title">${p.title} - ${p.location}</h3>
+                        <p class="card-text">${p.property_type} | ${p.bedrooms} Bed | ${p.bathrooms} Bathrooms</p>
+                        <strong>Ksh. ${p.price.toLocaleString()}</strong>
+                        <button class='view-btn' data-id="${p._id}">View Details</button>
+                    </div>
+                `;
+                popularSection.appendChild(card);
+                });
+
+                // Attach view button events
+                document.querySelectorAll('.view-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const propertyId = e.target.getAttribute('data-id');
+                    window.location.href = `propView.html?id=${propertyId}`;
+                });
+                });
+            }
+
+            // ✅ Fetch all properties for filtering
+            try {
+                const response = await fetch('/api/properties');
+                allProperties = await response.json();
+
+                // Populate dropdowns
+                const locations = [...new Set(allProperties.map(p => p.location.trim()))];
+                const propertyTypes = [...new Set(allProperties.map(p => p.property_type.trim()))];
+                const prices = allProperties.map(p => p.price);
+                const minPrice = Math.min(...prices);
+                const maxPrice = Math.max(...prices);
+                const step = Math.round((maxPrice - minPrice) / 4);
+
+                const ranges = [
+                { label: `Below Ksh. ${(minPrice + step).toLocaleString()}`, max: minPrice + step },
+                { label: `Ksh. ${(minPrice + step).toLocaleString()} - ${(minPrice + 2 * step).toLocaleString()}`, min: minPrice + step, max: minPrice + 2 * step },
+                { label: `Ksh. ${(minPrice + 2 * step).toLocaleString()} - ${(minPrice + 3 * step).toLocaleString()}`, min: minPrice + 2 * step, max: minPrice + 3 * step },
+                { label: `Above Ksh. ${(minPrice + 3 * step).toLocaleString()}`, min: minPrice + 3 * step }
+                ];
+
+                locations.forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = loc;
+                opt.textContent = loc;
+                locationDropdown.appendChild(opt);
+                });
+
+                propertyTypes.forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type;
+                opt.textContent = type;
+                propertyTypeDropdown.appendChild(opt);
+                });
+
+                ranges.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = JSON.stringify({ min: r.min || 0, max: r.max || Infinity });
+                opt.textContent = r.label;
+                budgetDropdown.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Error fetching properties:', err);
+            }
+
+            // 🔍 Search Button Logic
+            searchBtn.addEventListener('click', () => {
+                const location = locationDropdown.value;
+                const propertyType = propertyTypeDropdown.value;
+                const budgetValue = budgetDropdown.value;
+                const budget = budgetValue ? JSON.parse(budgetValue) : {};
+
+                let filtered = allProperties.filter(p => {
+                const matchLocation = !location || p.location === location;
+                const matchType = !propertyType || p.property_type === propertyType;
+                const matchBudget =
+                    (!budget.min && !budget.max) ||
+                    (p.price >= (budget.min || 0) && p.price <= (budget.max || Infinity));
+                return matchLocation && matchType && matchBudget;
+                });
+
+                renderProperties(filtered);
+                clearBtn.style.display = 'inline-block';
+                clearBtn.style = 'background-color: white; color: #000; border: 2px solid #000; padding: 10px 20px; cursor: pointer; border-radius: 5px;';
+            });
+
+            // 🧹 Clear Filters Button Logic
+            clearBtn.addEventListener('click', () => {
+                locationDropdown.value = '';
+                propertyTypeDropdown.value = '';
+                budgetDropdown.value = '';
+                fetchRecentProperties();
+                clearBtn.style.display = 'none';
+            });
+
+            // 🧭 Auto-hide Clear Button and Restore when all dropdowns reset
+            [locationDropdown, propertyTypeDropdown, budgetDropdown].forEach(dropdown => {
+                dropdown.addEventListener('change', () => {
+                if (!locationDropdown.value && !propertyTypeDropdown.value && !budgetDropdown.value) {
+                    fetchRecentProperties();
+                    clearBtn.style.display = 'none';
+                }
+                });
+            });
+
+            // ✅ Load initial data
+            fetchRecentProperties();
+        });
+    </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--Basic Meta Tags-->
+        <meta charset="UTF-8">
+        <meta name="description" content="Admin page for MagariSoko">
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+        <link rel="icon" href="images/system Images/rental_image_logo.png" type="image/gif">
+
+        <!--Site Meta Tags-->
+        <title>Property View | La Maison</title>
+        <!--CSS Links-->
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/sidebar.css">
+        <!--Other links-->
+        <!--link rel="stylesheet" href="css/responsive.css"-->
+         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <!--icon display style-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        /*styling the body of the page*/
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9ff;
+            margin: 0;
+            padding: 0;
+        }
+        /*styling for the top navigation bar*/
+        .navbar-top {
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 1000;
+            width: 100%;
+            background-color: #011a33;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .material-icons {
+            font-size: 50px;
+            color: blue;
+        }
+        .nav-links .material-icons {
+            color: white;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+        .nav-links a i.material-icons {
+            margin-right: 8px; /* or your preferred space */
+        }
+        .nav-links a.active {
+            color: #007bff; /* color of the link text */
+            text-decoration: underline;
+            text-underline-offset: 4px; /* space between the text and underline */
+        }
+        .nav-links a.active i.material-icons {
+            color: #007bff;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        /* styling the navigation bar  for smaller screens*/
+        /* Hide menu toggle button on larger screens */
+        /* Styles for small screens */
+        @media (max-width: 768px) {
+            .navbar-top{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+            .menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            /* Remove outline for the hamburger button when focused or active */
+            .menu-toggle:focus,
+            .menu-toggle:active {
+                outline: none;
+                box-shadow: none; /* if any shadows are applied */
+            }
+            .nav-links {
+                position: fixed; /* overlay over entire viewport */
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color:  #011a33; 
+                flex-direction: column; /* stack links vertically */
+                align-items: center;
+                justify-content: center; /* center links both vertically and horizontally */
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 9999; /* ensure it's above other content */
+            }
+        
+            .nav-links.show {
+                transform: translateX(0);
+            }
+
+            /* Hide the nav in default state (off screen) */
+            .nav-links {
+                display: flex; /* keep flex layout */
+            }
+
+            /* Optional: style links for better appearance */
+            .nav-links a {
+                font-size: 24px;
+                margin: 20px 0; /* space between links */
+            }
+
+            .close-btn {
+                display: none;
+                position: absolute;
+                top: 20px;
+                color: white;
+                right: 20px;
+                font-size: 30px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                z-index: 10000;
+            }
+            .close-btn:focus,
+            .close-btn:active {
+                outline: none;
+                box-shadow: none; /* if any shadows are applied */
+            }
+            /* Show when overlay is active */
+            body.overlay-active .close-btn {
+                display: block;
+            }
+
+           .cta-btn {
+                display: none; /* hide call to action button on small screens */
+            }
+            .navbar .material-icons{
+                display: none; /* hide material icons on small screens */
+            }
+            .nav-top{
+                top: 0;
+                left: 0;
+                position: fixed;
+                z-index: 1000;
+                width: 100%;
+                background-color: #011a33;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+        /*style for larger screens*/
+        @media (min-width: 769px) {
+            .nav-links {
+                display: flex; /* show links in a row */
+                position: static; /* reset position */
+                transform: none; /* reset transform */
+                flex-direction: row; /* keep links in a row */
+                align-items: center; /* center vertically */
+            }
+            .menu-toggle {
+                display: none; /* hide menu toggle on larger screens */
+            }
+            .close-btn {
+                display: none; /* hide close button on larger screens */
+            }
+            .cta-btn {
+                display: inline-block; /* show call to action button on larger screens */
+            }
+        }
+
+        /* Style for overlay background (optional) */
+        body.overlay-active {
+            overflow: hidden; /* prevent scrolling when overlay is active */
+        }
+        /* Hide menu toggle on larger screens */
+        @media (min-width: 769px) {
+        .menu-toggle {
+            display: none;
+        }
+        }
+        /*style for the underline i Headers*/
+        .half-underline {
+            display: inline-block;
+            position: relative;
+        }
+        .half-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px; /* Adjust based on desired space between text and underline */
+            width: 50%; /* Change to desired length of underline */
+            height: 2px; /* Adjust thickness of the underline */
+            background-color: currentColor; /* Use text color for underline */
+        }
+        .why-choose-us {
+            padding: 3rem 1rem;
+            background-color: #f9f9f9;
+        }
+        .why-choose-us h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .feature-card h3 {
+            color: #2c3e50;
+        }
+        .extended_about {
+            padding: 3rem 1rem;
+            background-color: #f4f9ff;
+        }
+        /* Container styling */
+        .social-icons {
+            display: flex; /* arrange icons horizontally */
+            gap: 15px; /* space between icons */
+            justify-content: center; /* center the icons horizontally */
+            padding: 10px 0; /* some padding around the icons */
+        }
+
+        /* Icon links styling */
+        .social-icons a {
+            display: inline-block;
+            text-decoration: none; /* remove underline from icons */
+            color: #555; /* default icon color */
+            font-size: 24px; /* size of icons, adjust as needed */
+            transition: color 0.3s, transform 0.3s; /* smooth hover transition */
+        }
+
+        /* Hover effects */
+        .social-icons a:hover {
+            color: #007bff; /* change color on hover, e.g., blue */
+            transform: scale(1.2); /* slight zoom effect on hover */
+        }
+        /* styling the About Us section */
+        .about_section {
+            padding-top: 100px;
+            background-color: #f4f9ff;
+        }
+        /* code for the search bar */
+        .input-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        /*style the search bar section*/
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 80px;
+            background-color: white; /* light background for the search bar */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+       /* Style the input to have some padding on the left for the icon */
+        .input-container input {
+            padding-left: 40px;
+            height: 40px;
+            font-size: 14px;
+        }
+
+        /* Style for the icon inside the input */
+        .input-container .material-icons {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #00a5fd; /* color of the icon */
+            pointer-events: none; /* so clicking the icon does not block input focus */
+        }
+        /* Style for the styling the inputs */
+        .input-container input {
+            border: 1px solid #00a5fd;
+            border-radius: 4px;
+        }
+        /* Styling the focus state of the input */
+        .input-container input:focus {
+            border-width: 2px; /* thicker border on focus */
+            border-color: #007BFF; /* color of the border when focused */
+            outline: none; /* remove default outline */
+        }
+        .property-section {
+            padding: 20px;
+            background-color: #f4f9ff; /* light background for the property section */
+        }
+        .property-section h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333; /* dark color for the heading */
+        }
+        .properties .home-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .content_section{
+            margin: 20px;
+            padding-top: 80px;
+        }
+         .content_section .container {
+            display: flex;
+            gap: 20px;
+         }
+
+        .content_section .left-section {
+            flex: 1;
+        }
+
+        #mainImage{
+            border-radius: 4px;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .thumbnails img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .content_section .center-section {
+            flex: 2;
+        }
+
+        .content_section .center-section h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+            .content_section .center-section p {
+            margin: 4px 0;
+            }
+
+            .content_section .right-section {
+            flex: 1;
+            border-left: 1px solid #ccc;
+            padding-left: 20px;
+            }
+
+            .content_section .contact-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            }
+
+            .contact-table td {
+            padding: 6px;
+            border: 1px solid #ccc;
+            }
+
+            .contact-buttons button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            }
+
+            .phone-btn {
+            background-color: #28a745;
+            }
+
+            .message-btn {
+            background-color: #007bff;
+            }
+
+            .whatsapp-btn {
+            background-color: #25d366;
+            color: #000;
+            border: 1px solid #25d366;
+            }
+
+            .description {
+            margin-top: 20px;
+            }
+             .overlay {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .full-screen-image {
+                max-width: 90%;
+                max-height: 80%;
+                margin: auto;
+                border-radius: 8px;
+            }
+
+            .arrow, .close-btn {
+                position: absolute;
+                color: white;
+                font-size: 40px;
+                cursor: pointer;
+                user-select: none;
+                padding: 10px;
+            }
+
+            .arrow.left {
+                left: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .arrow.right {
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+           #exitFullScreen {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                color: white;
+                font-size: 35px;
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 1001;
+            }
+             /* Modal container */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 999;
+                left: 0; top: 0;
+                width: 100%; height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            /* Modal content box */
+            .modal-content {
+                background-color: #fefefe;
+                margin: 10% auto;
+                padding: 20px;
+                border-radius: 8px;
+                width: 90%;
+                max-width: 400px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            }
+
+            .modal-content h2 {
+                margin-top: 0;
+                text-align: center;
+                color: #00a5fd;
+            }
+
+            .modal-content label {
+                font-weight: bold;
+                display: block;
+                margin-top: 10px;
+                color: #02b5f7;
+            }
+
+            .modal-content input,
+            .modal-content textarea {
+                border: 1px solid #02b5f7;
+                border-radius: 5px;
+                width: 100%;
+                padding: 8px;
+                margin-top: 4px;
+                box-sizing: border-box;
+            }
+
+            .submit-btn {
+                margin-top: 15px;
+                background-color: #02b5f7;
+                color: white;
+                border: none;
+                padding: 10px;
+                width: 100%;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .submit-btn:hover {
+                background-color: #029cd1;
+            }
+
+            .close-button {
+                float: right;
+                font-size: 24px;
+                font-weight: bold;
+                cursor: pointer;
+                color: #999;
+            }
+
+            .close-button:hover {
+                color: #000;
+            }
+    </style>
+</head>
+<body>
+    <!--Navigation Bar-->
+    <div class="navbar-top">
+        <header class="navbar">
+            <div class="logo"><i class="material-icons">landscape</i><strong>La Maison</strong></div>
+            <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+            </button>
+            <button class="close-btn" aria-label="Close menu">&times;</button>
+            <nav class="nav-links">
+            <a href="index.html"><i class="material-icons">home</i>Home</a>
+            <a href="property.html"><i class="material-icons">apartment</i>Properties</a>
+            <a href="#"><i class="material-icons">real_estate_agent</i>Agents</a>
+            <a href="aboutUs.html"><i class="material-icons">group</i>About Us</a>
+            </nav>
+            <button class="cta-btn">Find A House</button>
+        </header>
+    </div>
+    <!---End of Navigation Bar-->
+
+    <!--Start of the content Section-->
+    <section class="content_section fade-in-section">
+        <div class="container">
+            <div class="row">
+                <!-- Left section -->
+                <div class="col-md-4">
+                    <div class="left-section">
+                        <div class="main-image">
+                            <img id="mainImage" src="" class="d-block w-100 main-image" alt="Main_Property_Image">
+                        </div>
+                        <div class="thumbnails" id="thumbnailContainer">
+                            <!-- Thumbnails go here -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Center section -->
+                <div class="col-md-4">
+                    <div class="center-section">
+                        <h2 id="propertyTitle">Property Title</h2>
+                        <p><strong>Price:</strong> <span id="propertyPrice"></span></p>
+                        <p><strong>Status:</strong> <span id="propertyStatus"></span></p>
+                        <p><strong>Landlord:</strong> <span id="propertylandlord"></span></p>
+                        <p><strong>Location:</strong> <span id="propertyLocation"></span></p>
+                        <p><strong>Property Type:</strong> <span id="propertyType"></span></p>
+                        <p><strong> Property Size:</strong> <span id="propertySize"></span> ha</p>
+
+                        <div class="description">
+                            <h3>Description</h3>
+                            <p id="propertyDescription"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right section -->
+                <div class="col-md-4">
+                    <div class="right-section">
+                        <h3>Contact</h3>
+                        <table class="contact-table">
+                            <tr><td><strong>Landlord</strong></td><td id="tableLandlord">-</td></tr>
+                            <tr><td><strong>Phone</strong></td><td id="tablePhone">-</td></tr>
+                            <tr><td><strong>Price</strong></td><td id="tablePrice">-</td></tr>
+                            <tr><td><strong>Status</strong></td><td id="tableStatus">-</td></tr>
+                        </table>
+                        <div class="contact-dealer" style="display: flex; flex-direction: column; gap: 20px;">
+                            <button
+                                style="width: 100%; border-radius: 2px; color:black; background-color:#26c45d; border: 1px solid #26c45d;"
+                                onclick="callDealer()">
+                                <i class="fas fa-phone" aria-hidden="true" style="margin-right: 8px;"></i>
+                                <a id="phoneDealerLink" href="#" style="text-decoration: none; color: black;">Call Landlord</a>
+                            </button>
+                            <div class="ms_dealer" style="width: 100%;">
+                                <button id="messageLandlordBtn" style="width: 100%; border-radius: 2px; color:black;background-color:#02b5f7; border: 1px solid #02b5f7;"><i class="material-icons" style="vertical-align: middle; margin-right: 8px;color:white; font-size: 24px;">mail</i> Message Landlord</button>
+                            </div>
+                            <button
+                                style="width: 100%; border-radius: 2px; color: green; background-color: white; border: 2px solid #25D366; "
+                                onclick="whatsappDealer()">
+                                <i class="fab fa-whatsapp" aria-hidden="true" style="margin-right: 8px;"></i>
+                                <a id="whatsappDealerLink" href="#" style="text-decoration: none; color: black;">WhatsApp</a>
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Full Screen Overlay for Images -->
+    <div id="fullScreenOverlay" class="overlay">
+        <span class="exitFullScreen" id="exitFullScreen" onclick="closeFullScreen()">×</span>
+        <span class="arrow left" onclick="prevImage()">&#10094;</span>
+        <img id="fullScreenImage" class="full-screen-image" src="" alt="Full Screen Image">
+        <span class="arrow right" onclick="nextImage()">&#10095;</span>
+    </div>
+
+    <!--code for displaying the modal for allowing the user to send a message to the landlord-->
+    <!-- Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Contact Landlord</h2>
+            <form id="landlordForm">
+
+                <input type="hidden" id="propertyId" name="propertyId" />
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required />
+
+                <label for="phone-number">phone number: </label>
+                <input type="number" id="phone-number" name="phone-number" required />
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer_section fade-in-section" id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-col">
+                    <!-- Contact Us section -->
+                    <div class="footer_content" style="display: flex; flex-direction: column;">
+                        <h4>Contact Us</h4>
+                        <div class="contact_link_box">
+                            <a href="https://maps.app.goo.gl/X5jKPCnbjW9TkLET7" target="_blank"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                <span>Location</span>
+                            </a>
+                            <a href="tel:+254742743059"><i class="fas fa-phone" aria-hidden="true"></i>
+                                <span>Call +254 742 743059</span>
+                            </a><br>
+                            <a href="mailto:baschelle5@gmail.com"><i class="fas fa-envelope" aria-hidden="true"></i>
+                                <span style="margin-left: 5px;">baschelle5@gmail.com</span>
+                            </a>        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 footer-col">
+                    <!-- Footer Detail section -->
+                    <div class="footer_detail">
+                        <a href="index.html" class="footer-logo">
+                            La Maison
+                        </a>
+                        <em>"Your Address to Exceptional Living."</em>
+                        <div class="footer_social">
+                            <a href="https://web.facebook.com/people/Basil/100023719690145/" target="_blank"><img src="images/social_logos/facebook_logo_icon.png" alt="Facebook"></a>
+                            <a href="https://wa.me/+254742743059" target="_blank"><img src="images/social_logos/WhatsApp_Logo.png" alt="WhatsApp"></a>
+                            <a href="https://twitter.com/baschelle5" target="_blank"><img src="images/social_logos/x_logo.jpeg" alt="Twitter"></a>
+                            <a href="https://www.linkedin.com/in/basil-onyango-61a081250/" target="_blank"><img src="images/social_logos/linkedin logo_icon.png" alt="linkedIn"></a>
+                            <a href="https://www.youtube.com/@basilonyango5160" target="_blank"><img src="images/social_logos/youtube_logo.png" alt="Youtube"></a>
+                            <a href="https://www.instagram.com/_.blu.berry.__/" target="_blank"><img src="images/social_logos/instagram_logo_icon.png" alt="Instragram"></a>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-4 footer-col mb-4">
+                    <!-- MagariSoko Icon section -->
+                    <div class="MagariSoko_icon">
+                        <div class="img_logo">
+                            <img src="images/landscape_1000dp_0000F5_FILL0_wght400_GRAD0_opsz48.png" alt="la maison logo"> 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 footer-col">
+                    <!-- Footer Info section -->
+                    <div class="footer-info">
+                        <p>&copy; <span id="displayYear"></span> All Rights Reserved By
+                            <a href="index.html">La Maison</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--End of Footer-->
+    </section>
+     <script>
+        const faders = document.querySelectorAll('.fade-in-section');
+
+        const appearOnScroll = new IntersectionObserver(
+            (entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            });
+            },
+            {
+            threshold: 0.15, // Adjust as needed
+            }
+        );
+
+        faders.forEach(fader => appearOnScroll.observe(fader));
+    </script>
+     <script>
+        //code for displaying the hamburger menu for smaller screens
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const closebtn = document.querySelector('.close-btn');
+
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('show');
+                document.body.classList.toggle('overlay-active'); // prevent background scroll
+            });
+
+            const closeBtn = document.querySelector('.close-btn');
+            closeBtn.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+                document.body.classList.remove('overlay-active'); // allow background scroll
+            });
+
+        });
+    </script>
+    <script>
+        //code for checking the current year and displaying it in the footer
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearSpan = document.getElementById('displayYear');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        }); 
+    </script>
+    <script>
+        let currentImageIndex = 0;
+        let imageList = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            let propertyId = null; // Store for use in the form submission
+
+            // Modal DOM references
+            const modal = document.getElementById("messageModal");
+            const openBtn = document.getElementById("messageLandlordBtn");
+            const closeBtn = document.querySelector('.close-button');
+            const form = document.getElementById("landlordForm");
+
+            // === FETCH PROPERTY DATA ===
+            if (id) {
+                try {
+                    const res = await fetch(`/api/properties/${id}`);
+                    const property = await res.json();
+                    propertyId = property._id; // Store for message form
+
+                    // Fill in property details (existing logic)
+                    document.getElementById('propertyTitle').textContent = property.title;
+                    document.getElementById('propertyPrice').textContent = `Ksh ${property.price.toLocaleString()}`;
+                    document.getElementById('tablePrice').textContent = `Ksh ${property.price.toLocaleString()}`;
+                    document.getElementById('propertyStatus').textContent = property.status || 'Available';
+                    document.getElementById('tableStatus').textContent = property.status || 'Available';
+                    document.getElementById('propertylandlord').textContent = property.landlord || 'N/A';
+                    document.getElementById('propertyLocation').textContent = property.location || 'N/A';
+                    document.getElementById('propertyType').textContent = property.property_type || 'N/A';
+                    document.getElementById('propertySize').textContent = property.size.toLocaleString() || 'N/A';
+                    document.getElementById('propertyDescription').textContent = property.description;
+                    document.getElementById('tableLandlord').textContent = property.landlord || '-';
+                    document.getElementById('tablePhone').textContent = property.phone || '-';
+
+                    // Setup phone & WhatsApp links
+                    const phone = property.phone?.replace(/\s+/g, '') || '';
+                    if (phone) {
+                        document.getElementById('phoneDealerLink').href = `tel:${phone}`;
+                        document.getElementById('whatsappDealerLink').href = `https://wa.me/${phone}`;
+                        window.callDealer = () => window.location.href = `tel:${phone}`;
+                        window.whatsappDealer = () => window.location.href = `https://wa.me/${phone}`;
+                    }
+
+                    // Setup property images
+                    const images = property.images || [];
+                    imageList = images.map(img => `/${img}`);
+                    if (imageList.length > 0) {
+                        const mainImg = document.getElementById('mainImage');
+                        const thumbContainer = document.getElementById('thumbnailContainer');
+                        mainImg.src = imageList[0];
+                        mainImg.addEventListener('click', () => openFullScreen(0));
+                        images.forEach((img, index) => {
+                            const thumb = document.createElement('img');
+                            thumb.src = `/${img}`;
+                            thumb.addEventListener('click', () => {
+                                document.getElementById('mainImage').src = `/${img}`;
+                                openFullScreen(index);
+                            });
+                            thumbContainer.appendChild(thumb);
+                        });
+                    }
+                } catch (err) {
+                    console.error('Error loading property data:', err);
+                }
+            }
+
+            // === MODAL OPEN/CLOSE ===
+            openBtn.addEventListener("click", function () {
+                modal.style.display = "block";
+            });
+
+            closeBtn.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            // === HANDLE FORM SUBMISSION ===
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone-number').value,
+                    email: document.getElementById('email').value,
+                    message: document.getElementById('message').value,
+                    propertyId: propertyId // Add property ID here
+                };
+
+                try {
+                    const response = await fetch('/api/rentals/inquiry', { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify(formData) 
+                    });
+            
+
+                    if (response.ok) {
+                        modal.style.display = "none";
+                        alert('Message sent successfully!');
+                        form.reset();
+                    } else {
+                        alert('Error sending message. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    alert('Something went wrong.');
+                }
+            });
+        });
+
+        // Image viewer functions
+        function openFullScreen(index) {
+            currentImageIndex = index;
+            const overlay = document.getElementById('fullScreenOverlay');
+            const fullImg = document.getElementById('fullScreenImage');
+            fullImg.src = imageList[currentImageIndex];
+            overlay.style.display = 'flex';
+        }
+
+        function closeFullScreen() {
+            document.getElementById('fullScreenOverlay').style.display = 'none';
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % imageList.length;
+            document.getElementById('fullScreenImage').src = imageList[currentImageIndex];
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + imageList.length) % imageList.length;
+            document.getElementById('fullScreenImage').src = imageList[currentImageIndex];
+        }
+    </script>
+
+</body>
+</html>

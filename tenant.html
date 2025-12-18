@@ -1,0 +1,3248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Admin page for La Maison, a property management system.">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+    <link rel="icon" href="images/system Images/rental_image_logo.png" type="image/gif">
+
+    <title>Tenant | La Maison</title>
+    <!--CSS Links-->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="css/tenant.css">
+    <!--Other links-->
+    <!--link rel="stylesheet" href="css/responsive.css"-->
+    <!--Font Awesome CSS-->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/message.css">
+    <!--Boicons CSS-->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <!--icon display style-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #e6edff;
+            font-family: Arial, sans-serif;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        main {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            background-color: #dfe7fe;
+            width: 100%;
+            height: 100vh; /* Ensures main takes full height */
+        }
+
+        /* Style the search box container */
+        .searchBox-container .search-box {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Inner wrapper to align icon and input vertically and horizontally */
+        .search-inner {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 50%; /* Adjust width as needed for your layout */
+            max-width: 600px; /* Optional: limit maximum width */
+        }
+
+        /* Style for the search icon - slightly bigger */
+        .search-inner .icon {
+            padding: 10px;
+            font-size: 24px; /* make icon larger */
+            color: white; /* icon color */
+            background-color: #007BFF;
+            border-radius: 5px 0 0 5px;
+        }
+        #editTenantModal{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            padding-left: 20px;
+            background-color: #dfe7fe;
+        }
+        #editTenantModal input{
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #00a5fd;
+            border-radius: 4px;
+        }
+        .compose-container {
+            position: fixed; /* so it's centered relative to viewport */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* perfect center */
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1000;
+        }
+            /* Compose form layout */
+            #composeForm {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            }
+
+            #composeForm label {
+            font-weight: bold;
+            font-size: 18px;
+            color: #00a5fd;
+            margin-bottom: 5px;
+            }
+
+            #composeForm input,
+            #composeForm textarea {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #00a5fd;
+                border-radius: 8px;
+                font-size: 16px;
+                resize: none;
+                outline: #00a5fd;
+            }
+
+            /* Buttons */
+            #composeForm button {
+                padding: 10px;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            #composeForm button[type="submit"] {
+                background-color: #28a745;
+                color: white;
+            }
+
+            #composeForm button[type="submit"]:hover {
+                background-color: #218838;
+            }
+
+            #cancelCompose {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            #cancelCompose:hover {
+            background-color: #c82333;
+            }
+            #newMessageBtn {
+                position: fixed;        /* Fix the button position relative to the viewport */
+                bottom: 20px;           /* Adjust the distance from the bottom */
+                right: 20px;            /* Adjust the distance from the right */
+                z-index: 1000;          /* Ensure it's above other content */
+                border: none;           /* Optional: remove default border */
+                background-color: #007bff; /* Optional: button background color */
+                color: white;           /* Optional: icon/text color */
+                border-radius: 50%;      /* Optional: make it circular */
+                width: 60px;            /* Width of the button */
+                height: 60px;           /* Height of the button */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: shadow for better visibility */
+                cursor: pointer;
+            }
+            #newMessageBtn:active {
+            background-color: #00a5fd;
+            color: #fff;
+            }
+
+            #newMessageBtn:focus {
+            outline: none;
+            }
+        
+            #newMessageBtn:hover {
+                color: #00a5fd;
+                border: 2px solid #00a5fd;
+                background-color: white;
+            }
+
+            .message-card{
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+            
+            .reply-btn{
+                align-self: flex-end; /* Align button to the right */
+                margin-top: auto; /* Push button to the bottom */
+                padding: 10px 20px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            
+            /*styling the reply container*/
+            .reply-container{
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%); /* perfect center */
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                max-width: 500px;
+                width: 90%;
+                z-index: 1000;
+            }
+            #replyForm{
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            #replyForm label{
+                font-weight: bold;
+                font-size: 18px;
+                color: #00a5fd;
+                margin-bottom: 5px;
+            }
+            #replyForm input,
+            #replyForm textarea{
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #00a5fd;
+                border-radius: 5px;
+                font-size: 18px;
+                resize: none;
+                outline: #00a5fd;
+            }
+            #replyForm button{
+                padding: 10px;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            #replyForm button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            }
+
+            #cancelReply {
+                background-color: #dc3545;
+                color: white;
+            }
+            #payment-form{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 10px;
+                padding: 20px;
+                margin-top: 20px;
+                padding-left: 10px;
+                background-color: #dfe7fe;
+            }
+
+            #payment-form label{
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #00a5fd;
+            }
+
+            #payment-form input,
+            #payment-form select{
+                padding: 8px;
+                border: 1px solid #00a5fd;
+                border-radius: 4px;
+                width: 100%;
+            }
+            
+            #payment-form .submitBtn{
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            #payment-form .submitBtn button{
+                padding: 10px 20px;
+                background-color: #00a5fd;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            #payment-form .submitBtn button:hover{
+                background-color: #0086cc;
+            }
+
+            #payment-form button[type="submit"]{
+                background-color: #00a5fd;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            #payment-form .comment{
+                flex: 1 1 100%;
+                display: flex;
+                flex-direction: column;
+                margin-top: 20px;
+            }
+
+            #payment-form .comment textarea{
+                width: 100%;
+                padding: 10px;
+                height: 150px;
+                border: 1px solid #00a5fd;
+                border-radius: 4px;
+                resize: both;
+            }
+
+            .chat-wrapper {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                background-color: #e6edff;
+            }
+
+            .chat-header {
+                gap: 10px;
+                padding: 10px 20px;
+                border-bottom: 1px solid #ccc;
+                display: flex;
+                align-items: center; /* Vertically center the items */
+                justify-content: space-between; /* Push the button to the left and h3 to the center */
+                position: relative; /* For absolute positioning if needed */
+            }
+
+            .chat-header h3 {
+                font-size: 24px;
+                margin: 0 auto; /* Center the h3 horizontally */
+                position: absolute; /* Absolute positioning to center it */
+                left: 50%; /* Move to the middle */
+                transform: translateX(-50%); /* Adjust for exact center */
+            }
+
+            .chat-header button {
+                margin-right: auto; /* Push the button to the left */
+            }
+
+            .chat-header #backToInbox{
+                color: #00a5fd;
+                font-size: 16px;
+                text-decoration: none;
+                border: none;
+                background-color: inherit;
+                cursor: pointer;
+            }
+            .chat-messages {
+                flex: 1;
+                overflow-y: auto;
+                padding: 15px 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .chat-message .message-text {
+                margin-bottom: 10px;
+                font-size: 14px;
+                color: black;
+            }
+
+            /* Message styles */
+            .chat-message {
+                max-width: 70%;
+                padding: 10px 15px;
+                border-radius: 20px;
+                font-size: 14px;
+                word-break: break-word;
+            }
+
+            .chat-message.sent {
+                background-color: #d4f8c6;
+                align-self: flex-end;
+                border-top-right-radius: 0;
+                text-align: right;
+            }
+
+            .chat-message.received {
+                background-color: #f1f0f0;
+                align-self: flex-start;
+                border-top-left-radius: 0;
+                text-align: left;
+            }
+
+            .timestamp {
+                display: block;
+                font-size: 11px;
+                color: gray;
+                margin-top: 4px;
+            }
+
+            /* Form layout */
+            .chat-form {
+                display: flex;
+                gap: 10px;
+                padding: 10px 20px;
+                background-color: #fff;
+                border-top: 1px solid #ccc;
+            }
+
+            .chat-form textarea {
+                flex: 1;
+                resize: none;
+                border-radius: 25px;
+                padding: 10px 15px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                height: 40px;
+            }
+
+            .chat-form button {
+                background-color: #00a5fd;
+                color: white;
+                border: none;
+                padding: 0 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                height: 40px;
+            }
+
+            .chat-form button:hover {
+                background-color: #007acc;
+            }
+            /* Basic modal styles for demonstration */
+            .modal {
+                position: fixed;
+                z-index: 1000;
+                padding-top: 100px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.4);
+            }
+
+            .modal-content {
+                background-color: #fff;
+                margin: auto;
+                padding: 20px;
+                width: 80%;
+                position: relative;
+            }
+            #editForm {
+                padding: 20px;
+                margin-top: 20px;
+                padding-left: 10px;
+            }
+            #editForm label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #00a5fd;
+            }
+
+            #editForm input,
+            #editForm select{
+                padding: 8px;
+                border: 1px solid #00a5fd;
+                border-radius: 4px;
+                width: 100%;
+            }
+            .close {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                font-size: 24px;
+                cursor: pointer;
+            }
+
+            #editForm button[type="submit"]{
+                background-color: #00a5fd;
+                color: white;
+                border: none;
+                padding: 0 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                height: 40px;
+            }
+            /*code for custom-navbar dropdown*/
+            /* Dropdown Styles */
+            .dropdown-container {
+                position: relative;
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: 40px;
+                right: 0;
+                background-color: rgba(0, 0, 50, 0.6);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid #ddd;
+                padding: 10px;
+                min-width: 150px;
+                display: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                z-index: 9999;
+                border-radius: 6px;
+            }
+
+            .dropdown-menu a, .dropdown-menu p {
+                display: block;
+                color: #ddd;
+                padding: 8px;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .dropdown-menu a:hover {
+                color: black;
+                background-color: #f0f0f0;
+            }
+
+            /* Show dropdown on hover for large screens */
+            @media (min-width: 992px) {
+                .dropdown-container:hover .dropdown-menu {
+                    display: block;
+                }
+            }
+    </style>
+</head>
+<body>
+    <!-- Hamburger (visible only on small screens) -->
+    <div class="hamburger" id="hamburger">
+        <i class="material-icons">menu</i>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <i class="material-icons">landscape</i>
+                <div class="logo_name">La Maison</div>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+
+        <!-- Close button inside sidebar -->
+        <div class="close-btn" id="closeBtn">
+            <i class="material-icons">close</i>
+        </div>
+
+        <ul class="nav_list">
+            <li>
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Search" id="search">
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="#" id="dashboard" class="active" onclick="showSection(event, 'dashboard')">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="#" onclick="showSection(event, 'my_property')">
+                    <i class="material-icons">apartment</i>
+                    <span class="links_name">My Property</span>
+                </a>
+                <span class="tooltip">My Property</span>
+            </li>
+            <li>
+                <a href="#" onclick="showSection(event, 'payments')">
+                    <i class="material-icons">payments</i>
+                    <span class="links_name">Payments</span>
+                </a>
+                <span class="tooltip">Payments</span>
+            </li>
+            <li>
+                <a href="#" onclick="showSection(event, 'messages')">
+                    <i class="material-icons">mail</i>
+                    <span class="links_name">Messages</span>
+                </a>
+                <span class="tooltip">Messages</span>
+            </li>
+            <li>
+                <a href="#" onclick="showSection(event, 'requests')">
+                    <i class="material-icons">build_circle</i>
+                    <span class="links_name">My Requests</span>
+                </a>
+                <span class="tooltip">My Requests</span>
+            </li>
+            <li>
+                <a href="#" onclick="showSection(event, 'invoices')">
+                    <i class="bx  bx-credit-card-alt"></i>
+                    <span class="links_name">Invoices</span>
+                </a>
+                <span class="tooltip">Invoices</span>
+            </li>
+            <li>
+                <a href="#" onclick="showSection(event, 'settings')">
+                    <i class="material-icons">settings</i>
+                    <span class="links_name">Settings</span>
+                </a>
+                <span class="tooltip">Settings</span>
+            </li>
+            <div class="profile_content">
+                <div class="profile">
+                    <div class="profile_details">
+                        <img id="user_img" src="" alt="profile">
+                        <div class="name_job">
+                            <div class="name" id="user_name"></div>
+                            <div class="job">Tenant</div>
+                        </div>
+                    </div>
+                    <i style="cursor: pointer;" class="material-icons" id="log_out" onclick="showSection(event, 'logout')">logout</i>
+                </div>
+            </div>
+        </ul>
+    </div>
+
+    <!--end of sidebar-->
+    <main>
+        <div class="home_content">
+            <nav class="custom-navbar" style="width: 100%; position: fixed; top: 0;">
+                <div class="navbar-top container-fluid" style="position: relative; display: flex; align-items: center; justify-content: center;">
+
+                    <!-- Centered Logo -->
+                    <div class="logo-center" style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center;">
+                        <i class="material-icons" style="color: #0000ff;">landscape</i>
+                        <strong style="font-size: 20px; color: #fff; margin-left: 8px;">La Maison</strong>
+                    </div>
+
+                    <!-- Right side: Notification and Avatar -->
+                    <div class="nav-icons" style="margin-left: auto; display: flex; align-items: center;">
+                        
+                        <!-- Notification Bell Icon with Dropdown -->
+                        <div class="dropdown-container" style="position: relative; margin-right: 15px;">
+                            <i class="material-icons" style="font-size: 30px; color: blue; cursor: pointer;">circle_notifications</i>
+                            <div class="dropdown-menu">
+                                <p>No new notifications</p>
+                            </div>
+                        </div>
+
+                        <!-- User Avatar with Dropdown -->
+                        <div class="dropdown-container" style="position: relative;">
+                            <img id="top_user_img" src="" alt="User Avatar" style="width: 30px; height: 30px; border-radius:50%; cursor: pointer;">
+                            <div class="dropdown-menu">
+                                <a href="#" onclick="showSection(event, 'settings')">Profile</a>
+                                <a href="#" onclick="showSection(event, 'settings')">Settings</a>
+                                <a href="#" onclick="showSection(event, 'logout')">Logout</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </nav>
+            <div id="content" class="content">
+                <!--Content will be dynamically displayed here-->
+            </div>
+        </div>
+
+        <!-- Edit Tenant Modal -->
+        <div id="editTenantModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+            <div class="Tnt_Modal_content" style="background:white; padding:20px; border-radius:8px; max-width:500px; width:90%; position:relative;">
+                <span id="closeModalBtn" style="position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer;">&times;</span>
+                <h2 style="text-align: center; color: #00a5fd;">Edit Personal Info</h2>
+
+                <form id="editTenantForm" enctype="multipart/form-data">
+                    <!-- ✅ Profile Picture Upload -->
+                    <label><strong>Upload Profile Picture: </strong>
+                        <input style="border: none;" type="file" id="editImage" name="image" accept="image/*">
+                    </label><br><br>
+                    <label><strong>Full Name: </strong><input type="text" id="editName" name="name" required></label><br><br>
+                    <label><strong>Phone: </strong><input type="text" id="editPhone" name="phone" required></label><br><br>
+                    <label><strong>Email: </strong><input type="email" id="editEmail" name="email" required></label><br><br>
+                    <label><strong>Address: </strong><input type="text" id="editAddress" name="address"></label><br><br>
+
+                    <div class="actionBtn" style="display: flex; justify-content: center; align-items: center;">
+                        <button type="submit" style="background-color: #00a5fd; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </main>
+    <!--Notification popup-->
+    <div id="notification" class="notification-popup">
+        <span id="notificationMessage">
+            <img src="images/social_logos/hi emoji.png" alt="hi_emoji">
+             Welcome, <br><span id="TNT_name"></span>
+        </span>
+        <button id="notification-close" class="notification-close" onclick="closepopup()">×</button>
+    </div>
+
+    <!--code display notification based on rejected or completed requests and also payments made by the tenant-->
+    <div id="notification-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <!-- Notifications will be dynamically added here -->
+    </div>
+
+    <!-- JavaScript Links -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function shownotification() {
+                const notification = document.getElementById('notification');
+                notification.style.display = 'flex';
+                // Auto fade after 5 seconds
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+            function closepopup() {
+                document.getElementById('notification').style.display = 'none';
+            }
+            // show notification on page load
+            window.addEventListener('load', ()=> {
+                shownotification();
+        });    
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('notification-container'); // one container for both
+
+            // Fetch maintenance notifications
+            fetch('/api/maintenance/notifications', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && Array.isArray(data.data)) {
+                        data.data.forEach(item => {
+                            renderNotification({
+                                _id: item._id,
+                                status: item.status,
+                                type: 'maintenance',
+                                message: item.status === 'Resolved' 
+                                    ? `✅ Your maintenance request has been completed.` 
+                                    : `❌ Your maintenance request was rejected <br>Reason: "${item.rejectionReason || 'No reason provided'}"`,
+                                closeUrl: `/api/maintenance/notifications/${item._id}`
+                            });
+                        });
+                    }
+                })
+                .catch(err => console.error('Maintenance notification fetch error:', err));
+
+            // Fetch payment notifications
+            fetch('/api/review-Payments/notification', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && Array.isArray(data.data)) {
+                        data.data.forEach(item => {
+                            const amount = typeof item.amountPaid === 'number' ? item.amountPaid.toLocaleString() : '0';
+                            const datePaid = item.datePaid ? new Date(item.datePaid).toLocaleDateString() : 'Unknown date';
+                            renderNotification({
+                                _id: item._id,
+                                status: item.status,
+                                type: 'payment',
+                                message: item.status === 'Approved' 
+                                    ? `✅ Your Payment of Ksh. ${amount}<br>Paid on ${datePaid} has been approved!.` 
+                                    : `❌ Your Payment of Ksh. ${amount}<br>Paid on ${datePaid} was rejected <br>Reason: "${item.rejectionReason || 'No reason provided'}"`,
+                                closeUrl: `/api/review-Payments/notification/${item._id}`
+                            });
+                        });
+                    }
+                })
+                .catch(err => console.error('Payment notification fetch error:', err));
+
+            /**
+             * Render notification box
+             */
+            function renderNotification({ _id, status, message, closeUrl }) {
+                const box = document.createElement('div');
+                const isPositive = status === 'Resolved' || status === 'Approved';
+                const color = isPositive ? 'rgba(0, 0, 50, 0.6)' : 'rgba(255,0,0,0.2)';
+                const borderColor = isPositive ? 'white' : 'red';
+
+                box.className = 'notification-box';
+                box.innerHTML = `
+                    <span style="color: white; font-size: 18px; font-weight: bold; margin-bottom: 5px; float:right; cursor:pointer;" class="close-notf" data-id="${_id}" data-url="${closeUrl}">×</span>
+                    <p>${message}</p>
+                `;
+                box.style.cssText = `
+                    background: ${color};
+                    border: 2px solid ${color};
+                    backdrop-filter: blur(8px);
+                    padding: 15px 25px;
+                    border-radius: 12px;
+                    margin-bottom: 10px;
+                    font-weight: bold;
+                    color: ${borderColor};
+                    box-shadow: 0 0 10px ${color};
+                    animation: fadeIn 0.5s ease;
+                    position: relative;
+                `;
+
+                container.appendChild(box);
+
+                // Close handler
+                box.querySelector('.close-notf').addEventListener('click', function () {
+                    box.remove();
+                    fetch(this.dataset.url, { method: 'PUT', credentials: 'include' })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.success) {
+                                console.error('Failed to mark as notified:', data.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error marking as notified:', err);
+                        });
+                });
+            }
+        });
+    </script>
+
+    <script>
+        let btn = document.querySelector('#btn');  // your existing desktop toggle
+        let sidebar = document.querySelector('.sidebar');
+        let searchBtn = document.querySelector('.bx-search');
+        let hamburger = document.getElementById('hamburger'); 
+        let closeBtn = document.getElementById('closeBtn');
+
+        // Desktop button
+        if (btn) {
+            btn.onclick = function() {
+                sidebar.classList.toggle('active');
+            }
+        }
+
+        // Mobile hamburger
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                sidebar.classList.add('active');
+                hamburger.style.display = "none";  // hide hamburger
+            });
+        }
+
+        // Close button inside sidebar
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                hamburger.style.display = "flex";  // show hamburger again
+            });
+        }
+    </script>
+
+
+    <script>
+        // this scripts displays the dashboard content by default when the user is in the tenants page
+        const sections = {
+            dashboard: `
+            <div class="container">
+                        <div class="row">
+                            <div class="dashItems">
+
+                                <!-- Top Content-->
+                                <h2  style="font-weight: bold; text-align: center; font-size: 20px" class="quick-stats" ><strong>Quick Stats</strong></h2>
+
+                                <!-- Total Billed -->
+                                <div class="dash_card" style="border-bottom-color: #009688; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: #009688;">Total Billed</h2>
+                                    <div class="summary" style="color: #009688;">
+                                        <span id="total_billed_summary" class="count-text">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">functions</span>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="#" style="color: #009688;">
+                                            <span style="margin-right: 5px;" onclick="showSection(event, 'totalBilled')">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                 <!-- Payments -->
+                                <div class="dash_card" style="border-bottom-color: #e67e22; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: #e67e22;">Amount Paid</h2>
+                                    <div class="summary" style="color: #e67e22;">
+                                        <span id="amount_paid_summary" class="count-text">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">payments</span>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="#" style="color: #e67e22;">
+                                            <span style="margin-right: 5px;" onclick="showSection(event, 'totalBilled')">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                        <a href="#" onclick="showSection(event, 'create_payment')" style="color: #e67e22;">
+                                            <span class="material-icons" style="font-size: 14px; margin-right: 15px;">add_circle</span>
+                                            <span style="margin-right: 5px;">Add</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Balances -->
+                                <div class="dash_card" style="border-bottom-color: purple; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: purple;">Balance</h2>
+                                    <div class="summary" style="color: purple;">
+                                        <span id="balance_amount" class="count-text">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">account_balance_wallet</span>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="#" onclick="showSection(event, 'totalBilled')" style="color: purple;">
+                                            <span style="margin-right: 5px;">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                        <a href="#" onclick="showSection(event, 'create_payment')" style="color: purple;">
+                                            <span class="material-icons" style="font-size: 14px; margin-right: 15px;">add_circle</span>
+                                            <span style="margin-right: 5px;">Add</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Invoices -->
+                                <div class="dash_card" style="border-bottom-color: #0097a7; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: #0097a7;">Invoices</h2>
+                                    <div class="summary" style="color: #0097a7;">
+                                        <span id="invoice_count" class="count-text">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">receipt</span>
+                                    </div>
+                                    <div class="actions" style="margin-top: auto; align-self: flex-end;">
+                                        <a href="#" style="color: #0097a7; display: flex; align-items: center;">
+                                            <span style="margin-right: 5px;" onclick="showSection(event, 'invoices')">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!---Code for the personal section-->
+                    <div class="personal">
+                        <div class="container">
+                            <div class="profile-card">
+                                <h2>User Profile</h2>
+                                <div class="profile-image">
+                                    <img id="tenant_image" src="" alt="User Image">
+                                </div>
+                                <h3 id="tenant_name"></h3>
+                                <p><span class="material-icons">apartment</span> <strong>Apartment Name:</strong></p><br>
+                                <p id="property_name"></p><br>
+                                <p id="house_number"></p><br>
+                                <p style="font-size: 20px;"><strong>Rent:</strong> <span id="Rent_amount"></span></p><br>
+                                <hr>
+                                <p class="stage">Period Of Stay: <span id="stage"></span></p>
+                            </div>
+                                    <!-- Personal Info Section -->
+                                    <div class="info-card">
+                                        <div class="info-header" style="align-items: center; justify-content: center;">
+                                            <h1 style="text-align: center;">Personal Information</h1>
+                                        </div>
+                                        <div>
+                                            <div class="info-grid">
+                                                <div><strong>Tenat ID:</strong>
+                                                    <span id="Tenant_ID"></span>
+                                                </div>
+                                                <div><strong>ID/ Passport:</strong>
+                                                    <span id="id_no"></span>
+                                                </div>
+                                                <div><strong>Full Name:</strong>
+                                                    <span id="tenantName"></span>
+                                                </div>
+                                                <div><strong>Gender:</strong>
+                                                    <span id="gender"></span>
+                                                </div>
+                                                <div><strong>Address:</strong> 
+                                                    <span id="address"></span>
+                                                </div>
+                                                <div><strong>Phone Number:</strong>
+                                                    <span id="Phone_no"></span>
+                                                </div>
+                                                <div><strong>Email Address:</strong> 
+                                                    <span id="email"></span>
+                                                </div>
+                                                <div><strong>Lease Date:</strong>
+                                                    <span id="lease_date"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="actionBtn" style="display: flex; justify-content: center; margin-top:40px; margin-bottom: 5px;">
+                                            <button class="update-btn"><i class="bx bx-edit" style="font-size: 20px;"></i>Edit Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions -->
+                    <div class="Transaction_section">
+                    <div style="font-weight: bold; text-align: center; font-size: 20px; padding-bottom: 10px;">
+                        Latest Transaction
+                    </div>
+                    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
+                        <table id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Actor</th>
+                                    <th>Action Description</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data Will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--Blog Section-->
+                    <div style="font-weight: Bold; text-align: center; font-size: 20px; padding-top: 20px;">
+                        Blog Section
+                    </div>
+                    <div class="cards-container">
+                        <!-- Card 1 -->
+                        <div class="card" style="border-left: 5px solid #27ae60;">
+                            <div class="card-inner">
+                                <span class="material-icons" style="color: #27ae60;">comment</span>
+                                <div>
+                                    <div class="card-number">2</div>
+                                    <div class="card-label">Blog Comments</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="card" style="border-left: 5px solid #e74c3c;">
+                            <div class="card-inner">
+                                <span style='font-size: 24px;'>&#128545;</span>
+                            <div>
+                                <div class="card-number">0</div>
+                                <div class="card-label">Complaints</div>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="card" style="border-left: 5px solid #f39c12;">
+                            <div class="card-inner">
+                            <span class="material-icons" style="color:#f39c12;">mail</span>
+                            <div>
+                                <div class="card-number">5</div>
+                                    <div class="card-label">Messages</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="card" style="border-left: 5px solid #2980b9;">
+                            <div class="card-inner">
+                                <span class="material-icons" style="color:#2980b9;">build_circle</span>
+                                <div>
+                                    <div class="card-number" id="requestCount">0</div>
+                                    <div class="card-label">Requests</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+
+         function showSection(event, section) {
+            event.preventDefault();
+            document.getElementById('content').innerHTML = sections[section];
+            document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        //Load dashbaord by default when the page loads
+        document.getElementById('content').innerHTML = sections.dashboard;
+        
+        /* -------------------------
+        Auto-resize counts
+        ------------------------- */
+        function autoResizeText(el) {
+            const parent = el.parentElement;
+            let fontSize = 24; // default size
+            el.style.fontSize = fontSize + "px";
+
+            while (el.scrollWidth > parent.clientWidth - 50 && fontSize > 12) {
+                fontSize -= 1;
+                el.style.fontSize = fontSize + "px";
+            }
+        }
+
+        function observeCounts() {
+            document.querySelectorAll(".count-text").forEach(el => {
+                autoResizeText(el);
+                const observer = new MutationObserver(() => autoResizeText(el));
+                observer.observe(el, { childList: true });
+            });
+        }
+
+        // Call when dashboard loads
+        observeCounts();
+    </script>
+    <script>
+        // display of content when the user clicks on the various links in the sidebar
+        // when the user clicks dashbaord in the sidebar
+        function showSection(event, sectionId){
+            event.preventDefault(); //Prevent default link behavior
+
+            const mainContent = document.querySelector('.content');
+            
+            if (sectionId === 'dashbaord') {
+                mainContent.innerHTML = `
+                    <div class="container">
+                        <div class="row">
+                            <div class="dashItems">
+                                <!-- Top Content-->
+                                <h2  style="font-weight: bold; text-align: center; font-size: 20px" class="quick-stats" ><strong>Quick Stats</strong></h2>
+                                <div class="dash_card" style="border-bottom-color: #009688; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: #009688;">Total Billed</h2>
+                                    <div class="summary" style="color: #009688;">
+                                        <span id="total_billed_summary">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">functions</span>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="#" style="color: #009688;">
+                                            <span style="margin-right: 5px;" onclick="showSection(event, 'totalBilled')">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Payments -->
+                                <div class="dash_card" style="border-bottom-color: #e67e22; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: #e67e22;">Amount Paid</h2>
+                                    <div class="summary" style="color: #e67e22;">
+                                        <span id="amount_paid_summary">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">payments</span>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="#" style="color: #e67e22;">
+                                            <span style="margin-right: 5px;">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                        <a href="#" onclick="showSection(event, 'createPayment')" style="color: #e67e22;">
+                                            <span class="material-icons" style="font-size: 14px;  margin-right: 15px;">add_circle</span>
+                                            <span style="margin-right: 5px;">Add</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Balances -->
+                                <div class="dash_card" style="border-bottom-color: purple; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: purple;">Balance</h2>
+                                    <div class="summary" style="color: purple;">
+                                        <span id="balance_amount">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">account_balance_wallet</span>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="#" style="color: purple;">
+                                            <span style="margin-right: 5px;">View details</span>
+                                            <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                        <a href="#" onclick="showSection(event, 'create_payment')" style="color: purple;">
+                                            <span class="material-icons" style="font-size: 14px; margin-right: 15px;">add_circle</span>
+                                            <span style="margin-right: 5px;">Add</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Invoices -->
+                                <div class="dash_card" style="border-bottom-color: #0097a7; display: flex; flex-direction: column; position: relative; padding: 16px">
+                                    <h2 style="color: #0097a7;">Invoices</h2>
+                                    <div class="summary" style="color: #0097a7;">
+                                        <span id="invoice_count">Loading...</span>
+                                        <span class="material-icons" style="font-size: 40px;">receipt</span>
+                                    </div>
+                                    <div class="actions" style="margin-top: auto; align-self: flex-end;">
+                                        <a href="#" style="color: #0097a7; display: flex; align-items: center;">
+                                        <span style="margin-right: 5px;">View details</span>
+                                        <span class="material-icons" style="font-size: 14px;">keyboard_double_arrow_right</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---Code for the personal section-->
+                    <div class="personal">
+                        <div class="container">
+                            <div class="profile-card">
+                                <h2>User Profile</h2>
+                                <div class="profile-image">
+                                    <img id="tenant_image" src="" alt="User Image">
+                                </div>
+                                <h3 id="tenant_name"></h3>
+                                <p><span class="material-icons">apartment</span> <strong>Apartment Name:</strong></p><br>
+                                <p id="property_name"></p><br>
+                                <p id="house_number"></p><br>
+                                <p style="font-size: 20px;"><strong>Rent:</strong> <span id="Rent_amount"></span></p><br>
+                                <hr>
+                                <p class="stage">Period Of Stay: <span id="stage"></span></p>
+                            </div>
+
+
+                                    <!-- Personal Info Section -->
+                                    <div class="info-card">
+                                        <div class="info-header" style="align-items: center; justify-content: center;">
+                                            <h1 style="text-align: center;">Personal Information</h1>
+                                        </div>
+                                        <div>
+                                            <div class="info-grid">
+                                                <div><strong>Tenat ID:</strong>
+                                                    <span id="Tenant_ID"></span>
+                                                </div>
+                                                <div><strong>ID/ Passport:</strong>
+                                                    <spab id="id_no"></span>
+                                                </div>
+                                                <div><strong>Full Name:</strong>
+                                                    <span id="tenantName"></span>
+                                                </div>
+                                                <div><strong>Gender:</strong>
+                                                    <span id="gender"></span>
+                                                </div>
+                                                <div id=""><strong>Date of Birth:</strong> 02/07/02</div>
+                                                <div><strong>Phone Number:</strong>
+                                                    <span id="Phone_no"></span>
+                                                </div>
+                                                <div><strong>Email Address:</strong> 
+                                                    <span id="email"></span>
+                                                </div>
+                                                <div><strong>Lease Date:</strong>
+                                                    <span id="lease_date"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="actionBtn" style="display: flex; justify-content: center; margin-top:40px; margin-bottom: 5px;">
+                                            <button class="update-btn"><i class="bx bx-edit" style="font-size: 20px;"></i>Edit Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Transactions -->
+                    <div class="Transaction_section">
+                    <div style="font-weight: bold; text-align: center; font-size: 20px; padding-bottom: 10px;">
+                        Latest Transaction
+                    </div>
+                    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Actor</th>
+                                    <th>Action Description</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background-color: #3498db; color: #fff;">
+                                    <td>Admin (obded)</td>
+                                    <td>obded added payment of 5000 for Xzv, under invoice ID: INV20250512094820</td>
+                                    <td>2025-05-12 : 09:50:06</td>
+                                </tr>
+                                <tr>
+                                    <td>Admin (obded)</td>
+                                    <td>obded added payment of 5000 for Xzv, under invoice ID: INV20250512094820</td>
+                                    <td>2025-05-12 : 09:50:06</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--Blog Section-->
+                    <div style="font-weight: Bold; text-align: center; font-size: 20px; padding-top: 20px;">
+                        Blog Section
+                    </div>
+                    <div class="cards-container">
+                        <!-- Card 1 -->
+                        <div class="card" style="border-left: 5px solid #27ae60;">
+                            <div class="card-inner">
+                                <span class="material-icons" style="color: #27ae60;">comment</span>
+                                <div>
+                                    <div class="card-number">2</div>
+                                    <div class="card-label">Blog Comments</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="card" style="border-left: 5px solid #e74c3c;">
+                            <div class="card-inner">
+                                <span style='font-size: 24px;'>&#128545;</span>
+                            <div>
+                                <div class="card-number">0</div>
+                                <div class="card-label">Complaints</div>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="card" style="border-left: 5px solid #f39c12;">
+                            <div class="card-inner">
+                            <span class="material-icons" style="color:#f39c12;">mail</span>
+                            <div>
+                                <div class="card-number">5</div>
+                                    <div class="card-label">Messages</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="card" style="border-left: 5px solid #2980b9;">
+                            <div class="card-inner">
+                                <span class="material-icons" style="color:#2980b9;">build_circle</span>
+                                <div>
+                                    <div class="card-number" id="requestCount">0</div>
+                                    <div class="card-label">Requests</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                ` ;
+            } else if (sectionId === 'my_property') {
+                mainContent.innerHTML = `<p>Loading property info...</p>`;
+
+                fetch('/api/tenants/profile', { credentials: 'include' })
+                    .then(res => res.json())
+                    .then(async tenantData => {
+                        if (!tenantData.success) throw new Error('Failed to fetch tenant profile');
+                        const tenant = tenantData.tenant;
+
+                        const propertyRes = await fetch(`/api/properties/by-title/${encodeURIComponent(tenant.property)}`, { credentials: 'include' });
+                        const propertyData = await propertyRes.json();
+                        if (!propertyData.success) throw new Error('Property not found');
+                        const property = propertyData.property;
+
+                        const imagesHtml = property.images.map((img, i) => `<img src="${img}" onclick="openFullscreen(${i})" alt="Thumb">`).join('');
+
+                        mainContent.innerHTML = `
+                            <div class="property-display">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="property-images">
+                                                <img id="main-image" src="${property.images[0]}" alt="Property Image" class="d-block w-100 main-img" onclick="openFullscreen(0)">
+                                                <div class="thumbnails">${imagesHtml}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="property-info">
+                                                <h2>${property.title} - ${tenant.roomNumber}</h2>
+                                                <p><strong>Bedrooms:</strong> ${property.bedrooms}</p>
+                                                <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
+                                                <p><strong>Monthly Rent:</strong> Ksh ${tenant.rent.toLocaleString()}</p>
+                                                <p><strong>Features:</strong> Gym, Parking, Security</p>
+                                                <p><strong>Description:</strong> ${property.description.replace(/\n/g, "<br>")}</p>
+                                                <div class="contact-buttons">
+                                                    <a href="tel:${property.phone}" class="btn call"><i class="material-icons">call</i>Call</a>
+                                                    <a href="sms:${property.phone}" class="btn message"><i class="material-icons">sms</i>Message</a>
+                                                    <a href="https://wa.me/${property.phone.replace(/^0/, '254')}" target="_blank" class="btn whatsapp"><i class="material-icons">chat</i>WhatsApp</a>
+                                                    <a href="mailto:${property.email}" class="btn email"><i class="material-icons">email</i>Email</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fullscreen Viewer -->
+                            <div id="fullscreenViewer" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center; flex-direction:column;">
+                                <span id="closeFullscreenBtn" style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
+                                <img id="fullscreenImage" src="" style="max-width:90%; max-height:80%;">
+                                <div style="margin-top:20px;">
+                                    <button id="prevBtn" style="margin-right:10px;">⬅️ Prev</button>
+                                    <button id="nextBtn">Next ➡️</button>
+                                </div>
+                            </div>
+                        `;
+
+                        // JavaScript logic
+                        let currentImgIndex = 0;
+                        const imageUrls = property.images;
+
+                        window.openFullscreen = function (index) {
+                            currentImgIndex = index;
+                            document.getElementById('fullscreenImage').src = imageUrls[currentImgIndex];
+                            document.getElementById('fullscreenViewer').style.display = 'flex';
+                        };
+
+                        const showImage = (index) => {
+                            if (index >= 0 && index < imageUrls.length) {
+                                currentImgIndex = index;
+                                document.getElementById('fullscreenImage').src = imageUrls[currentImgIndex];
+                            }
+                        };
+
+                        document.getElementById('prevBtn').onclick = () => showImage(currentImgIndex - 1);
+                        document.getElementById('nextBtn').onclick = () => showImage(currentImgIndex + 1);
+                        document.getElementById('closeFullscreenBtn').onclick = () => {
+                            document.getElementById('fullscreenViewer').style.display = 'none';
+                        };
+
+                        // Keyboard support
+                        document.addEventListener('keydown', (e) => {
+                            const viewerVisible = document.getElementById('fullscreenViewer').style.display === 'flex';
+                            if (viewerVisible) {
+                                if (e.key === 'ArrowRight') showImage(currentImgIndex + 1);
+                                else if (e.key === 'ArrowLeft') showImage(currentImgIndex - 1);
+                                else if (e.key === 'Escape') document.getElementById('fullscreenViewer').style.display = 'none';
+                            }
+                        });
+
+                        // Swipe support
+                        let touchStartX = 0;
+                        document.getElementById('fullscreenViewer').addEventListener('touchstart', (e) => {
+                            touchStartX = e.changedTouches[0].screenX;
+                        });
+                        document.getElementById('fullscreenViewer').addEventListener('touchend', (e) => {
+                            const touchEndX = e.changedTouches[0].screenX;
+                            const deltaX = touchEndX - touchStartX;
+                            if (Math.abs(deltaX) > 50) {
+                                if (deltaX > 0) showImage(currentImgIndex - 1);
+                                else showImage(currentImgIndex + 1);
+                            }
+                        });
+
+                    })
+                    .catch(err => {
+                        console.error('Error loading property section:', err);
+                        mainContent.innerHTML = `<p style="text-align:center; color:red;">Failed to load your property info. Please try again later.</p>`;
+                    });
+            } else if (sectionId === 'payments'){
+                mainContent.innerHTML = `
+                    <div class="payments">
+                        <form class="payment-form">
+                            <h2><i class="material-icons" style="vertical-align: middle; font-size: 28px;">payments</i> Rent Payment</h2>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tenantName">Full Name</label>
+                                        <input type="text" id="tenantName" name="tenantName" placeholder="Enter your full name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="houseNumber">House Number</label>
+                                        <input type="text" id="houseNumber" name="houseNumber" placeholder="Enter your house number" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="amount">Amount (KES)</label>
+                                        <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="paymentMethod">Payment Method</label>
+                                        <select id="paymentMethod" name="paymentMethod" required>
+                                            <option value="">Select Method</option>
+                                            <option value="mpesa">M-Pesa</option>
+                                            <option value="Bank Transfer">Bank Transfer</option>
+                                            <option value="Cash">Cash</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="InvoiceId">Invoice ID / Receipt</label>
+                                        <select id="InvoiceId" name="InvoiceId" required>
+                                            <option value="">Select Invoice</option>
+                                            <!---invoices will be loaded here--->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="datePaid">Date of Payment</label>
+                                        <input type="date" id="datePaid" name="datePaid" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="submit-btn">Submit Payment</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+            }
+            // Messages Section Entry Point
+           const socket = io();
+            let loggedInUserId = null;
+
+            if (sectionId === 'messages') {
+                loadMessagesSection();
+
+                // Get tenant profile and join socket room
+                fetch('/api/tenants/profile', { credentials: 'include' })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && data.tenant?._id) {
+                            loggedInUserId = data.tenant._id;
+                            socket.emit('join', loggedInUserId);
+                        }
+                    });
+            }
+
+            // 1. Init split layout UI
+            function loadMessagesSection(){
+                mainContent.innerHTML = `
+                    <div class="messaging-app">
+                        <!-- Sidebar -->
+                        <div class="inbox-sidebar">
+                            <div class="search-bar">
+                                <input type="text" placeholder="Search chats..." id="chatSearch">
+                            </div>
+                            <div class="chat-list" id="chatList">
+                                <p style="text-align:center; color:#aaa;">Loading messages...</p>
+                            </div>
+                            <button id="newMessageBtn" class="new-message-btn">
+                                <i class="material-icons">add_comment</i>
+                            </button>
+                        </div>
+
+                        <!-- Chat area -->
+                        <div class="chat-area" id="chatArea">
+                            <p style="text-align:center; margin-top:50px; color:#aaa;">
+                                Select a conversation to start chatting
+                            </p>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => loadInbox(), 10); 
+
+                document.getElementById('newMessageBtn').addEventListener('click', showNewMessageForm);
+            }
+            
+            // 2. Load Inbox Sidebar
+            function loadInbox() {
+                const chatList = document.getElementById('chatList');
+                if (!chatList) {
+                    console.error('ChatList element not found!');
+                    return;
+                }
+
+                fetch('/api/messages/tenant', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    //console.log(data);
+                    if (!data.success) throw new Error(data.message);
+
+                    const messages = data.conversations;
+                    const chatList = document.getElementById('chatList');
+
+                    if (!messages.length) {
+                        chatList.innerHTML = `<p style="text-align:center; color:#888;">No messages yet</p>`;
+                        return;
+                    }
+
+                    chatList.innerHTML = messages.map(msg => `
+                        <div class="chat-item" data-id="${msg.participantId}" data-name="${msg.participantName}">
+                            <img src="${msg.participantImage || 'images/system Images/user (1).png'}" class="sender-image" />
+                            <div class="chat-info">
+                                <h4>${msg.participantName}</h4>
+                                <p>${msg.lastMessage}</p>
+                                <span class="timestamp">${new Date(msg.lastTimestamp).toLocaleTimeString()}</span>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    // Click event to open conversation
+                    document.querySelectorAll('.chat-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            openConversation(item.dataset.id, item.dataset.name);
+                        });
+                    });
+                })
+                .catch(err => {
+                    document.getElementById('chatList').innerHTML = `<p style="color:red; text-align:center;">${err.message}</p>`;
+                });
+            
+            }
+           
+            // 3. Open Conversation (Right Pane Only)
+            function openConversation (participantId, participantName) {
+                const chatArea = document.getElementById('chatArea');
+                chatArea.innerHTML = `<p style="text-align:center;">Loading conversation...</p>`;
+
+                fetch(`/api/messages/conversation/${participantId}`, { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) throw new Error(data.message);
+
+                    const messages = data.messages;
+
+                    chatArea.innerHTML = `
+                        <div class="chat-header">
+                            <h3 style="padding-bottom: 10px; margin: 5px; margin-bottom: 5px;">${participantName}</h3>
+                        </div>
+
+                        <div class="chat-messages" id="chatBox">
+                            ${messages.map(msg => `
+                                <div class="chat-message ${msg.isSender ? 'sent' : 'received'}">
+                                    <p class="message-text">${msg.content}</p>
+                                    <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <form id="chatForm" class="message-input">
+                            <input type="text" id="messageText" placeholder="Type a message..." required />
+                            <button type="submit"><i class="material-icons">send</i></button>
+                        </form>
+                    `;
+
+                    const chatBox = document.getElementById('chatBox');
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    
+                    // ✅ Add WhatsApp-style mobile view handling
+                    document.querySelector('.messaging-app').classList.add('chat-active');
+
+                    // Add back button handler (for small screens)
+                    document.querySelector('.chat-header')?.addEventListener('click', (e) => {
+                        if (window.innerWidth <= 768 && e.target.textContent === 'arrow_back') {
+                            document.querySelector('.messaging-app').classList.remove('chat-active');
+                        }
+                    });
+                    
+                    // Send Message
+                    document.getElementById('chatForm').addEventListener('submit', e => {
+                        e.preventDefault();
+                        const message = document.getElementById('messageText').value;
+
+                        fetch('/api/messages/reply', {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ receiverId: participantId, message })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const newMessage = document.createElement('div');
+                                newMessage.className = 'chat-message sent';
+                                newMessage.innerHTML = `
+                                    <p class="message-text">${message}</p>
+                                    <span class="timestamp">${new Date().toLocaleTimeString()}</span>
+                                `;
+                                chatBox.appendChild(newMessage);
+                                chatBox.scrollTop = chatBox.scrollHeight;
+                                document.getElementById('messageText').value = '';
+                            } else {
+                                alert('Failed to send message: ' + data.message);
+                            }
+                        });
+                    });
+
+                    // ✅ Real-time listener for incoming messages
+                    socket.off('newMessage');
+                    socket.on('newMessage', (msg) => {
+                        if (msg.senderId === participantId) {
+                            const newMessage = document.createElement('div');
+                            newMessage.className = 'chat-message received';
+                            newMessage.innerHTML = `
+                                <p class="message-text">${msg.content}</p>
+                                <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+                            `;
+                            chatBox.appendChild(newMessage);
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        }
+                    });
+                })
+                .catch(err => {
+                    document.getElementById('chatArea').innerHTML = `<p>Error: ${err.message}</p>`;
+                });
+            }
+
+            // 4. Compose New Message (still Right Pane)
+            function showNewMessageForm() {
+                document.getElementById('chatArea').innerHTML = `
+                    <div class="compose-container">
+                        <div class="compose-content">
+                            <h2 style="text-align: center; font-weight: bold; color: #00a5fd;">Compose New Message</h2>
+                            <form id="composeForm">
+                                <div>
+                                    <label for="recipient">Send To (username or email):</label>
+                                    <input type="text" id="recipient" required />
+                                </div>
+                                <div>
+                                    <label for="message">Message:</label>
+                                    <textarea id="message" rows="5" required></textarea>
+                                </div>
+                                <div style="display:flex; gap:10px; justify-content:center;">
+                                    <button type="submit">Send</button>
+                                    <button id="cancelCompose" type="button">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    <div>
+                `;
+
+                document.getElementById('cancelCompose').addEventListener('click', () => {
+                    document.getElementById('chatArea').innerHTML =
+                        `<p style="text-align:center; margin-top:50px; color:#aaa;">Select a conversation to start chatting</p>`;
+                });
+
+                document.getElementById('composeForm').addEventListener('submit', e => {
+                    e.preventDefault();
+                    const recipient = document.getElementById('recipient').value;
+                    const message = document.getElementById('message').value;
+
+                    fetch('/api/messages/send', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ recipient, message })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Message Sent');
+                            const participantId = data.receiverId || data.participantId;
+                            const participantName = data.receiverName || recipient;
+                            if (participantId) openConversation(participantId, participantName);
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    });
+                });
+            } if (sectionId === 'requests'){
+                    mainContent.innerHTML = `
+                        <div class="requests-container">
+                            <div class="requests">
+                                <form class="request-form">
+                                    <h2 style="text-align: center;">
+                                        <i class="material-icons" style="vertical-align: middle; font-size: 28px;">request_quote</i> Tenant Request
+                                    </h2>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="tenantName">Full Name</label>
+                                                <input type="text" id="tenantName" name="tenantName" placeholder="Enter your full name" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="phoneNumber">Phone Number</label>
+                                                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="property">Property</label>
+                                                <input type="text" id="property" name="property" placeholder="Enter the property name" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="houseNumber">House Number</label>
+                                                <input type="text" id="houseNumber" name="houseNumber" placeholder="Enter your house number" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="requestType">Request Type</label>
+                                                <select id="requestType" name="requestType" required>
+                                                    <option value="">Select Type</option>
+                                                    <option value="maintenance">Maintenance</option>
+                                                    <option value="complaint">Complaint</option>
+                                                    <option value="inquiry">General Inquiry</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="requestDate">Date</label>
+                                                <input type="date" id="requestDate" name="requestDate" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="requestDetails">Request Details</label>
+                                        <textarea id="requestDetails" name="requestDetails" placeholder="Describe your request here..." rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn">Submit Request</button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                    fetch('/api/tenants/profile', { method: 'GET', credentials: 'include' })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            const t = data.tenant;
+                            document.getElementById('tenantName').value = t.name;
+                            document.getElementById('houseNumber').value = t.roomNumber;
+                            document.getElementById('property').value = t.property;
+                            document.getElementById('phoneNumber').value = t.phone;
+                        }
+
+                        const requestForm = document.querySelector('.request-form');
+                        requestForm.addEventListener('submit', async function (e) {
+                            e.preventDefault();
+                            const tenantName = document.getElementById('tenantName').value;
+                            const houseNumber = document.getElementById('houseNumber').value;
+                            const property = document.getElementById('property').value;
+                            const phoneNumber = document.getElementById('phoneNumber').value;
+                            const requestType = document.getElementById('requestType').value;
+                            const requestDetails = document.getElementById('requestDetails').value.trim();
+                            const requestDate = document.getElementById('requestDate').value;
+
+                            if (!tenantName || !houseNumber || !requestType || !requestDetails || !requestDate) {
+                                alert('Please fill in all fields.');
+                                return;
+                            }
+
+                            try {
+                                const res = await fetch('/api/maintenance/tenant', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    credentials: 'include',
+                                    body: JSON.stringify({
+                                        name: tenantName,
+                                        phone: phoneNumber,
+                                        property: property,
+                                        roomNumber: houseNumber,
+                                        type: requestType,
+                                        date: requestDate,
+                                        description: `[${requestType.toUpperCase()}] ${requestDetails}`
+                                    })
+                                });
+
+                                const result = await res.json();
+                                if (result.success) {
+                                    alert('Your request has been submitted successfully!');
+                                    requestForm.reset();
+                                } else {
+                                    alert(`Error: ${result.message}`);
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                alert('An error occurred while submitting the request.');
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.error('Error fetching tenant profile:', err);
+                    });
+
+                }  else if (sectionId === 'invoices'){
+                mainContent.innerHTML = `
+                    <div id="invoices-section">
+                        <h2 style="text-align: center;"><i class="material-icons" style="vertical-align: middle;">receipt_long</i> Your Invoices</h2>
+
+                        <!--Search Bar-->
+                        <div class="searchBox-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 20px;">
+                            <div class="search-box">
+                                <div class="search-inner">
+                                    <i class="bx bx-search icon"></i>
+                                    <input type="text" id="searchInput" placeholder="Search Invoice..." style="display: block; width: 100%; padding: 14px; outline: #007BFF; border-radius: 0 5px 5px 0; border: 1px solid #00a5fd;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="invoice-list" class="invoice-list"> 
+                            <!-- invoice cards can be added dynamically Here-->
+                        </div>
+                        <div id="pagination" style="text-align: center; margin-bottom: 20px; margin-top: 20px; padding-bottom: 20px;"></div>
+                    </div>
+
+                    <!-- Hidden Receipt Template for PDF Download -->
+                    <div id="receiptContent" style="display:none; font-family: Arial, sans-serif; padding: 30px; border: 1px solid #ccc; max-width: 600px; margin: auto; position: relative;">
+                        <div style="text-align: center; position: relative;">
+                            <img src="images/landscape_1000dp_0000F5_FILL0_wght400_GRAD0_opsz48.png" alt="Watermark Logo" style="opacity: 0.05; position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; z-index: 0;">
+                            <h2 style="color: #00a5fd; z-index: 1;">La Maison</h2>
+                            <h3 style="z-index: 1;">Invoice</h3>
+                        </div>
+                        <div id="receiptBody" style="z-index: 1; position: relative;"></div>
+                        <hr style="margin: 20px 0;">
+                        <div style="text-align: center; font-size: 12px;">
+                            <p>Thank you for your payment.</p>
+                            <p>Contact: info@la Maison.co.ke | +254 742 743 059</p>
+                        </div>
+                    </div>
+
+                `;
+
+                let invoice = [];
+                let currentPage = 1;
+
+                //Fetch Invoices
+                fetch('/api/tenants/invoices', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("💬 Fetched payments response:", data); // <-- Add this
+                    if(data.success && Array.isArray(data.invoices)) {
+                        invoice = data.invoices;
+                        displayInvoices(currentPage);
+                    } else{
+                        document.getElementById('invoice-list').innerHTML = '<p style="text-align: center; color: red;">No Payments found.</p>';
+                    }
+                })
+
+                function displayInvoices(page, filteredList = invoice) {
+                    const invoiceList = document.getElementById('invoice-list');
+                    const paginationContainer = document.getElementById('pagination');
+                    invoiceList.innerHTML = '';
+                    paginationContainer.innerHTML = '';
+
+                    const start = (page - 1) * 6;
+                    const end = start + 6;
+                    const paginatedInvoices = filteredList.slice(start, end);
+
+                    if (paginatedInvoices.length === 0) {
+                        invoiceList.innerHTML = '<p style="text-align:center;">No invoices found.</p>';
+                        return;
+                    }
+
+                    paginatedInvoices.forEach((invoice, index) => {
+                        const invoiceCard = document.createElement('div');
+                        invoiceCard.className = 'invoice-card';
+                        invoiceCard.style = 'border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 16px; background: #f9f9f9; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+
+                        invoiceCard.innerHTML = `
+                            <div class="Invoice-wrapper" id="billing-${invoice._id}" style="position: relative; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div class="invoice-info">
+                                        <h3>${invoice.tenantName}</h3>
+                                        <p><strong>Property:</strong> ${invoice.property}</p>
+                                        <p><strong>Room Number:</strong> ${invoice.roomNumber}</p>
+                                        <p><strong>Amount:</strong> Ksh ${invoice.amount.toLocaleString()}</p>
+                                        <p><strong>Status:</strong> ${invoice.status}</p>
+                                        <p><strong>Due Date:</strong> ${new Date(invoice.dueDate).toLocaleDateString()}</p>
+                                        <p><strong>Comment:</strong> ${invoice.comment}</p>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <span style="background-color: #00a5fd; color: white; padding: 4px 8px; border-radius: 6px; font-weight: bold;">
+                                            ${invoice.invoiceId}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Bottom-right download button -->
+                                <div class="billing-actions" style="text-align: right; margin-top: 20px;">
+                                    <button class="download-btn" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                        invoiceList.appendChild(invoiceCard);
+                    });
+
+                    //pagination 
+                    const totalPages = Math.ceil(filteredList.length / 6);
+                    for (let i = 1; i <= totalPages; i++) {
+                        const pageBtn = document.createElement('button');
+                        pageBtn.textContent = i;
+                        pageBtn.style.margin = '0 5px';
+                        pageBtn.style.padding = '6px 10px';
+                        pageBtn.style.border = 'none';
+                        pageBtn.style.borderRadius = '4px';
+                        pageBtn.style.background = i === currentPage ? '#00a5fd' : '#eee';
+                        pageBtn.style.color = i === currentPage ? 'white' : 'black';
+                        pageBtn.addEventListener('click', () => {
+                            currentPage = i;
+                            displayInvoices(currentPage);
+                        });
+                        paginationContainer.appendChild(pageBtn);
+                    } 
+
+                    //Function for downloading a receipt
+                    document.querySelectorAll('.download-btn').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const card = button.closest('.Invoice-wrapper');
+
+                            const tenant = card.querySelector('h3').textContent;
+                            const property = card.querySelector('p:nth-child(2)').textContent;
+                            const room = card.querySelector('p:nth-child(3)').textContent;
+                            const amount = card.querySelector('p:nth-child(4)').textContent;
+                            const mode = card.querySelector('p:nth-child(5)').textContent;
+                            const date = card.querySelector('p:nth-child(6)').textContent;
+                            const comment = card.querySelector('p:nth-child(7)').textContent;
+
+                            //Generate unique receipt Number
+                            const today = new Date();
+                            const dateStr = today.toISOString().slice(0, 10).replace(/-/g, '');
+                            const randomNum = Math.floor(Math.random() * 900 + 100);
+                            const receiptId = `INV${dateStr}-${randomNum}`;
+
+                            // Inject dynamic content
+                            const body = `
+                                <p style="text-align: right;"><strong>Invoice No:</strong> ${receiptId}</p>
+                                <p><strong>Tenant Name:</strong> ${tenant}</p>
+                                <p>${property}</p>
+                                <p>${room}</p>
+                                <p>${amount}</p>
+                                <p>${mode}</p>
+                                <p>${date}</p>
+                                <p>${comment}</p>
+                            `;
+                            const receiptContent = document.getElementById('receiptContent');
+                            document.getElementById('receiptBody').innerHTML = body;
+
+                            // Show temporarily for PDF creation
+                            receiptContent.style.display = 'block';
+
+                            const opt = {
+                                margin: 0.5,
+                                filename: `${receiptId}.pdf`,
+                                image: { type: 'jpeg', quality: 0.98 },
+                                html2canvas: { scale: 2 },
+                                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                            };
+
+                            html2pdf().set(opt).from(receiptContent).save().then(() => {
+                                receiptContent.style.display = 'none';
+                            }).catch(err => {
+                                console.error('PDF generation error:', err);
+                                receiptContent.style.display = 'none';
+                            });
+                        });
+                    });
+                }
+
+                // Search Functionality
+                document.addEventListener('input', function (e) {
+                    if (e.target.id === 'searchInput') {
+                        const query = e.target.value.toLowerCase();
+                        const filtered = invoice.filter(i =>
+                            i.comment?.toLowerCase().includes(query) ||
+                            i.paymentMethod?.toLowerCase().includes(query) ||
+                            i.amount?.toString().includes(query)||
+                            new Date(i.dueDate).toLocaleDateString().includes(query)
+                        );
+                        displayInvoices(1, filtered);
+                    }
+                })
+            } else if ( sectionId ==='settings'){
+                mainContent.innerHTML = `
+                    <div class="settings">
+                        <div class="settings-section">
+                            <h2 style="text-align: center;"><i class="material-icons" style="vertical-align: middle;">settings</i> Account Settings</h2>
+
+                            <div class="settings-container">
+                                <div class="setting">
+                                    <div class="setting-content">
+                                        <div class="tenant-image">
+                                            <img id="UsrImg" src="" alt="Tenant Image">
+                                        </div>
+                                        <p><strong>Username:</strong> <span id="tnt-name"></span></p>
+                                        <p><strong>TenantID:</strong> <span id="tnt-ID"></span></p>
+                                        <p><strong>Role:</strong> Tenant</p>
+                                        <p><strong>Password:</strong> ********</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action">
+                                <button class="edit-btn">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Edit modal from the setting section-->
+                    <div id="editModal" class="modal" style="display: none;">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <h2 style="text-align: center; color: #00a5fd;">Profile Edit</h2>
+                            <form id="editForm">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="edit-name">Name:</label>
+                                        <input type="text" id="tntName" name="name" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-tenantID">Tenant ID:</label>
+                                        <input type="text" id="tntID" name="tenantID" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-phone">Phone:</label>
+                                        <input type="text" id="tnt-phone" name="phone" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-email">Email:</label>
+                                        <input type="email" id="tnt-email" name="email" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="tnt-password">Password:</label>
+                                        <input type="password" id="tnt-password" placeholder="Leave blank to retain previous password" name="password">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-address">Address:</label>
+                                        <input type="text" id="tntAddress" name="address" required>
+                                    </div>
+                                </div>
+                                <div class="submit_Btn" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                                    <button type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                `;
+
+                //code for feeding the modal with tenant data
+                fetch('/api/tenants/profile', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success){
+                        const tenantDat = data.tenant;
+                        document.getElementById('UsrImg').src = tenantDat.image || 'images/system Images/user (1).png';
+                        document.getElementById('tnt-name').textContent= tenantDat.name || '';
+                        document.getElementById('tnt-ID').textContent = tenantDat.tenantID || ''; 
+                    } else {
+                        alert("failed to fetch tenant data.");
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching tenant data:', err);
+                });
+
+                //code for editing the tenant data 
+                const modal = document.getElementById('editModal');
+                const closeBtn = modal.querySelector('.close');
+                const form = document.getElementById('editForm');
+                
+                let currentTenantId = '';
+
+                //show modal when clicking 'edit'
+                document.querySelector('.edit-btn').addEventListener('click', () => {
+                    // fetch the tenant data first (if not already fetched)
+                    fetch('/api/tenants/profile', { credentials: 'include'})
+                     .then(res => res.json())
+                     .then(data => {
+                        console.log(data);
+                        if (data.success) {
+                            const tenant = data.tenant;
+                            //populate form fields
+                            document.getElementById('tntName').value = tenant.name || '';
+                            document.getElementById('tntID').value = tenant.tenantID || '';
+                            document.getElementById('tnt-phone').value = tenant.phone || '';
+                            document.getElementById('tnt-email').value = tenant.email || '';
+                            document.getElementById('tntAddress').value = tenant.Address || '';
+                            
+                            currentTenantId = tenant.tenantID;
+                            //show the modal
+                            modal.style.display = 'block';
+                        } else {
+                            alert("failed to fetch tenant data.");
+                        }
+                     })
+                     .catch(err => {
+                        console.error('Error fetching tenant data:', err);
+                     });
+                });
+
+                //handle modal close 
+                closeBtn.onclick = () => {
+                    modal.style.display = 'none';
+                };
+
+                // Whenthe user clicks outside the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                };
+
+                // handle form submission 
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+                    const updateData = {
+                        name: document.getElementById('tntName').value,
+                        tenantID: document.getElementById('tntID').value,
+                        phone: document.getElementById('tnt-phone').value,
+                        email: document.getElementById('tnt-email').value,
+                        password: document.getElementById('tnt-password').value,
+                        address: document.getElementById('tntAddress').value
+                    };
+
+                    // 👇 Remove password if left blank so it doesn't overwrite the old one
+                    if (!updateData.password) {
+                        delete updateData.password;
+                    }
+
+                    //send the updated data to the backend
+                    fetch('/api/tenants/profile/update', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(updateData)
+                    })
+
+                     .then(res => res.json())
+                     .then(result => {
+                        if (result.success) {
+                            alert('Profile updated successfully.');
+                            modal.style.display = 'none'; //hide modal
+                        } else {
+                            alert('Failed to update profile.');
+                        }
+                     })
+                     .catch(err => {
+                        console.error('Error updating tenant:', err);
+                     });
+                }; 
+            } else if (sectionId === 'totalBilled') {
+                mainContent.innerHTML = `
+                    <div id="BilledContainer">
+                        <h2 style="text-align: center; font-weight: bold; color: #00a5fd; padding-bottom: 20px; padding-top: 10px">All Made Payments</h2>
+                        <div class="searchBox-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 20px;">
+                            <div class="search-box">
+                                <div class="search-inner">
+                                    <i class="bx bx-search icon"></i>
+                                    <input type="text" id="searchInput" placeholder="Search payment..." style="display: block; width: 100%; padding: 13px; outline: #007BFF; border-radius: 0 5px 5px 0; border: 1px solid #00a5fd;">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="BillingList" style="padding: 30px; padding-left: 40px;"></div>
+                        <div id="pagination" style="text-align: center; margin-bottom: 20px; margin-top: 20px; padding-bottom: 20px;"></div>
+                    </div>
+
+                    <!-- Hidden Receipt Template for PDF Download -->
+                    <div id="receiptContent" style="display:none; font-family: Arial, sans-serif; padding: 30px; border: 1px solid #ccc; max-width: 600px; margin: auto; position: relative;">
+                        <div style="text-align: center; position: relative;">
+                            <img src="images/landscape_1000dp_0000F5_FILL0_wght400_GRAD0_opsz48.png" alt="Watermark Logo" style="opacity: 0.05; position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; z-index: 0;">
+                            <h2 style="color: #00a5fd; z-index: 1;">La Maison</h2>
+                            <h3 style="z-index: 1;">Payment Receipt</h3>
+                        </div>
+                        <div id="receiptBody" style="z-index: 1; position: relative;"></div>
+                        <hr style="margin: 20px 0;">
+                        <div style="text-align: center; font-size: 12px;">
+                            <p>Thank you for your payment.</p>
+                            <p>Contact: info@la Maison.co.ke | +254 742 743 059</p>
+                        </div>
+                    </div>
+                `;
+
+                let billing = [];
+                let currentPage = 1;
+                const itemsPerPage = 6;
+
+                // Fetch payments
+                fetch('/api/tenants/payments', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("💬 Fetched payments response:", data); // <-- Add this
+                    if (data.success && Array.isArray(data.payments)) {
+                        billing = data.payments;
+                        displayBillings(currentPage);
+                    } else {
+                        document.getElementById('BillingList').innerHTML = '<p style="text-align: center; color: red;">No Payments found.</p>';
+                    }
+                })
+
+                // Display paginated billings
+                function displayBillings(page, filteredList = billing) {
+                    const BillingList = document.getElementById('BillingList');
+                    const paginationContainer = document.getElementById('pagination');
+                    BillingList.innerHTML = '';
+                    paginationContainer.innerHTML = '';
+
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    const paginatedBillings = filteredList.slice(start, end);
+
+                    if (paginatedBillings.length === 0) {
+                        BillingList.innerHTML = '<p style="text-align: center; color: red;">No payments found.</p>';
+                        return;
+                    }
+
+                    paginatedBillings.forEach((billing, index) => {
+                        const billingCard = document.createElement('div');
+                        billingCard.className = 'billing-card';
+                        billingCard.style = 'border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 16px; background: #f9f9f9; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+
+                        const formattedDate = new Date(billing.paymentDate).toLocaleDateString();
+
+                        billingCard.innerHTML = `
+                            <div class="billing-wrapper" id="billing-${billing._id}" style="position: relative; justify-content: space-between;">
+                                <!-- Top-right payment date -->
+                                <div style="position: absolute; top: 10px; right: 10px;">
+                                    <span style="background-color: #00a5fd; color: white; padding: 4px 8px; border-radius: 6px; font-weight: bold;">
+                                        ${billing.paymentDate}
+                                    </span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div class="payment-details">
+                                        <h3 style="color: #00a5fd;">${billing.tenantName}</h3>
+                                        <p><strong>Property:</strong> ${billing.property}</p>
+                                        <p><strong>Room/House Number:</strong> ${billing.roomNumber}</p>
+                                        <p><strong>Amount Paid:</strong> Ksh ${billing.amountPaid.toLocaleString()}</p>
+                                        <p><strong>Mode:</strong> ${billing.paymentMethod}</p>
+                                        <p><strong>Date:</strong> ${formattedDate}
+                                        <p><strong>Comment:</strong> ${billing.comment || '-'}</p>
+                                    </div>
+                                </div>
+                                <!-- Bottom-right download button -->
+                                <div class="billing-actions" style="text-align: right; margin-top: 20px;">
+                                    <button class="downloadbtn" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        BillingList.appendChild(billingCard);
+                    });
+
+                    // Pagination
+                    const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+                    for (let i = 1; i <= totalPages; i++) {
+                        const pageBtn = document.createElement('button');
+                        pageBtn.textContent = i;
+                        pageBtn.style = `margin: 0 5px; padding: 5px 10px; border: none; background-color: ${i === page ? '#00a5fd' : '#ddd'}; color: ${i === page ? '#fff' : '#000'}; border-radius: 4px;`;
+                        pageBtn.addEventListener('click', () => {
+                            currentPage = i;
+                            displayBillings(currentPage, filteredList);
+                        });
+                        paginationContainer.appendChild(pageBtn);
+                    }
+
+                    //Function for downloading a receipt
+                     document.querySelectorAll('.downloadbtn').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const card = button.closest('.billing-wrapper');
+
+                            const tenant = card.querySelector('h3').textContent;
+                            const property = card.querySelector('p:nth-child(2)').textContent;
+                            const room = card.querySelector('p:nth-child(3)').textContent;
+                            const amount = card.querySelector('p:nth-child(4)').textContent;
+                            const mode = card.querySelector('p:nth-child(5)').textContent;
+                            const date = card.querySelector('p:nth-child(6)').textContent;
+                            const comment = card.querySelector('p:nth-child(7)').textContent;
+
+                            // Generate unique receipt number
+                            const today = new Date();
+                            const dateStr = today.toISOString().slice(0, 10).replace(/-/g, '');
+                            const randomNum = Math.floor(Math.random() * 900 + 100);
+                            const receiptId = `RCT${dateStr}-${randomNum}`;
+
+                            // Inject dynamic content
+                            const body = `
+                                <p style="text-align: right;"><strong>Receipt No:</strong> ${receiptId}</p>
+                                <p><strong>Tenant Name:</strong> ${tenant}</p>
+                                <p>${property}</p>
+                                <p>${room}</p>
+                                <p>${amount}</p>
+                                <p>${mode}</p>
+                                <p>${date}</p>
+                                <p>${comment}</p>
+                            `;
+                            const receiptContent = document.getElementById('receiptContent');
+                            document.getElementById('receiptBody').innerHTML = body;
+
+                            // Show temporarily for PDF creation
+                            receiptContent.style.display = 'block';
+
+                            const opt = {
+                                margin: 0.5,
+                                filename: `${receiptId}.pdf`,
+                                image: { type: 'jpeg', quality: 0.98 },
+                                html2canvas: { scale: 2 },
+                                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                            };
+
+                            html2pdf().set(opt).from(receiptContent).save().then(() => {
+                                receiptContent.style.display = 'none';
+                            }).catch(err => {
+                                console.error('PDF generation error:', err);
+                                receiptContent.style.display = 'none';
+                            });
+                        });
+                    });
+                }
+
+
+                // Search functionality
+                document.addEventListener('input', function (e) {
+                    if (e.target.id === 'searchInput') {
+                        const query = e.target.value.toLowerCase();
+                        const filtered = billing.filter(b =>
+                            b.comment?.toLowerCase().includes(query) ||
+                            b.paymentMethod?.toLowerCase().includes(query) ||
+                            new Date(b.paymentDate).toLocaleDateString().includes(query)
+                        );
+                        displayBillings(1, filtered);
+                    }
+                });
+            } else if (sectionId === 'payments') {
+                mainContent.innerHTML = `
+                    <div class="payments">
+                        <form class="payment-form">
+                            <h2><i class="material-icons" style="vertical-align: middle; font-size: 28px;">payments</i> Rent Payment</h2>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tenantName">Full Name</label>
+                                        <input type="text" id="tenantName" name="tenantName" placeholder="Enter your full name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="phoneNumber">Phone Number</label>
+                                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="email">Tenant ID</label>
+                                        <input type="tenantID" id="tenantID" name="tenantID" placeholder="Tenant ID" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="propertyName">Property Name</label>
+                                        <input type="text" id="propertyName" name="propertyName" placeholder="Enter your property name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="houseNumber">House Number</label>
+                                        <input type="text" id="houseNumber" name="houseNumber" placeholder="Enter your house number" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="amount">Amount (KES)</label>
+                                        <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="paymentMethod">Payment Method</label>
+                                        <select id="paymentMethod" name="paymentMethod" required>
+                                            <option value="">Select Method</option>
+                                            <option value="mpesa">M-Pesa</option>
+                                            <option value="Bank Transfer">Bank Transfer</option>
+                                            <option value="Cash">Cash</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="InvoiceId">Invoice ID / Receipt</label>
+                                        <select id="InvoiceId" name="InvoiceId" required>
+                                            <option value="">Select Invoice</option>
+                                            <!---invoices will be loaded here--->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="datePaid">Date of Payment</label>
+                                        <input type="date" id="datePaid" name="datePaid" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="submit-btn">Submit Payment</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+
+                // ✅ Phone normalizer
+                function normalizePhone(phone) {
+                    phone = phone.toString().trim().replace(/\s+/g, '').replace(/^\+/, '');
+
+                    if (phone.startsWith("07")) {
+                        phone = "254" + phone.substring(1);
+                    } else if (phone.startsWith("7")) {
+                        phone = "254" + phone;
+                    } else if (phone.startsWith("254")) {
+                        // already correct
+                    } else {
+                        throw new Error("Invalid phone number format");
+                    }
+
+                    return phone;
+                }
+
+                // ✅ Fetch tenant details
+                fetch('/api/tenants/profile', {
+                    method: 'GET',
+                    credentials: 'include'
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Tenant profile:", data);
+                    if (data.success) {
+                        const tenant = data.tenant;
+                        document.getElementById('tenantName').value = tenant.name;
+                        document.getElementById('tenantID').value = tenant.tenantID;
+                        document.getElementById('propertyName').value = tenant.property;
+                        document.getElementById('houseNumber').value= tenant.roomNumber;
+                        document.getElementById('phoneNumber').value = tenant.phone;
+
+                        // Fetch invoices
+                        fetch('/api/invoices/tenant', {
+                            method: 'GET',
+                            credentials: 'include'
+                        })
+                        .then(res => res.json())
+                        .then(invoiceData => {
+                            console.log(invoiceData);
+                            if (invoiceData.success && invoiceData.invoices.length > 0) {
+                                const invoiceSelect = document.getElementById('InvoiceId');
+                                invoiceData.invoices.forEach(invoice => {
+                                    const option = document.createElement('option');
+                                    option.value = invoice._id;
+                                    option.textContent = `#${invoice.invoiceId} - ${invoice.amount} KES - ${new Date(invoice.dueDate).toLocaleDateString()}`;
+                                    invoiceSelect.appendChild(option);
+                                });
+                            } else {
+                                console.warn('No invoices found or error:', invoiceData.message);
+                            }
+                        })
+                        .catch(err => console.error('Error fetching invoices:', err));
+
+                    } else {
+                        console.error("Error:", data.message);
+                    }
+                })
+                .catch(error => console.error("Error fetching tenant profile:", error));
+
+                // ✅ Handle form submission
+                document.querySelector('.payment-form').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const paymentMethod = document.getElementById('paymentMethod').value;
+
+                    const tenantName = document.getElementById('tenantName').value;
+                    const tenantID = document.getElementById('tenantID').value;
+                    const phoneRaw = document.getElementById('phoneNumber').value;
+                    const property = document.getElementById('propertyName').value;
+                    const roomNumber = document.getElementById('houseNumber').value;
+                    const amountPaid = parseFloat(document.getElementById('amount').value);
+                    const invoiceId = document.getElementById('InvoiceId').value;
+                    const invoiceID = document.getElementById('InvoiceId').value;
+                    const datePaid = document.getElementById('datePaid').value;
+
+                    if (!paymentMethod || !phoneRaw || !amountPaid || !invoiceId) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill all required fields.',
+                        });
+                        return;
+                    }
+
+                    // ✅ M-PESA FLOW
+                    if (paymentMethod === 'mpesa') {
+                        try {
+                            const phone = normalizePhone(phoneRaw);
+
+                            // Step 1: Show "Payment Initiated" message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payment Initiated',
+                                text: 'STK Push sent to your phone. Please complete the payment.',
+                            });
+
+                            // Step 2: After a delay, show "Checking for payment" loading message and start polling
+                            setTimeout(async () => {
+                                const loadingSwal = Swal.fire({
+                                    icon: 'info',
+                                    title: 'Processing Payment',
+                                    text: 'Checking for payment confirmation. Please wait...',
+                                    allowOutsideClick: false,
+                                    showConfirmButton: false,
+                                    allowEscapeKey: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+
+                                // Step 3: Initiate STK Push and get CheckoutRequestID
+                                const paymentResponse = await fetch('/api/mpesa/pay', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        phoneNumber: phone,
+                                        amount: amountPaid,
+                                        accountRef: tenantName // or invoiceId
+                                    })
+                                });
+
+                                const paymentResult = await paymentResponse.json();
+
+                                if (!paymentResponse.ok || !paymentResult.success) {
+                                    Swal.close();
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Failed',
+                                        text: paymentResult.message || 'Failed to initiate M-Pesa STK Push.',
+                                    });
+                                    return;
+                                }
+
+                                const CheckoutRequestID = paymentResult.data.CheckoutRequestID; // From your controller response
+
+                                // Step 4: Polling function to check payment status
+                                const pollPaymentStatus = async () => {
+                                    try {
+                                        const response = await fetch(`/api/mpesa/status?CheckoutRequestID=${CheckoutRequestID}`);
+                                        const result = await response.json();
+
+                                        if (result.status === 'success') {
+                                            // Payment confirmed
+                                            Swal.close();
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Payment Confirmed',
+                                                text: 'Your payment was successful!',
+                                            });
+                                            this.reset();
+                                        } else if (result.status === 'pending') {
+                                            // Retry after 3 seconds if still pending
+                                            setTimeout(pollPaymentStatus, 3000);
+                                        } else {
+                                            // Payment failed
+                                            Swal.close();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Payment Failed',
+                                                text: result.message || 'Payment could not be confirmed.',
+                                            });
+                                        }
+                                    } catch (error) {
+                                        console.error('Polling error:', error);
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'An error occurred while confirming payment.',
+                                        });
+                                    }
+                                };
+
+                                // Start polling
+                                pollPaymentStatus();
+
+                            }, 2000); // Delay of 2 seconds before polling starts
+
+                        } catch (error) {
+                            console.error('STK Push error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while initiating payment.',
+                            });
+                        }
+
+                        return; // ✅ Prevent further processing
+                    }
+
+                    // ✅ BANK / CASH FLOW
+                    if (paymentMethod === 'Bank Transfer' || paymentMethod === 'Cash') {
+                        try {
+                            const res = await fetch('/api/review-payments/reviewPayments', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    tenantName,
+                                    tenantID,
+                                    phone: phoneRaw,
+                                    property,
+                                    roomNumber,
+                                    amountPaid,
+                                    paymentMethod,
+                                    invoiceId,
+                                    invoiceID,
+                                    datePaid,
+                                })
+                            });
+
+                            const data = await res.json();
+
+                            if (res.ok && data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Submitted',
+                                    text: 'Payment submitted for review. Awaiting confirmation.',
+                                });
+                                this.reset();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: data.message || 'Failed to submit payment for review.',
+                                });
+                            }
+                        } catch (err) {
+                            console.error('Error saving review payment:', err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Something went wrong while submitting your payment.',
+                            });
+                        }
+
+                        return;
+                    }
+
+                    // ❌ Catch unknown method
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Unsupported',
+                        text: 'Unsupported payment method.',
+                    });
+                });
+            } else if (sectionId === 'create_payment') {
+                mainContent.innerHTML = `
+                <div id="payment-form">
+                    <form id="paymentForm">
+                        <h2 style="text-align: center; font-weight: bold; color: #00a5fd; padding-bottom: 20px;">Add Payment</h2>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="tenant">Tenant:</label><br>
+                                <input type="text" id="tenant" name="tenantName" readonly><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="tenantID">Tenant ID:</label>
+                                <input type="text" id="tenantID" name="tenantID" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="PhoneNumber">Phone Number:</label>
+                                <input type="text" id="PhoneNumber" name="PhoneNumber" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="property">Property:</label><br>
+                                <input type="text" id="property" name="property" readonly><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="roomNumber">Room/House Number:</label>
+                                <input type="text" id="roomNumber" name="roomNumber" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="amount">Amount (Ksh):</label><br>
+                                <input type="number" id="amount" name="amountPaid" min="0" step="0.01" required><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="mode">Payment Mode:</label><br>
+                                <input type="text" id="mode" name="paymentMethod" value="Mpesa" readonly>
+                                <br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="date">Payment Date:</label><br>
+                                <input type="date" id="date" name="date" required><br><br>
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <label for="comment">Comment:</label><br>
+                            <textarea id="comment" name="comment" rows="5" cols="50" required maxlength="500"></textarea><br><br>
+                        </div>
+                        <div class="submitBtn">
+                            <button type="submit">Add Payment</button>
+                        </div>
+                    </form>
+                </div>
+                `;
+
+                let tenantObjectId = null; // 🔑 Store actual MongoDB ObjectId
+
+                // ✅ Fetch tenant profile and prefill
+                fetch('/api/tenants/profile', {
+                    method: 'GET',
+                    credentials: 'include'
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Tenant profile:", data);
+                    if (data.success) {
+                        const tenant = data.tenant;
+                        tenantObjectId = tenant._id;  // store ObjectId for backend
+
+                        document.getElementById('tenant').value = tenant.name;
+                        document.getElementById('tenantID').value = tenant.tenantID;
+                        document.getElementById('email').value = tenant.email;
+                        document.getElementById('PhoneNumber').value = tenant.phone;
+                        document.getElementById('property').value = tenant.property;
+                        document.getElementById('roomNumber').value = tenant.roomNumber;
+                    } else {
+                        console.error(data.message);
+                    }
+                })
+                .catch(err => console.error("Error fetching tenant profile:", err));
+
+                // ✅ Phone normalizer function
+                function normalizePhone(phone) {
+                    phone = phone.toString().trim().replace(/\s+/g, '').replace(/^\+/, '');
+
+                    if (phone.startsWith("07")) {
+                        phone = "254" + phone.substring(1);
+                    } else if (phone.startsWith("7")) {
+                        phone = "254" + phone;
+                    } else if (phone.startsWith("254")) {
+                        // already correct
+                    } else {
+                        throw new Error("Invalid phone number format");
+                    }
+
+                    return phone;
+                }
+
+                // ✅ Handle form submission
+                document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const formData = {
+                        tenant: tenantObjectId,
+                        tenantName: document.getElementById('tenant').value,
+                        property: document.getElementById('property').value,
+                        roomNumber: document.getElementById('roomNumber').value,
+                        amountPaid: parseFloat(document.getElementById('amount').value),
+                        paymentMethod: document.getElementById('mode').value,
+                        date: document.getElementById('date').value,
+                        comment: document.getElementById('comment').value,
+                        actor: "Tenant"
+                    };
+
+                    try {
+                        const rawPhone = document.getElementById('PhoneNumber').value;
+                        const normalizedPhone = normalizePhone(rawPhone);
+
+                        // 🔵 Toast: starting STK push request
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'info',
+                            title: 'Sending STK Push...',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+
+                        // 🔵 Toast: waiting for the callback response
+
+                        // 1️⃣ Initiate STK Push
+                        const mpesaRes = await fetch('/api/mpesa/pay', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                phoneNumber: normalizedPhone,
+                                amount: formData.amountPaid,
+                                accountRef: "TenantRent2025"
+                            })
+                        });
+
+                        const mpesaData = await mpesaRes.json();
+
+                        if (!mpesaRes.ok) {
+                            return Swal.fire({
+                                icon: 'error',
+                                title: 'STK Push Failed',
+                                text: mpesaData.message || "Mpesa Error"
+                            });
+                        }
+
+                        const CheckoutRequestID = mpesaData.data.CheckoutRequestID;
+
+                        // 🔵 Toast: STK Push sent
+                        Swal.fire({
+                            icon: 'success',
+                            title: "STK Push Sent!",
+                            text: "Enter your MPESA PIN to complete payment.",
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+
+                        // 2️⃣ Start polling server until payment is confirmed
+                        checkPaymentStatus(CheckoutRequestID);
+
+                        // show "Checking for payment" loading message
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Processing Payment',
+                            text: 'Checking for payment confirmation. Please wait...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            allowEscapeKey: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.message
+                        });
+                    }
+                });
+
+                async function checkPaymentStatus(CheckoutRequestID) {
+                    const interval = setInterval(async () => {
+
+                        const res = await fetch(`/api/mpesa/status?CheckoutRequestID=${CheckoutRequestID}`);
+                        const data = await res.json();
+
+                        if (data.status === 'pending') return; // still waiting
+
+                        clearInterval(interval); // stop checking
+
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payment Successful!',
+                                text: 'Your rent payment has been received.',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+
+                            // 🔄 Auto reload or update UI
+                            document.getElementById('paymentForm').reset();
+                            return;
+                        }
+
+                        if (data.status === 'failed') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Payment Failed',
+                                text: data.message || 'You cancelled the MPESA prompt or payment failed.'
+                            });
+                        }
+
+                    }, 3000);
+                }
+
+            } else if( sectionId === 'logout') {
+                // Handle logout
+                fetch('/api/tenants/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect the user to the home page (index.html)
+                        window.alert('You have been logged out successfully.');
+                        window.location.href = '/index.html';
+                    } else {
+                        alert('Logout failed. Please try again.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Logout error:', err);
+                    alert('An error occurred during logout.');
+                });
+            }else if (sectionId === 'dashboard') {
+                mainContent.innerHTML = sections.dashboard;
+                //code for refreshing the dashboard
+                window.location.reload();
+            }
+        }
+    </script>
+    <script>
+        // code for loading the tenant data
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('/api/tenants/profile', { credentials: 'include' }) // Include cookies if using them
+                .then(res => res.json())
+                .then(data => {
+                if (data.success) {
+                    const { name, property, roomNumber, joinedAt, image, tenantID, idNumber, gender, phone, email, Address, lease_start, rent } = data.tenant;
+
+                    document.getElementById('TNT_name').textContent = name;
+                    document.getElementById('tenant_name').textContent = name;
+                    document.getElementById('user_name').textContent = name;
+                    document.getElementById('property_name').textContent = property;
+                    document.getElementById('house_number').textContent = roomNumber;
+                    document.getElementById('Tenant_ID').textContent = tenantID;
+                    document.getElementById('id_no').textContent = idNumber;
+                    document.getElementById('tenantName').textContent = name;
+                    document.getElementById('gender').textContent = gender;
+                    document.getElementById('Phone_no').textContent = phone;
+                    document.getElementById('address').textContent = Address;
+
+                    // Format rent with commas
+                    const formattedRent = rent.toLocaleString();
+                    document.getElementById('Rent_amount').textContent = formattedRent;
+
+                    // Format lease_start to YYYY-MM-DD
+                    const leaseDate = new Date(lease_start);
+                    const formattedLeaseDate = leaseDate.toISOString().slice(0, 10);
+                    document.getElementById('lease_date').textContent = formattedLeaseDate;
+
+                    document.getElementById('email').textContent = email;
+                    document.getElementById('tenant_image').src = image || 'images/system Images/user%20(1).png'; // Fallback image
+                    document.getElementById('user_img').src = image || 'images/system Images/user%20(1).png'; // Fallback image
+                    document.getElementById('top_user_img').src = image || 'images/system Images/user%20(1).png'; // Fallback image
+                    
+
+                    // Calculate and display period of stay using lease_start
+                    const leaseStartDate = lease_start ? new Date(lease_start) : null;
+                    const now = new Date();
+
+                    let stageText = "";
+
+                    if (leaseStartDate && !isNaN(leaseStartDate)) {
+                        const diffTime = now - leaseStartDate;
+                        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                        if (diffDays < 7) {
+                            stageText = "Currently moved in";
+                        } else if (diffDays < 30) {
+                            stageText = `${diffDays} day(s)`;
+                        } else if (diffDays < 365) {
+                            const months = Math.floor(diffDays / 30);
+                            const days = diffDays % 30;
+                            stageText = `${months} month(s)` + (days > 0 ? ` ${days} day(s)` : "");
+                        } else {
+                            const years = Math.floor(diffDays / 365);
+                            const remainingDays = diffDays % 365;
+                            const months = Math.floor(remainingDays / 30);
+                            stageText = `${years} year(s)` + (months > 0 ? ` ${months} month(s)` : "");
+                        }
+                    } else {
+                        stageText = "Lease start date not available";
+                    }
+
+                    document.getElementById('stage').textContent = stageText;
+
+                } else {
+                    console.log('Failed to load profile', data);
+                }
+                })
+                .catch(err => console.error('Error loading tenant profile:', err));
+            });
+    </script>
+
+    <script>
+        // Function to update the balance card
+        fetch('/api/tenants/balance', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                const balance = data.balance;
+                console.log('Balance data:', data);
+                let balanceText = "";
+
+                if (balance > 0) {
+                    balanceText = `Ksh ${balance.toLocaleString()}`;
+                } else if (balance < 0) {
+                    balanceText = `Ksh -${Math.abs(balance).toLocaleString()}`;
+                } else {
+                    balanceText = `No outstanding balance`;
+                }
+
+                document.getElementById('balance_amount').textContent = balanceText;
+                } else {
+                document.getElementById('balance_amount').textContent = 'Balance unavailable';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching balance:', err);
+                document.getElementById('balance_amount').textContent = 'Error loading';
+            });
+    </script>
+    <script>
+        // Fetch tenant balance info and update only the Amount Paid card
+        fetch('/api/tenants/balance', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Balance data:', data);
+                if (data.success) {
+                    const totalPaid = data.paid || 0;
+                    console.log('Total paid:', totalPaid);
+
+                    // Update the Amount Paid card
+                    document.getElementById('amount_paid_summary').innerHTML = `
+                        Ksh ${totalPaid.toLocaleString()}
+                    `;
+                } else {
+                    document.getElementById('amount_paid_summary').textContent = 'Unavailable';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching amount paid:', err);
+                document.getElementById('amount_paid_summary').textContent = 'Error loading';
+            });
+    </script>
+    <script>
+        // Fetch and display total billed amount (lifetime payments)
+        fetch('/api/tenants/billed/total', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const totalBilled = data.totalBilled || 0;
+                    document.getElementById('total_billed_summary').innerHTML = `
+                        Ksh ${totalBilled.toLocaleString()}
+                    `;
+                } else {
+                    document.getElementById('total_billed_summary').textContent = 'Unavailable';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching total billed amount:', err);
+                document.getElementById('total_billed_summary').textContent = 'Error loading';
+            });
+    </script>
+    <script>
+        //code that feeds the invoice card
+        fetch('/api/tenants/invoices/count', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('invoice_count').textContent = data.count.toLocaleString();
+                } else {
+                    document.getElementById('invoice_count').textContent = 'Unavailable';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching invoice count:', err);
+                document.getElementById('invoice_count').textContent = 'Error';
+            });
+    </script>
+    <script>
+        // code for updating the request card in the tenant dashboard
+        fetch('/api/maintenance/requests/count', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    document.getElementById('requestCount').textContent = data.count.toLocaleString();
+                } else {
+                    document.getElementById('requestCount').textContent = 'Unavailable';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching request count:', err);
+                document.getElementById('requestCount').textContent = 'Error';
+            });
+    </script>
+    <script>
+        //code for updating the table with the latest transactions
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/tenants/latest', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const tbody = document.querySelector('#transactionsTable tbody');
+                    tbody.innerHTML = '';
+
+                    if (data.success && data.transactions.length > 0) {
+                        data.transactions.forEach((txn, index) => {
+                            const tr = document.createElement('tr');
+
+                            if (index % 2 === 0) {
+                                tr.style.backgroundColor = '#3498db';
+                                tr.style.color = '#fff';
+                            }
+
+                            tr.innerHTML = `
+                                <td>${txn.actor}</td>
+                                <td>${txn.description}</td>
+                                <td>${txn.time}</td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">No transactions found</td></tr>`;
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching transactions:', err);
+                });
+        });
+    </script>
+    <script>
+        //code for feeding and sending the data modal for editting the Personal Information
+        document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("editTenantModal");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const editBtn = document.querySelector(".update-btn");
+
+        // Open modal and populate form
+        editBtn?.addEventListener("click", () => {
+            fetch("/api/tenants/profile", { credentials: "include" })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const tenant = data.tenant;
+                        document.getElementById("editName").value = tenant.name || '';
+                        document.getElementById("editPhone").value = tenant.phone || '';
+                        document.getElementById("editEmail").value = tenant.email || '';
+                        document.getElementById("editAddress").value = tenant.Address || '';
+                        modal.style.display = "flex";
+                    } else {
+                        alert("Failed to fetch tenant data.");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error fetching tenant info:", err);
+                });
+        });
+
+        // Close modal
+        closeModalBtn?.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+            // Submit updated tenant info (including image)
+            document.getElementById("editTenantForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch("/api/tenants/profile/update", {
+                    method: "POST",
+                    body: formData,
+                    credentials: "include"
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Profile updated successfully.");
+                        modal.style.display = "none";
+                        location.reload();
+                    } else {
+                        alert("Update failed.");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error updating profile:", err);
+                    alert("Something went wrong.");
+                });
+            });
+        });
+    </script>
+</body>
+</html>

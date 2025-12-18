@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tenant Records</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .table-container {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 20px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 10px 0;
+      cursor: pointer;
+      font-size: 14px;
+      color: #666;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+    }
+
+    .tab.active {
+      color: #2e7d32;
+      font-weight: bold;
+      border-bottom: 2px solid #2e7d32;
+    }
+
+    /* Search */
+    .search-box {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+
+    .search-box input {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 250px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 14px;
+      color: #888;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f5f7fb;
+    }
+
+    td {
+      padding: 15px 10px;
+      font-size: 14px;
+      color: #333;
+      vertical-align: middle;
+    }
+
+    .tenant-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tenant-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .cleared {
+      background: #e6f4ea;
+      color: #2e7d32;
+    }
+
+    .partial {
+      background: #fff8e1;
+      color: #f9a825;
+    }
+
+    .not-paid {
+      background: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="table-container">
+    <h2>Tenant Records</h2>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="filterStatus('all')">All Tenants</div>
+      <div class="tab" onclick="filterStatus('Cleared')">Cleared</div>
+      <div class="tab" onclick="filterStatus('Partially Cleared')">Partially Cleared</div>
+      <div class="tab" onclick="filterStatus('Not Paid')">Not Paid</div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+      <input type="text" id="searchInput" onkeyup="searchTenant()" placeholder="Search tenant...">
+    </div>
+
+    <!-- Table -->
+    <table id="tenantTable">
+      <thead>
+        <tr>
+          <th>Tenant</th>
+          <th>Room No.</th>
+          <th>Rent Balance</th>
+          <th>Property</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-status="Cleared">
+          <td>
+            <div class="tenant-info">
+              <img src="tenant1.jpg" alt="Tenant 1">
+              <span>John Doe</span>
+            </div>
+          </td>
+          <td>12</td>
+          <td>$0</td>
+          <td>Greenwood Apartments</td>
+          <td><span class="status cleared">Cleared</span></td>
+        </tr>
+        <tr data-status="Partially Cleared">
+          <td>
+            <div class="tenant-info">
+              <img src="tenant2.jpg" alt="Tenant 2">
+              <span>Mary Smith</span>
+            </div>
+          </td>
+          <td>5</td>
+          <td>$150</td>
+          <td>Sunset Villas</td>
+          <td><span class="status partial">Partially Cleared</span></td>
+        </tr>
+        <tr data-status="Not Paid">
+          <td>
+            <div class="tenant-info">
+              <img src="tenant3.jpg" alt="Tenant 3">
+              <span>Alex Johnson</span>
+            </div>
+          </td>
+          <td>8</td>
+          <td>$500</td>
+          <td>Hillview Estate</td>
+          <td><span class="status not-paid">Not Paid</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Filter by tab
+    function filterStatus(status) {
+      let rows = document.querySelectorAll("#tenantTable tbody tr");
+      let tabs = document.querySelectorAll(".tab");
+
+      tabs.forEach(tab => tab.classList.remove("active"));
+      event.target.classList.add("active");
+
+      rows.forEach(row => {
+        if (status === "all" || row.dataset.status === status) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+
+    // Search tenant
+    function searchTenant() {
+      let input = document.getElementById("searchInput").value.toLowerCase();
+      let rows = document.querySelectorAll("#tenantTable tbody tr");
+
+      rows.forEach(row => {
+        let name = row.querySelector(".tenant-info span").innerText.toLowerCase();
+        row.style.display = name.includes(input) ? "" : "none";
+      });
+    }
+  </script>
+
+</body>
+</html>
