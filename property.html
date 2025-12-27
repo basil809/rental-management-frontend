@@ -541,7 +541,7 @@
             // ✅ Function to fetch & render 3 recent properties
             async function fetchRecentProperties() {
                 try {
-                const response = await fetch('/api/properties');
+                const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/properties');
                 const properties = await response.json();
                 renderProperties(properties);
                 } catch (error) {
