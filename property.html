@@ -589,7 +589,7 @@
 
             // ✅ Fetch all properties for filtering
             try {
-                const response = await fetch('/api/properties');
+                const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/properties');
                 allProperties = await response.json();
 
                 // Populate dropdowns
