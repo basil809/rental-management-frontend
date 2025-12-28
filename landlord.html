@@ -1271,7 +1271,7 @@
                 let tenantList = [];
                 let currentPage = 1;
 
-                fetch('/api/landlords/tenants', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success && Array.isArray(data.tenants)) {
@@ -1338,7 +1338,7 @@
                             const tenantId = this.getAttribute('data-id');
 
                             if (confirm('Are you sure you want to delete this tenant?')) {
-                            fetch(`/api/landlords/tenants/${tenantId}`, {
+                            fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants/${tenantId}`, {
                                 method: 'DELETE',
                                 credentials: 'include',
                             })
@@ -1400,7 +1400,7 @@
                             rent: parseFloat(document.getElementById('editRent').value)
                         };
 
-                        fetch(`/api/landlords/tenants/${tenantId}`, {
+                        fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants/${tenantId}`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             credentials: 'include',
@@ -1413,7 +1413,7 @@
                                 alert('Tenant updated successfully!');
                                 document.getElementById('editTenantModal').style.display = 'none';
                                 // Refresh tenants list
-                                fetch('/api/landlords/tenants', { credentials: 'include' })
+                                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants', { credentials: 'include' })
                                     .then(res => res.json())
                                     .then(data => {
                                         if (data.success) {
@@ -1575,7 +1575,7 @@
                 }
 
                 // Fetch pending payments
-                fetch('/api/review-payments/pending', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/review-payments/pending', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     approveList = data.pendingPayments;
@@ -1637,7 +1637,7 @@
 
                     document.getElementById('rejectModal').style.display = 'none';
 
-                    fetch(`/api/review-payments/reject/${selectedPaymentId}`, {
+                    fetch(`https://rental-management-backend-ynbb.onrender.com/api/review-payments/reject/${selectedPaymentId}`, {
                         method: 'PUT',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
@@ -1673,7 +1673,7 @@
 
                 // Approve action
                 function handlePaymentAction(paymentId, action) {
-                    fetch(`/api/review-payments/${action}/${paymentId}`, {
+                    fetch(`https://rental-management-backend-ynbb.onrender.com/api/review-payments/${action}/${paymentId}`, {
                         method: 'PUT',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' }
@@ -1705,14 +1705,14 @@
                     });
                 }
             } else if (sectionId === 'showProperty'){
-                fetch('/api/landlords/dashboard', {credentials: 'include'})
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/dashboard', {credentials: 'include'})
                 .then(response => response.json())
                 .then(async landlorddata => {
                     console.log('Dashboard response:', landlorddata);
                     if(!landlorddata.success);
                     const landlord = landlorddata.landlord;
 
-                    const propertyRes = await fetch(`/api/properties/by-title/${encodeURIComponent(landlord.property)}`, { credentials: 'include' });
+                    const propertyRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/properties/by-title/${encodeURIComponent(landlord.property)}`, { credentials: 'include' });
                     const propertyData = await propertyRes.json();
                     if (!propertyData.success) throw new Error('Property not found');
                     const property = propertyData.property;
@@ -1893,7 +1893,7 @@
                 `;
 
                 // Fetch Tenant's 
-                fetch('/api/landlords/tenants')
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -1952,7 +1952,7 @@
                     };
 
                     try{
-                       const response = await fetch('/api/landlords/new-invoice', {
+                       const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/new-invoice', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
