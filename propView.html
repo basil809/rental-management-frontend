@@ -769,7 +769,7 @@
             // === FETCH PROPERTY DATA ===
             if (id) {
                 try {
-                    const res = await fetch(`/api/properties/${id}`);
+                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/properties/${id}`);
                     const property = await res.json();
                     propertyId = property._id; // Store for message form
 
@@ -847,7 +847,7 @@
                 };
 
                 try {
-                    const response = await fetch('/api/rentals/inquiry', { 
+                    const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/rentals/inquiry', { 
                         method: 'POST', 
                         headers: { 'Content-Type': 'application/json' }, 
                         body: JSON.stringify(formData) 
