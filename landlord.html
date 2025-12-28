@@ -873,7 +873,7 @@
     <script>
         //code for fetching the landlords's details from the backend
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/landlords/profile', { credentials: 'include' })
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/profile', { credentials: 'include' })
             .then(response => response.json())
             .then( data => {
                 console.log(data);
