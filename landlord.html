@@ -872,28 +872,54 @@
         });    
     </script>
     <script>
-        //code for fetching the landlords's details from the backend
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/profile', { credentials: 'include' })
+
+            const IMAGE_BASE_URL = 'https://rental-management-backend-ynbb.onrender.com';
+            const DEFAULT_IMAGE = 'images/system Images/user%20(1).png';
+
+            // 🔧 Helper to normalize image URLs
+            const getImageUrl = (img) => {
+                if (!img) return DEFAULT_IMAGE;
+
+                // If already absolute (Cloudinary, S3, etc.)
+                if (img.startsWith('http')) return img;
+
+                // Ensure correct backend path
+                return `${IMAGE_BASE_URL}/${img.replace(/^\/+/, '')}`;
+            };
+
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/profile', {
+                credentials: 'include'
+            })
             .then(response => response.json())
-            .then( data => {
-                console.log(data);
-                if(data.success) {
-                    // Display the landlord's name in the notification popup
-                    document.getElementById('landlord_name').textContent = data.landlord.name;
-                    // Display the landlord's profile image in the top navbar
-                    document.getElementById('top_user_img').src = data.landlord.image || 'images/system Images/user%20(1).png';
-                    //Displaying the landlord's profile image in the sidebar
-                    document.getElementById('user_img').src = data.landlord.image || 'images/system Images/user%20(1).png';
-                } else {
+            .then(data => {
+                console.log('Landlord profile:', data);
+
+                if (!data.success) {
                     console.error('Failed to fetch landlord profile:', data.message);
+                    return;
                 }
+
+                const landlord = data.landlord;
+
+                // ✅ Set landlord name
+                document.getElementById('landlord_name').textContent = landlord.name || 'Landlord';
+
+                // ✅ Normalize profile image
+                const profileImage = getImageUrl(landlord.image);
+
+                // ✅ Top navbar image
+                document.getElementById('top_user_img').src = profileImage;
+
+                // ✅ Sidebar image
+                document.getElementById('user_img').src = profileImage;
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error fetching landlord profile:', error);
             });
         });
     </script>
+
 
     <script>
         let btn = document.querySelector('#btn');  // your existing desktop toggle
@@ -1748,7 +1774,7 @@
                     const fallbackImage = 'https://via.placeholder.com/600x400?text=No+Image+Available';
 
                     const mainImageSrc = imageUrls.length > 0 ? imageUrls[0] : fallbackImage;
-                    
+
                     const imagesHtml = imageUrls.length > 0
                         ? imageUrls.map((url, i) =>
                             `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
