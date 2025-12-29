@@ -1746,7 +1746,7 @@
                         .map((url, i) => 
                         `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
                     )
-                    .json('');
+                    .join('');
                     mainContent.innerHTML = `
                     <div class="property-display">
                         <div class="container">
