@@ -1705,26 +1705,54 @@
                     });
                 }
             } else if (sectionId === 'showProperty'){
-                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/dashboard', {credentials: 'include'})
+                const IMAGE_BASE_URL = 'https://rental-management-backend-ynbb.onrender.com';
+
+                const getImageUrl = (img) => {
+                    if (!img) return '';
+                    // If already absolute URL, return as-is
+                    if (img.startsWith('http')) return img;
+                    // Ensure single slash
+                    return `${IMAGE_BASE_URL}/${img.replace(/^\/+/, '')}`;
+                };
+
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/dashboard', {
+                    credentials: 'include'
+                })
                 .then(response => response.json())
                 .then(async landlorddata => {
                     console.log('Dashboard response:', landlorddata);
-                    if(!landlorddata.success);
+
+                    if(!landlorddata.success) {
+                        throw new Error('Failed to load landlord dashboard');
+                    }
+
                     const landlord = landlorddata.landlord;
 
-                    const propertyRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/properties/by-title/${encodeURIComponent(landlord.property)}`, { credentials: 'include' });
+                    const propertyRes = await fetch(
+                        `https://rental-management-backend-ynbb.onrender.com/api/properties/by-title/${encodeURIComponent(landlord.property)}`, 
+                        { credentials: 'include' }
+                    );
+
                     const propertyData = await propertyRes.json();
                     if (!propertyData.success) throw new Error('Property not found');
+
                     const property = propertyData.property;
 
-                    const imagesHtml = property.images.map((img, i) =>  `<img src="${img}" onclick="openFullscreen(${i})" alt="Thumb">`).join('');
+                    // 🔥 Normalize image URLs
+                    const imageUrls = (property.images || []).map(getImageUrl);
+
+                    const imagesHtml = imageUrls
+                        .map((url, i) => 
+                        `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
+                    )
+                    .json('');
                     mainContent.innerHTML = `
                     <div class="property-display">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="property-images">
-                                        <img id="main-image" src="${property.images[0]}" alt="Property Image" class="d-block w-100 main-img" onclick="openFullscreen(0)">
+                                        <img id="main-image" src="${property.imageUrl[0] || ''}" alt="Property Image" class="d-block w-100 main-img" onclick="openFullscreen(0)">
                                                 <div class="thumbnails">${imagesHtml}</div>
                                     </div>
                                 </div>
@@ -1756,7 +1784,6 @@
                     `;
                     // JavaScript logic
                     let currentImgIndex = 0;
-                    const imageUrls = property.images;
 
                     window.openFullscreen = function(index){
                         currentImgIndex = index;
