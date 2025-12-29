@@ -1740,27 +1740,36 @@
                     const property = propertyData.property;
 
                     // 🔥 Normalize image URLs
-                    const imageUrls = (property.images || []).map(getImageUrl);
+                    const imageUrls = Array.isArray(property.images)
+                    ? property.images.map(getImageUrl)
+                    : [];
 
-                    const imagesHtml = imageUrls
-                        .map((url, i) => 
-                        `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
-                    )
-                    .join('');
+                    //Fallback image
+                    const fallbackImage = 'https://via.placeholder.com/600x400?text=No+Image+Available';
+
+                    const imagesHtml = imageUrls.length > 0
+                        ? imageUrls.map((url, i) =>
+                            `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
+                            ).join('')
+                        : '<p style="color:#999;">No additional images</p>';
+
                     mainContent.innerHTML = `
                     <div class="property-display">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="property-images">
-                                        src="${imageUrls[0] || ''}"
-                                        alt="Property Image"
-                                        class="d-block w-100 main-img"
-                                        onclick="openFullscreen(0)"
-                                    >
-                                    <div class="thumbnails">${imagesHtml}</div>
+                                        <img
+                                            id="main-image"
+                                            src="${mainImageSrc}"
+                                            alt="Property Image"
+                                            class="d-block w-100 main-img"
+                                            onclick="${imageUrls.length ? 'openFullscreen(0)' : ''}"
+                                        />
+                                        <div class="thumbnails">${imagesHtml}</div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <div class="property-info">
                                         <h2>${property.title}</h2>
@@ -1791,6 +1800,7 @@
                     let currentImgIndex = 0;
 
                     window.openFullscreen = function(index){
+                        if (!imageUrls.length) return;
                         currentImgIndex = index;
                         document.getElementById('fullscreenImage').src = imageUrls[currentImgIndex];
                         document.getElementById('fullscreenViewer').style.display = 'flex';
