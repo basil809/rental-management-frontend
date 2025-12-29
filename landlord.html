@@ -1747,6 +1747,8 @@
                     //Fallback image
                     const fallbackImage = 'https://via.placeholder.com/600x400?text=No+Image+Available';
 
+                    const mainImageSrc = imageUrls.length > 0 ? imageUrls[0] : fallbackImage;
+                    
                     const imagesHtml = imageUrls.length > 0
                         ? imageUrls.map((url, i) =>
                             `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
