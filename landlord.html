@@ -851,7 +851,8 @@
         <button id="notification-close" class="notification-close" onclick="closepopup()">×</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://rental-management-backend-ynbb.onrender.com/socket.io/socket.io.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function shownotification() {
@@ -2506,7 +2507,9 @@
                         }, 4000);
                     }
                 });
-            } const socket = io();
+            } const socket = io('https://rental-management-backend-ynbb.onrender.com', {
+                withCredentials: true
+            });
             let loggedInUserId = null;
 
             if (sectionId === 'messages') {
