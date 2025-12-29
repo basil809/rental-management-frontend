@@ -1704,155 +1704,163 @@
                         });
                     });
                 }
-            } else if (sectionId === 'showProperty'){
-                const IMAGE_BASE_URL = 'https://rental-management-backend-ynbb.onrender.com';
+            } else if (sectionId === 'showProperty') {
 
-                const getImageUrl = (img) => {
-                    if (!img) return '';
-                    // If already absolute URL, return as-is
-                    if (img.startsWith('http')) return img;
-                    // Ensure single slash
-                    return `${IMAGE_BASE_URL}/${img.replace(/^\/+/, '')}`;
-                };
+    const IMAGE_BASE_URL = 'https://rental-management-backend-ynbb.onrender.com';
 
-                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/dashboard', {
-                    credentials: 'include'
-                })
-                .then(response => response.json())
-                .then(async landlorddata => {
-                    console.log('Dashboard response:', landlorddata);
+    const getImageUrl = (img) => {
+        if (!img) return '';
+        // If already absolute URL, return as-is
+        if (img.startsWith('http')) return img;
+        // Ensure single slash
+        return `${IMAGE_BASE_URL}/${img.replace(/^\/+/, '')}`;
+    };
 
-                    if(!landlorddata.success) {
-                        throw new Error('Failed to load landlord dashboard');
-                    }
+    fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/dashboard', {
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(async landlorddata => {
 
-                    const landlord = landlorddata.landlord;
+        if (!landlorddata.success) {
+            throw new Error('Failed to load landlord dashboard');
+        }
 
-                    const propertyRes = await fetch(
-                        `https://rental-management-backend-ynbb.onrender.com/api/properties/by-title/${encodeURIComponent(landlord.property)}`, 
-                        { credentials: 'include' }
-                    );
+        const landlord = landlorddata.landlord;
 
-                    const propertyData = await propertyRes.json();
-                    if (!propertyData.success) throw new Error('Property not found');
+        const propertyRes = await fetch(
+            `https://rental-management-backend-ynbb.onrender.com/api/properties/by-title/${encodeURIComponent(landlord.property)}`,
+            { credentials: 'include' }
+        );
 
-                    const property = propertyData.property;
+        const propertyData = await propertyRes.json();
+        if (!propertyData.success) throw new Error('Property not found');
 
-                    // 🔥 Normalize image URLs
-                    const imageUrls = (property.images || []).map(getImageUrl);
+        const property = propertyData.property;
 
-                    const imagesHtml = imageUrls
-                        .map((url, i) => 
-                        `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
-                    )
-                    .json('');
-                    mainContent.innerHTML = `
-                    <div class="property-display">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="property-images">
-                                        <img id="main-image" src="${property.imageUrl[0] || ''}" alt="Property Image" class="d-block w-100 main-img" onclick="openFullscreen(0)">
-                                                <div class="thumbnails">${imagesHtml}</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="property-info">
-                                        <h2>${property.title}</h2>
-                                        <p><strong>Location:</strong> ${property.location}</p>
-                                        <p><strong>Units:</strong> ${property.units}</p>
-                                        <p><strong>Bedrooms:</strong> ${property.bedrooms}</p>
-                                        <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                                        <p><strong>Monthly Rent:</strong> Ksh ${property.price.toLocaleString()}</p>
-                                        <p><strong>Features:</strong> Gym, Parking, Security</p>
-                                        <p><strong>Description:</strong> ${property.description.replace(/\n/g, "<br>")}</p>
-                                    </div>
-                                </div>
-                            </div>
+        // 🔥 Normalize image URLs
+        const imageUrls = (property.images || []).map(getImageUrl);
+
+        const imagesHtml = imageUrls
+            .map((url, i) =>
+                `<img src="${url}" onclick="openFullscreen(${i})" alt="Thumb">`
+            )
+            .join('');
+
+        mainContent.innerHTML = `
+        <div class="property-display">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="property-images">
+                            <img 
+                                id="main-image"
+                                src="${imageUrls[0] || ''}"
+                                alt="Property Image"
+                                class="d-block w-100 main-img"
+                                onclick="openFullscreen(0)"
+                            >
+                            <div class="thumbnails">${imagesHtml}</div>
                         </div>
                     </div>
 
-                    <!-- Fullscreen Viewer -->
-                    <div id="fullscreenViewer" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center; flex-direction:column;">
-                        <span id="closeFullscreenBtn" style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
-                        <img id="fullscreenImage" src="" style="max-width:90%; max-height:80%;">
-                        <div style="margin-top:20px;">
-                            <button id="prev-Btn" style="margin-right:10px;">⬅️ Prev</button>
-                            <button id="next-Btn">Next ➡️</button>
+                    <div class="col-md-4">
+                        <div class="property-info">
+                            <h2>${property.title}</h2>
+                            <p><strong>Location:</strong> ${property.location}</p>
+                            <p><strong>Units:</strong> ${property.units}</p>
+                            <p><strong>Bedrooms:</strong> ${property.bedrooms}</p>
+                            <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
+                            <p><strong>Monthly Rent:</strong> Ksh ${property.price.toLocaleString()}</p>
+                            <p><strong>Description:</strong> ${property.description.replace(/\n/g, "<br>")}</p>
                         </div>
                     </div>
-                    `;
-                    // JavaScript logic
-                    let currentImgIndex = 0;
+                </div>
+            </div>
+        </div>
 
-                    window.openFullscreen = function(index){
-                        currentImgIndex = index;
-                        document.getElementById('fullscreenImage').src = imageUrls[currentImgIndex];
-                        document.getElementById('fullscreenViewer').style.display = 'flex';
-                    };
+        <!-- Fullscreen Viewer -->
+        <div id="fullscreenViewer" style="
+            display:none;
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.9);
+            z-index:2000;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+        ">
+            <span id="closeFullscreenBtn"
+                  style="position:absolute; top:20px; right:30px;
+                         font-size:40px; color:white; cursor:pointer;">
+                &times;
+            </span>
 
-                    const showImage = (index) => {
-                        if (index >= 0 && index < imageUrls.length) {
-                            document.getElementById('fullscreenImage').src = imageUrls[index];
-                        }
-                    };
-                    
-                    //code to enable the landlord to move from one picture to another while in fullscreen mode while clicking the next and prev buttons
-                    document.getElementById('next-Btn').addEventListener('click', () => {
-                        if (currentImgIndex < imageUrls.length - 1) {
-                            currentImgIndex++;
-                            showImage(currentImgIndex);
-                        }
-                    });
+            <img id="fullscreenImage" src="" style="max-width:90%; max-height:80%;">
 
-                    document.getElementById('prev-Btn').addEventListener('click', () => {
-                        if (currentImgIndex > 0) {
-                            currentImgIndex--;
-                            showImage(currentImgIndex);
-                        }
-                    });
+            <div style="margin-top:20px;">
+                <button id="prev-Btn">⬅️ Prev</button>
+                <button id="next-Btn">Next ➡️</button>
+            </div>
+        </div>
+        `;
 
-                    //code for closing the fullscreen mode by clicking the close button
-                    document.getElementById('closeFullscreenBtn').addEventListener('click', () => {
-                        document.getElementById('fullscreenViewer').style.display = 'none';
-                    });
+        // ===== IMAGE VIEWER LOGIC =====
+        let currentImgIndex = 0;
 
+        window.openFullscreen = function (index) {
+            currentImgIndex = index;
+            document.getElementById('fullscreenImage').src = imageUrls[currentImgIndex];
+            document.getElementById('fullscreenViewer').style.display = 'flex';
+        };
 
-                    // Keyboard support, to allow the user to navigate through and also close the fullscreen mode using escape key
-                    document.addEventListener('keydown', (e) => {
-                        const viewerVisible = document.getElementById('fullscreenViewer').style.display === 'flex';
-                        if (viewerVisible) {
-                            if (e.key === 'Escape') {
-                                document.getElementById('fullscreenViewer').style.display = 'none';
-                            } else if (e.key === 'ArrowRight') {
-                                currentImgIndex = (currentImgIndex + 1) % imageUrls.length;
-                                showImage(currentImgIndex);
-                            } else if (e.key === 'ArrowLeft') {
-                                currentImgIndex = (currentImgIndex - 1 + imageUrls.length) % imageUrls.length;
-                                showImage(currentImgIndex);
-                            }
-                        }
-                    });
+        const showImage = (index) => {
+            if (index >= 0 && index < imageUrls.length) {
+                document.getElementById('fullscreenImage').src = imageUrls[index];
+            }
+        };
 
-                    //swipe support
-                    let touchStartX = 0;
-                    document.getElementById('fullscreenImage').addEventListener('touchstart', (e) => {
-                        touchStartX = e.changedTouches[0].screenX;
-                    });
-                    document.getElementById('fullscreenImage').addEventListener('touchend', (e) => {
-                        const touchEndX = e.changedTouches[0].screenX;
-                        const deltaX = touchEndX - touchStartX;
-                        if (Math.abs(deltaX) > 50) {
-                            if (deltaX > 0) showImage(currentImgIndex + 1);
-                            else showImage(currentImgIndex - 1);
-                        }
-                    });
-                })
-                .catch (err => {
-                    console.error('Error loading property:', err);
-                    mainContent.innerHTML = `<p style="text-align:center; color:red; padding-top: 20px;">Failed to load your property info. Please try again later.</p>`;
-                });
-            } else if (sectionId === 'createInvoice') {
+        document.getElementById('next-Btn').addEventListener('click', () => {
+            currentImgIndex = (currentImgIndex + 1) % imageUrls.length;
+            showImage(currentImgIndex);
+        });
+
+        document.getElementById('prev-Btn').addEventListener('click', () => {
+            currentImgIndex = (currentImgIndex - 1 + imageUrls.length) % imageUrls.length;
+            showImage(currentImgIndex);
+        });
+
+        document.getElementById('closeFullscreenBtn').addEventListener('click', () => {
+            document.getElementById('fullscreenViewer').style.display = 'none';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('fullscreenViewer').style.display === 'flex') {
+                if (e.key === 'Escape') {
+                    document.getElementById('fullscreenViewer').style.display = 'none';
+                }
+                if (e.key === 'ArrowRight') {
+                    currentImgIndex = (currentImgIndex + 1) % imageUrls.length;
+                    showImage(currentImgIndex);
+                }
+                if (e.key === 'ArrowLeft') {
+                    currentImgIndex = (currentImgIndex - 1 + imageUrls.length) % imageUrls.length;
+                    showImage(currentImgIndex);
+                }
+            }
+        });
+
+    })
+    .catch(err => {
+        console.error('Error loading property:', err);
+        mainContent.innerHTML = `
+            <p style="text-align:center; color:red; padding-top:20px;">
+                Failed to load your property info. Please try again later.
+            </p>
+        `;
+    });
+} else if (sectionId === 'createInvoice') {
                 mainContent.innerHTML = `
                 <div id="invoiceForm">
                     <form id="Invoice-form">
