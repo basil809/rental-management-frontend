@@ -2023,6 +2023,7 @@
 
                     try{
                        const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/new-invoice', {
+                        credentials: 'include',
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
