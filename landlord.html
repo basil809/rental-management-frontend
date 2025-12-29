@@ -1963,7 +1963,7 @@
                 `;
 
                 // Fetch Tenant's 
-                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants')
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/tenants', { credentials: 'include'})
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
