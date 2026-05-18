@@ -2311,7 +2311,7 @@
                     }
                     
                     try {
-                        const response = await fetch('/api/properties', {
+                        const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/properties', {
                             method: 'POST',
                             body: formData,
                         });
@@ -2394,7 +2394,7 @@
             `;
 
             // Fetch and populate property dropdown
-            fetch('/api/properties')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/properties')
                 .then(res => res.json())
                 .then(properties => {
                     const propertySelect = document.getElementById('property');
@@ -2470,7 +2470,7 @@
                 };
 
                 try {
-                    const response = await fetch('/api/tenants', {
+                    const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -2549,7 +2549,7 @@
             
             // Fetch and populate properties from backend
             const populateProperties = () => {
-            fetch('/api/properties')  // Replace with your actual endpoint
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/properties')  // Replace with your actual endpoint
                 .then(response => response.json())
                 .then(data => {
                 const propertiesSelect = document.getElementById('propValues');
@@ -2593,7 +2593,7 @@
                 };
 
                 // Send data to backend
-                fetch('/api/landlords', {  // Replace with your backend endpoint
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords', {  // Replace with your backend endpoint
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -2678,7 +2678,7 @@
             `;
 
             //Fetch tenants
-            fetch('/api/tenants')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -2727,7 +2727,7 @@
                 };
 
                 try {
-                    const response = await fetch('/api/payments', {
+                    const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/payments', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -2776,7 +2776,7 @@
             initMessagingUI();
 
             //Get the Admin Profile and Join socket room
-            fetch('/api/profile' , { credentials: 'include' })
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/profile' , { credentials: 'include' })
               .then(res => res.json())
               .then(data => {
                 console.log(data)
@@ -2826,7 +2826,7 @@
                     return;  
                 }  
                 
-                fetch('/api/messages/Admin', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/Admin', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     //console.log(data);
@@ -2903,7 +2903,7 @@
                         e.preventDefault();
                         const message = document.getElementById('messageText').value;
 
-                        fetch('/api/messages/reply', {
+                        fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/reply', {
                             method: 'POST',
                             credentials: 'include',
                             headers: { 'Content-Type': 'application/json' },
@@ -2981,7 +2981,7 @@
                     const recipient = document.getElementById('recipient').value;
                     const message = document.getElementById('message').value;
 
-                    fetch('/api/messages/send', {
+                    fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/send', {
                         method: 'POST',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
@@ -3059,7 +3059,7 @@
 
             //Fetch inquiries and render them
             function fetchAndDisplayInquiries() {
-                fetch('/api/Quiz/genQuizes', { credentials: 'include'})
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/Quiz/genQuizes', { credentials: 'include'})
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
@@ -3711,7 +3711,7 @@
                 
             }
             // Fetch payments from the server
-            fetch('/api/payments')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments')
                 .then(res => res.json())
                 .then(data => {
                     payments = data;
@@ -3839,7 +3839,7 @@
                 </div>
             `;
 
-            fetch('/api/properties', { credentials: 'include' })
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/properties', { credentials: 'include' })
                 .then(res => res.json())
                 .then(properties => {
                     let currentPage = 1;
@@ -4529,7 +4529,7 @@
             // ✅ Script logic moved outside
             (async () => {
                 try {
-                const res = await fetch('/api/admins');
+                const res = await fetch('https://rental-management-backend-ynbb.onrender.com/api/admins');
                 const admins = await res.json();
 
                 if (!admins.length) {
@@ -4563,7 +4563,7 @@
                     const updatedUsername = document.getElementById('adminUsername').value;
                     const updatedEmail = document.getElementById('adminEmail').value;
 
-                    const updateRes = await fetch('/api/admins/' + admin._id, {
+                    const updateRes = await fetch('https://rental-management-backend-ynbb.onrender.com/api/admins/' + admin._id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -4638,7 +4638,7 @@
             `;
 
             // Fetch tenants
-            fetch('/api/tenants')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants')
                 .then(response => response.json())
                 .then(data => {
                     const tenantSelect = document.getElementById('tenant');
@@ -4684,7 +4684,7 @@
                 };
 
                 try {
-                    const response = await fetch('/api/invoices', {
+                    const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -4874,7 +4874,7 @@
                                 const res = await fetch(`/api/invoices/${id}`, { method: 'DELETE' });
                                 if (res.ok) {
                                     alert('Invoice deleted successfully!');
-                                    const response = await fetch('/api/invoices');
+                                    const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices');
                                     invoices = await response.json();
                                     displayInvoices(currentPage);
                                 } else {
@@ -4897,7 +4897,7 @@
                 });
             }
 
-            fetch('/api/invoices')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices')
                 .then(response => response.json())
                 .then(data => {
                     invoices = data;
@@ -4946,7 +4946,7 @@
                             alert('Invoice updated successfully!');
                             document.getElementById('editInvoiceModal').style.display = 'none';
 
-                            const response = await fetch('/api/invoices');
+                            const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices');
                             invoices = await response.json();
                             displayInvoices(currentPage);
                         } else {
@@ -5159,7 +5159,7 @@
 
             // Function to load leaderboard data
            function loadLeaderboard() {
-            fetch('/api/payments/top-tenants')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/top-tenants')
                 .then(res => res.json())
                 .then(data => {
                 const list = document.querySelector('.leaderboard ul');
@@ -5182,7 +5182,7 @@
             }
 
             //function to load the payment completion rate
-            fetch('/api/payments/completion-rate')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/completion-rate')
                 .then(res => res.json())
                 .then(data => {
                     const rate = data.completionRate || 0;
@@ -5199,7 +5199,7 @@
                 .catch(err => console.error('Failed to fetch completion rate:', err));
 
                 //function to load the occupancy rate
-                fetch('/api/properties/occupancy-rate')
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/properties/occupancy-rate')
                     .then(res => res.json())
                     .then(data => {
                         const rate = data.occupancyRate || 0;
@@ -5216,7 +5216,7 @@
                     .catch(err => console.error('Failed to fetch occupancy rate:', err));
 
                 //Function to load the paymentVolume chart
-                fetch('/api/payments/volume')
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/volume')
                 .then(res => res.json())
                 .then(data => {
                     const chart = Chart.getChart('paymentVolumeChart');
@@ -5227,7 +5227,7 @@
                 .catch(err => console.error('Failed to fetch payment volume data:', err));
 
                 // 1. Fetch dropdown options
-                fetch('/api/payments/weeks')
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/weeks')
                 .then(res => res.json())
                 .then(weeks => {
                     const select = document.getElementById('weekSelector');
@@ -5287,7 +5287,7 @@
                 // 4. Load default (all weeks)
                 document.getElementById('weekSelector').dispatchEvent(new Event('change'));
             //function to load the payment made in the current month
-            fetch('/api/payments/total-this-month')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/total-this-month')
                 .then(res => res.json())
                 .then(data => {
                     const total = data.totalPaid.toLocaleString();
@@ -5299,7 +5299,7 @@
                     document.getElementById('totalThisMonth').textContent = 'KES 0';
                 });
             //function to load the payment made in the current week
-            fetch('/api/payments/total-this-week')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/total-this-week')
                 .then(res => res.json())
                 .then(data => {
                     const total = data.totalPaid.toLocaleString();
@@ -5326,7 +5326,7 @@
             //});
 
             //function to update the total amount in the Pending Payments card
-            fetch('/api/payments/total-balance', { 
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/total-balance', { 
                 method: 'GET',
                 credentials: 'include'})
             .then(res => res.json())
@@ -5338,7 +5338,7 @@
             })
 
             //Function to update the landlord count
-            fetch('/api/landlords/count')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/count')
                 .then(response => response.json())
                 .then(data => {
                     const landlord_count = data.count;
@@ -5355,7 +5355,7 @@
                 });
 
             //Function to update maintenance count
-            fetch('/api/maintenance/open-count')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/maintenance/open-count')
                 .then(res => res.json())
                 .then(data => {
                     if (!data.success) throw new Error('Failed to load maintenance count');
@@ -5374,7 +5374,7 @@
             });
 
             //Function to update the maintenance chart
-            fetch('/api/maintenance/completion-rate')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/maintenance/completion-rate')
                 .then(res => res.json())
                 .then(data => {
                     const rate = data.completionRate || 0;
@@ -5402,7 +5402,7 @@
         //code for updating the count on the admin-house card
         async function fetchHouseCount() {
             try {
-            const res = await fetch('/api/properties/count'); // Adjust if you use full URL or proxy
+            const res = await fetch('https://rental-management-backend-ynbb.onrender.com/api/properties/count'); // Adjust if you use full URL or proxy
             const data = await res.json();
             document.getElementById('houseCount').textContent = data.count;
             } catch (error) {
@@ -5415,7 +5415,7 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/tenants/count')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/count')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('tenantCount').innerText = data.count;
@@ -5429,7 +5429,7 @@
         // Function to update invoice count on the invoice card
         async function fetchInvoiceCount() {
             try {
-                const res = await fetch('/api/invoices/count'); // Adjust path if needed
+                const res = await fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices/count'); // Adjust path if needed
                 if (!res.ok) throw new Error('Network response was not ok');
                 const data = await res.json();
                 const countElement = document.getElementById('invoiceCount');
@@ -5451,7 +5451,7 @@
         // Function to update the payment count on the payment card
         async function fetchPaymentCount() {
             try {
-                const res = await fetch('/api/payments/count'); // Adjust path if needed
+                const res = await fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/count'); // Adjust path if needed
                 if (!res.ok) throw new Error('Network response was not ok');
                 const data = await res.json();
                 const countElement = document.getElementById('paymentCount');
@@ -5472,7 +5472,7 @@
     <script>
         //code for updating the table with the latest transactions
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/payments/admin/latest', { credentials: 'include'})
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/admin/latest', { credentials: 'include'})
             .then(res => res.json())
             .then(data => {
                 const tbody = document.querySelector('#AdmintransactionsTable tbody');
@@ -5504,7 +5504,7 @@
     <script>
         //Update pending payments in the invoice card via the invoices
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/invoices/pending', { 
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices/pending', { 
                 method: 'GET',
                 credentials: 'include'})
             .then(res => res.json())
@@ -5534,7 +5534,7 @@
     <script>
         //code for updating the anticipated amount of monthly collections
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/payments/anticipated', { credentials: 'include'})
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/anticipated', { credentials: 'include'})
             .then(res => res.json())
             .then(data => {
                 const anticipatedAmount = data.anticipatedAmount.toLocaleString();
@@ -5549,7 +5549,7 @@
     <script>
        //code for updating the balance card with tenant balances
        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/payments/total-balance', { credentials: 'include'})
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/payments/total-balance', { credentials: 'include'})
             .then(res => res.json())
             .then(data => {
                 //console.log(data);
@@ -5567,7 +5567,7 @@
     <script>
         //code for updating the rental units card with the number of unoccupied units
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/properties/unoccupied', { credentials: 'include'})
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/properties/unoccupied', { credentials: 'include'})
             .then(res => res.json())
             .then(data => {
                 const availableUnits = data.availableUnits.toLocaleString();
