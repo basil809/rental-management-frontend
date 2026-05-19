@@ -471,3 +471,33 @@
         </div>
     </footer>
     <!--End of Footer-->
+    <script>
+      //code for displaying the hamburger menu for smaller screens
+      document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const closebtn = document.querySelector('.close-btn');
+
+        menuBtn.addEventListener('click', () => {
+          navLinks.classList.toggle('show');
+          document.body.classList.toggle('overlay-active'); // prevent background scroll
+        });
+
+        const closeBtn = document.querySelector('.close-btn');
+        closeBtn.addEventListener('click', () => {
+            navLinks.classList.remove('show');
+            document.body.classList.remove('overlay-active'); // allow background scroll
+        });
+
+      });
+    </script>
+    <script>
+      //code for checking the current year and displaying it in the footer
+      document.addEventListener('DOMContentLoaded', () => {
+          const yearSpan = document.getElementById('displayYear');
+          const currentYear = new Date().getFullYear();
+          yearSpan.textContent = currentYear;
+      }); 
+    </script>
+</body>
+</html>
