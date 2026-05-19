@@ -67,6 +67,86 @@
             margin: 0 auto;
         }
 
+        /* NEW ADDITIONS: Steps & Packages responsive grid styling */
+        .promo-section {
+            margin-bottom: 50px;
+        }
+        .promo-title {
+            text-align: center;
+            font-weight: bold;
+            color: #011a33;
+            margin-bottom: 30px;
+        }
+        .step-card {
+            background: #ffffff;
+            border-left: 5px solid #00a5fd;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        .step-num {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00a5fd;
+            margin-bottom: 10px;
+        }
+        .pkg-card {
+            background: #ffffff;
+            border: 1px solid #dfe7fe;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            height: 100%;
+        }
+        .pkg-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,165,253,0.15);
+        }
+        .pkg-title {
+            font-weight: bold;
+            color: #011a33;
+        }
+        .pkg-price {
+            font-size: 28px;
+            color: #00a5fd;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        /* Blue Glassmorphism Modal Overrides */
+        .glass-modal .modal-content {
+            background: rgba(1, 26, 51, 0.75);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            color: #ffffff;
+        }
+        .glass-modal .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-modal .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-modal .close {
+            color: #ffffff;
+            text-shadow: none;
+            opacity: 0.8;
+        }
+        .glass-modal .close:hover {
+            color: #00a5fd;
+            opacity: 1;
+        }
+        .glass-modal .btn-outline-light:hover {
+            background-color: #00a5fd;
+            border-color: #00a5fd;
+            color: #fff;
+        }
+
         /*styling the advertise form*/
         #advertiseForm {
           display: flex;
@@ -346,10 +426,73 @@
 
     <!--Main Content-->
     <Section class="form_section">
+
+      <!-- SECTION 1: STEPS & INSTRUCTIONS -->
+      <div class="promo-section">
+          <h2 class="promo-title">How to Advertise with La Maison</h2>
+          <div class="row">
+              <div class="col-md-4 mb-4">
+                  <div class="step-card">
+                      <div class="step-num">01</div>
+                      <h5>Select Your Package</h5>
+                      <p class="text-muted">Review our tiers below and select a budget package that best showcases your properties to premium renters.</p>
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <div class="step-card">
+                      <div class="step-num">02</div>
+                      <h5>Fill Details</h5>
+                      <p class="text-muted">Complete our registration form with your active property parameters, price evaluation, metrics, and location criteria.</p>
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <div class="step-card">
+                      <div class="step-num">03</div>
+                      <h5>Go Live</h5>
+                      <p class="text-muted">Submit your application. Our administrative panel checks listings within 24 hours to secure immediate marketplace traffic.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- SECTION 2: PACKAGE CARDS -->
+      <div class="promo-section">
+          <h2 class="promo-title">Choose Your Plan</h2>
+          <div class="row">
+              <div class="col-md-4 mb-4">
+                  <div class="pkg-card" data-toggle="modal" data-target="#standardModal">
+                      <h4 class="pkg-title">Standard Plan</h4>
+                      <div class="pkg-price">Ksh 2,500</div>
+                      <p class="text-muted mb-3">Basic listing features for micro landlords</p>
+                      <button class="btn btn-outline-primary btn-sm btn-block">View Details</button>
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <div class="pkg-card" data-toggle="modal" data-target="#mediumModal">
+                      <h4 class="pkg-title">Medium Plan</h4>
+                      <div class="pkg-price">Ksh 5,500</div>
+                      <p class="text-muted mb-3">Enhanced visibility profiles for property agents</p>
+                      <button class="btn btn-primary btn-sm btn-block">View Details</button>
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <div class="pkg-card" data-toggle="modal" data-target="#premiumModal">
+                      <h4 class="pkg-title">Premium Plan</h4>
+                      <div class="pkg-price">Ksh 10,000</div>
+                      <p class="text-muted mb-3">Top tier matching system and verified priority badges</p>
+                      <button class="btn btn-outline-primary btn-sm btn-block">View Details</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
       <!--FORM FOR USER ADVERTISE REGISTRATION-->
       <div id="advertiseForm">
-        <form id="advertForm" enctype="multipart/form-data">
-          <h2 style="text-align: center; font-weight: bold; color: #00a5fd; padding-bottom: 20px;">ADVERTISE WITH US</h2> 
+        <form id="advertForm" enctype="multipart/form-data" style="width: 100%;">
+          <!-- Hidden input field to capture the auto-selected package dynamically -->
+          <input type="hidden" id="selectedPackage" name="selected_package" value="">
+          
+          <h2 style="text-align: center; font-weight: bold; color: #00a5fd; padding-bottom: 20px;">ADVERTISE WITH US <span id="pkgBadge" class="badge badge-primary style='display:none;'"></span ></h2> 
 
             <div class="row">
               <div class="col-md-4">
@@ -408,12 +551,94 @@
               <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
             </div>
             <div class="submitBtn">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">Submit Listing</button>
             </div>
         </form>
       </div>
     </Section>
     <!--End of Main Content--->
+
+    <!-- GLASSMORPHISM PACKAGE MODALS -->
+    <!-- Standard Modal -->
+    <div class="modal fade glass-modal" id="standardModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Standard Plan Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ideal choice for independent property hosts looking for clean market layouts.</p>
+                    <ul>
+                        <li>Active duration: 30 Days live time</li>
+                        <li>Up to 5 High-Quality image allocations</li>
+                        <li>Standard customer dashboard metrics</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-light" onclick="selectPackage('Standard Package')">Select Package</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medium Modal -->
+    <div class="modal fade glass-modal" id="mediumModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Medium Plan Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Designed specifically for scaling commercial agents managing several vacancies.</p>
+                    <ul>
+                        <li>Active duration: 60 Days live time</li>
+                        <li>Up to 15 HD Image uploads + Video Link embed options</li>
+                        <li>Weekly analytical profile summaries</li>
+                        <li>Social media feature promotion on La Maison handles</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-light" onclick="selectPackage('Medium Package')">Select Package</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="modal fade glass-modal" id="premiumModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Premium Plan Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Maximum visibility tier designed to push real estate complexes immediately to structural targets.</p>
+                    <ul>
+                        <li>Active duration: Until Property is Sold/Rented</li>
+                        <li>Unlimited media files and virtual tour configurations</li>
+                        <li>Priority pinning on structural homepages</li>
+                        <li>Instant SMS lead notifications directly to your phone</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-light" onclick="selectPackage('Premium Package')">Select Package</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--Footer-->
     <footer class="footer_section fade-in-section" id="footer">
         <div class="container">
@@ -472,7 +697,30 @@
     </footer>
     <!--End of Footer-->
 
-    <!--JAVASCRIPTS-->
+    <!-- JAVASCRIPTS (Bootstrap dependencies required for modals) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Modal Package Assignment Interaction Logic -->
+    <script>
+        function selectPackage(packageName) {
+            // Set the value inside our form's hidden field
+            document.getElementById('selectedPackage').value = packageName;
+            
+            // UI visual verification badge injection
+            const badge = document.getElementById('pkgBadge');
+            badge.style.display = "inline-block";
+            badge.innerText = "- " + packageName.toUpperCase();
+
+            // Hide open modals via bootstrap engine
+            $('.modal').modal('hide');
+
+            // Scroll down directly to registration form smooth wrapper
+            document.getElementById('advertiseForm').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
     <script>
       const faders = document.querySelectorAll('.fade-in-section');
 
