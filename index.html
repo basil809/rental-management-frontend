@@ -410,7 +410,7 @@
             <div class="hero-text" style="z-index: 1;">
                 <h1>Find A House That Suits You</h1>
                 <p>Want to find a home? We are ready to help you find one that suits your lifestyle and needs</p><br>
-                <button id="get-started" class="get-started"><a href="property.html" style="text-decoration: none; color: #f8f9fa;">Get Started</a></button>
+                <button id="get-started" class="get-started">Get Started</button>
                 
                 <div class="stats">
                     <div><strong><span  class="counter">1200</span>+</strong><br>Listed Properties</div>
@@ -772,6 +772,14 @@
         //code to redirect the user to the properties page when the user clicks on the cta-btn
         $(document).ready(function() {
             $(".cta-btn").click(function() {
+                window.location.href = "property.html";
+            });
+        });
+    </script>
+    <script>
+        // code for redirecting the user to the properties page when he clicks the  get-started button
+        $(document).ready(function() {
+            $("#get-started").click(function() {
                 window.location.href = "property.html";
             });
         });
