@@ -151,7 +151,7 @@ body {
   animation-delay: 0.2s;
 }
 
-.get-started:hover {
+.get-started a:hover {
   border: 2px solid #00a5fd;
   color: #00b8fb;
   background-color: white;
