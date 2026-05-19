@@ -59,6 +59,87 @@
         .nav-links a:hover {
             text-decoration: underline;
         }
+
+        /*styling the form section*/
+        .form_section {
+            padding: 100px 20px 20px; /* top padding to account for fixed navbar */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /*styling the advertise form*/
+        #advertiseForm {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          gap: 10px;
+          padding: 20px;
+          margin-top: 20px;
+          padding-left: 20px;
+          background-color: #dfe7fe;
+        }
+         /* Label styling */
+       #advertiseForm label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #00a5fd;
+        }
+
+        /* Input and select field styling */
+       #advertiseForm input, 
+       #advertiseForm select {
+            padding: 8px;
+            border: 1px solid #00a5fd;
+            border-radius: 4px;
+            width: 100%; /* Ensures full width for inputs */
+        }
+
+        /* Description styling */
+       #advertiseForm .description {
+            flex: 1 1 100%; /* Makes the description take up the entire row */
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px; /* Add some margin above the description */
+        }
+
+       #advertiseForm .description textarea {
+            width: 100%; /* Ensures the textarea covers the full width */
+            padding: 10px;
+            height: 150px; /* Sets height similar to the one in your image */
+            border: 1px solid #00a5fd;
+            border-radius: 4px;
+            resize: both; /* Allows users to resize the height and width */
+        }
+
+       #advertiseForm .submitBtn{
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            margin-top: 20px;
+        }
+
+       #advertiseForm .submitBtn button{
+                padding: 10px 20px;
+                background-color: #00a5fd;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                cursor: pointer;
+        }
+
+       #advertiseForm .submitBtn button:hover {
+            background-color: #0086cc;
+        }
+
+       #advertiseForm button[type="submit"] {
+            background-color: #00a5fd;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
         /* styling the navigation bar  for smaller screens*/
         /* Hide menu toggle button on larger screens */
         /* Styles for small screens */
@@ -259,7 +340,7 @@
               <a href="#" class="active"><i class="material-icons">real_estate_agent</i>Advertise</a>
               <a href="aboutUs.html"><i class="material-icons">group</i>About Us</a>
             </nav>
-            <button class="cta-btn"><a href="property.html" style="text-decoration: none;">Find A House</a></button>
+            <button class="cta-btn"><a href="property.html" style="text-decoration: none;  color: #f8f9fa;">Find A House</a></button>
         </header>
     </div>
 
