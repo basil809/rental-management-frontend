@@ -471,6 +471,26 @@
         </div>
     </footer>
     <!--End of Footer-->
+
+    <!--JAVASCRIPTS-->
+    <script>
+      const faders = document.querySelectorAll('.fade-in-section');
+
+      const appearOnScroll = new IntersectionObserver(
+        (entries, observer) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        });
+        },
+        {
+        threshold: 0.15, // Adjust as needed
+        }
+      );
+
+       faders.forEach(fader => appearOnScroll.observe(fader));
+    </script>
     <script>
       //code for displaying the hamburger menu for smaller screens
       document.addEventListener('DOMContentLoaded', () => {
