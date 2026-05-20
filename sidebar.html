@@ -2770,7 +2770,11 @@
         }
         
         //Message Section Entry Point 
-        const socket = io();
+        const socket = io('https://rental-management-backend-ynbb.onrender.com', {
+            withCredentials: true,
+            transports: ['websocket','polling']
+        });
+        
         let loggedInUserId = null;
 
         if (sectionId === 'Messages') {
