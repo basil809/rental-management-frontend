@@ -2471,6 +2471,7 @@
 
                 try {
                     const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants', {
+                        credentials:'include',
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -2608,9 +2609,9 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Handle success, e.g., show message or redirect
+                    // Handle success
                     alert('Landlord added successfully!');
-                    // Optionally, reset the form
+                    //  reset the form
                     document.querySelector('#landlordForm').reset();
                 })
                 .catch(error => {
@@ -3983,7 +3984,7 @@
                         formData.append('size', document.getElementById('editSize').value);
                         formData.append('description', document.getElementById('editDescription').value);
 
-                        const res = await fetch(`/api/properties/${id}`, {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/properties/${id}`, {
                             method: 'PUT',
                             credentials: 'include',
                             body: formData
