@@ -2874,7 +2874,7 @@
                 const chatArea = document.getElementById('chatArea');
                 chatArea.innerHTML = `<p style="text-align:center;">Loading conversation...</p>`;
 
-                fetch(`/api/messages/conversation/${participantId}`, { credentials: 'include' })
+                fetch(`https://rental-management-backend-ynbb.onrender.com/api/messages/conversation/${participantId}`, { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     if (!data.success) throw new Error(data.message);
@@ -3226,7 +3226,7 @@
                 async function fetchLogs(page = 1, status = currentStatus) {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>';
                     try {
-                    const res = await fetch(`/api/system/system-logs?page=${page}&limit=${logsPerPage}&status=${status}`);
+                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/system/system-logs?page=${page}&limit=${logsPerPage}&status=${status}`, { credentials: 'include' });
                     const data = await res.json();
 
                     if (data.success && data.logs.length > 0) {
