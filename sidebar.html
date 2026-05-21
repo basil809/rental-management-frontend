@@ -3345,7 +3345,7 @@
             // Fetch tenant data
             async function fetchTenants(page = 1) {
                 try {
-                    const res = await fetch(`/api/payments/tenants?page=${page}`);
+                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/payments/tenants?page=${page}`, { credentials: 'include' });
                     const data = await res.json();
                     if (!data.success) return;
 
@@ -3696,7 +3696,7 @@
                     btn.addEventListener('click', async (e) => {
                         const paymentId = e.target.getAttribute('data-id');
                         if (confirm('Are you sure you want to delete this payment?')) {
-                            const res = await fetch(`/api/payments/${paymentId}`, {
+                            const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/payments/${paymentId}`, {
                                 method: 'DELETE',
                                 credentials: 'include'
                             });
@@ -3755,7 +3755,7 @@
                     };
 
                     try {
-                        const res = await fetch(`/api/payments/${id}`, {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/payments/${id}`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(formData),
@@ -3866,7 +3866,7 @@
                         }
 
                         propertiesToRender.forEach(property => {
-                            const imageUrl = property.images?.[0] ? `/${property.images[0]}` : 'default.jpg';
+                            const imageUrl = property.images?.[0] ? `https://rental-management-backend-ynbb.onrender.com/${property.images[0]}` : 'default.jpg';
 
                             const card = document.createElement('div');
                             card.classList.add('property-card');
@@ -4196,7 +4196,7 @@
                     tenantContainer.addEventListener("click", async function (e) {
                         if (e.target.closest(".edit-btn")) {
                             const tenantId = e.target.closest(".edit-btn").dataset.id;
-                            const response = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`);
+                            const response = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, { credentials: 'include' });
                             const tenant = await response.json();
 
                             document.getElementById('editTenantId').value = tenant._id;
@@ -4211,7 +4211,7 @@
                         if (e.target.closest(".delete-btn")) {
                             const tenantId = e.target.closest(".delete-btn").dataset.id;
                             if (confirm("Are you sure you want to delete this tenant?")) {
-                                await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, { method: 'DELETE' });
+                                await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, { method: 'DELETE', credentials: 'include' });
                                 alert("Tenant deleted.");
                                 showSection(null, 'showTenants');
                             }
@@ -4241,7 +4241,8 @@
                             const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, {
                                 method: "PUT",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(updatedData)
+                                body: JSON.stringify(updatedData),
+                                credentials: 'include'
                             });
 
                             if (!res.ok) throw new Error("Update failed");
@@ -4467,6 +4468,7 @@
 
                         try {
                             const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords/${landlordId}`, {
+                                credentials: 'include',
                                 method: "PUT",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(updatedData)
@@ -5277,8 +5279,8 @@
                 document.getElementById('weekSelector').addEventListener('change', e => {
                 const [week, month, year] = e.target.value.split('-');
                 const url = e.target.value
-                    ? `/api/payments/volume-weekly?week=${week}&month=${month}&year=${year}`
-                    : `/api/payments/volume-weekly`;
+                    ? `https://rental-management-backend-ynbb.onrender.com/api/payments/volume-weekly?week=${week}&month=${month}&year=${year}`
+                    : `https://rental-management-backend-ynbb.onrender.com/api/payments/volume-weekly`;
 
                 fetch(url)
                     .then(res => res.json())
