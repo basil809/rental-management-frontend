@@ -2678,7 +2678,7 @@
             `;
 
             //Fetch tenants
-            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants', {credentials: 'include'})
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -2774,7 +2774,7 @@
             withCredentials: true,
             transports: ['websocket','polling']
         });
-        
+
         let loggedInUserId = null;
 
         if (sectionId === 'Messages') {
@@ -4123,7 +4123,7 @@
             `;
             document.head.appendChild(style);
 
-            fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants`)
+            fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants`, { credentials: 'include' })
                 .then(response => response.json())
                 .then(data => {
                     let tenants = data;
@@ -4643,7 +4643,7 @@
             `;
 
             // Fetch tenants
-            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants')
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants', {credentials: 'include'})
                 .then(response => response.json())
                 .then(data => {
                     const tenantSelect = document.getElementById('tenant');
