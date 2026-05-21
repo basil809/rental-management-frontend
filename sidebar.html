@@ -4355,7 +4355,7 @@
             `;
             document.head.appendChild(style);
 
-            fetch(`/api/landlords`)
+            fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords`, {credentials: 'include'})
                 .then(response => response.json())
                 .then(data => {
                     let landlords = data;
@@ -4424,7 +4424,7 @@
                     landlordContainer.addEventListener("click", async function (e) {
                         if (e.target.closest(".edit-btn")) {
                             const landlordId = e.target.closest(".edit-btn").dataset.id;
-                            const response = await fetch(`/api/landlords/${landlordId}`);
+                            const response = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords/${landlordId}`, {credentials: 'include'});
                             const landlord = await response.json();
 
                             document.getElementById('editLandlordId').value = landlord._id;
@@ -4439,7 +4439,7 @@
                         if (e.target.closest(".delete-btn")) {
                             const landlordId = e.target.closest(".delete-btn").dataset.id;
                             if (confirm("Are you sure you want to delete this landlord?")) {
-                                await fetch(`/api/landlords/${landlordId}`, { method: 'DELETE' });
+                                await fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords/${landlordId}`, { method: 'DELETE', credentials: 'include' });
                                 alert("Landlord deleted.");
                                 showSection(null, 'viewLandlords');
                             }
@@ -4466,7 +4466,7 @@
                         };
 
                         try {
-                            const res = await fetch(`/api/landlords/${landlordId}`, {
+                            const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/landlords/${landlordId}`, {
                                 method: "PUT",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(updatedData)
