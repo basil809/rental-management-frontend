@@ -445,12 +445,12 @@
             font-weight: bold;
         }
         #landlordForm {
-            display: flex;
+            /*display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            gap: 10px;
+            gap: 10px;*/
             padding: 20px;
-            margin-top: 20px;
+           /* margin-top: 20px;
             padding-left: 10px;
             background-color: #dfe7fe; /* Light background for the form */
         }
@@ -2519,7 +2519,7 @@
                     submitBtn.textContent = 'Add Tenant';
                 }
             });
-        }else if (sectionId === 'createLandlord') {
+        } else if (sectionId === 'createLandlord') {
             mainContent.innerHTML = `
                 <div id="landlord">
                     <form id="landlordForm" class="landlordForm" method="POST">
@@ -2615,21 +2615,22 @@
                     },
                     body: JSON.stringify(formData)
                 })
-                .then(response => {
+                .then(async response => {
+                    const responseData = await response.json().catch(() => ({}));
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(responseData.message || 'Network response was not ok');
                     }
-                    return response.json();
+                    return responseData;
                 })
                 .then(data => {
                     // Handle success
-                    alert('Landlord added successfully!');
-                    //  reset the form
+                    const successMessage = data.message || 'Landlord added successfully!';
+                    alert(successMessage);
                     document.querySelector('#landlordForm').reset();
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('There was an error submitting the form.');
+                    alert(error.message || 'There was an error submitting the form.');
                 })
                 .finally(() => {
                     submitBtn.textContent = originalBtnText;
@@ -3936,7 +3937,7 @@
                             btn.addEventListener('click', async e => {
                                 const propertyId = e.target.dataset.id;
                                 if (confirm('Are you sure you want to delete this property?')) {
-                                    const res = await fetch(`/api/properties/${propertyId}`, {
+                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/properties/${propertyId}`, {
                                         method: 'DELETE',
                                         credentials: 'include'
                                     });
