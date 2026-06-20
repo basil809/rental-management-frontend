@@ -482,9 +482,13 @@
                 properties.forEach(property => {
                     const card = document.createElement('div');
                     card.className = 'home-card';
+                    const rawImg = property.images && property.images[0] ? property.images[0] : '';
+                    const imageUrl = rawImg
+                        ? (rawImg.startsWith('http') ? rawImg : `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`)
+                        : 'https://via.placeholder.com/600x400?text=No+Image';
 
                     card.innerHTML = `
-                        <img src="https://rental-management-backend-ynbb.onrender.com/${property.images[0]}" alt="${property.title}">
+                        <img src="${imageUrl}" alt="${property.title}">
                         <div class="card-body">
                             <h3 class="card-title">${property.title} - ${property.location}</h3>
                             <p class="card-text">${property.property_type} | ${property.bedrooms} Bed | ${property.bathrooms} Bathrooms</p>

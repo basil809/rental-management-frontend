@@ -2616,16 +2616,19 @@
                         return;
                     }
 
-                    chatList.innerHTML = messages.map(msg => `
+                    chatList.innerHTML = messages.map(msg => {
+                        const rawImg = msg.participantImage || '';
+                        const imgSrc = rawImg ? (rawImg.startsWith('http') ? rawImg : `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`) : 'images/system Images/user (1).png';
+                        return `
                         <div class="chat-item" data-id="${msg.participantId}" data-name="${msg.participantName}">
-                            <img src="https://rental-management-backend-ynbb.onrender.com/${msg.participantImage || 'images/system Images/user (1).png'}" class="sender-image" />
+                            <img src="${imgSrc}" class="sender-image" />
                             <div class="chat-info">
                                 <h4>${msg.participantName}</h4>
                                 <p>${msg.lastMessage}</p>
                                 <span class="timestamp">${new Date(msg.lastTimestamp).toLocaleTimeString()}</span>
                             </div>
                         </div>
-                    `).join('');
+                    `}).join('');
 
                     // Click event to open conversation
                     document.querySelectorAll('.chat-item').forEach(item => {

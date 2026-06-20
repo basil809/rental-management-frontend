@@ -3882,7 +3882,10 @@
                         }
 
                         propertiesToRender.forEach(property => {
-                            const imageUrl = property.images?.[0] ? `https://rental-management-backend-ynbb.onrender.com/${property.images[0]}` : 'default.jpg';
+                            const rawImg = property.images?.[0] || '';
+                            const imageUrl = rawImg
+                                ? (rawImg.startsWith('http') ? rawImg : `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`)
+                                : 'default.jpg';
 
                             const card = document.createElement('div');
                             card.classList.add('property-card');
@@ -4227,7 +4230,13 @@
                         if (e.target.closest(".delete-btn")) {
                             const tenantId = e.target.closest(".delete-btn").dataset.id;
                             if (confirm("Are you sure you want to delete this tenant?")) {
-                                await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, { method: 'DELETE', credentials: 'include' });
+                                await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, 
+                                
+                                { 
+                                    method: 'DELETE', 
+                                    credentials: 'include' 
+                                });
+
                                 alert("Tenant deleted.");
                                 showSection(null, 'showTenants');
                             }

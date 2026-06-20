@@ -1045,7 +1045,7 @@
             };
 
             //simulate sending the form data 
-            fetch('https://rental-management-backend-ynbb.onrender.com//api/Quiz/genQuiz', {
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/Quiz/genQuiz', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -1133,8 +1133,12 @@
                 properties.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'home-card';
+                const rawImg = p.images && p.images[0] ? p.images[0] : '';
+                const imageUrl = rawImg
+                    ? (rawImg.startsWith('http') ? rawImg : `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`)
+                    : 'https://via.placeholder.com/600x400?text=No+Image';
                 card.innerHTML = `
-                    <img src="https://rental-management-backend-ynbb.onrender.com/${p.images[0]}" alt="${p.title}">
+                    <img src="${imageUrl}" alt="${p.title}">
                     <div class="card-body">
                         <h3 class="card-title">${p.title} - ${p.location}</h3>
                         <p class="card-text">${p.property_type} | ${p.bedrooms} Bed | ${p.bathrooms} Bathrooms</p>
