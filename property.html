@@ -484,7 +484,7 @@
                     card.className = 'home-card';
 
                     // 🔄 FILTER OUT NULLS: Look for the first element that is a valid string
-                    const validImages = p.images ? p.images.filter(img => img !== null && img !== '') : [];
+                    const validImages = property.images ? property.images.filter(img => img !== null && img !== '') : [];
                     const rawImg = validImages.length > 0 ? validImages[0] : '';
                     
                     let imageUrl = 'https://placehold.co/600x400?text=No+Image';
@@ -495,7 +495,7 @@
                             imageUrl = `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`;
                         }
                     }
-                    
+
                     card.innerHTML = `
                         <img src="${imageUrl}" alt="${property.title}">
                         <div class="card-body">
