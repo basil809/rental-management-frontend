@@ -1134,20 +1134,20 @@
                     console.log("Property Title:", p.title, "Images Data:", p.images);
                     const card = document.createElement('div');
                     card.className = 'home-card';
-                    const rawImg = p.images && p.images[0] ? p.images[0] : '';
+
+                    // 🔄 FILTER OUT NULLS: Look for the first element that is a valid string
+                    const validImages = p.images ? p.images.filter(img => img !== null && img !== '') : [];
+                    const rawImg = validImages.length > 0 ? validImages[0] : '';
                     
-                    // 🔄 Updated Image URL builder to prioritize Cloudinary/Absolute URLs
-                    let imageUrl = 'https://via.placeholder.com/600x400?text=No+Image';
+                    let imageUrl = 'https://placehold.co/600x400?text=No+Image';
                     if (rawImg) {
                         if (rawImg.startsWith('http://') || rawImg.startsWith('https://')) {
-                            // If it's a full Cloudinary URL or an external link, use it directly
                             imageUrl = rawImg;
                         } else {
-                            // Fallback for older legacy local records still pointing to the backend uploads folder
                             imageUrl = `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`;
                         }
                     }
-
+                    
                     card.innerHTML = `
                         <img src="${imageUrl}" alt="${p.title}">
                         <div class="card-body">
