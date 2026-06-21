@@ -893,8 +893,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Landlord profile:', data);
-
+                
                 if (!data.success) {
                     console.error('Failed to fetch landlord profile:', data.message);
                     return;
@@ -3675,7 +3674,7 @@
             fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/dashboard', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
-                    console.log('Dashboard response:', data);
+                    
                     console.log('Found element:', document.getElementById('unit_count_input'));
 
                 if (!data.success) throw new Error('Failed to load dashboard');
