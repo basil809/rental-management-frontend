@@ -355,28 +355,28 @@
             color: #333;
         }
 
-            .content_section .center-section p {
+        .content_section .center-section p {
             margin: 4px 0;
-            }
+        }
 
-            .content_section .right-section {
+        .content_section .right-section {
             flex: 1;
             border-left: 1px solid #ccc;
             padding-left: 20px;
-            }
+        }
 
-            .content_section .contact-table {
+        .content_section .contact-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
-            }
+        }
 
-            .contact-table td {
+        .contact-table td {
             padding: 6px;
             border: 1px solid #ccc;
-            }
+        }
 
-            .contact-buttons button {
+        .contact-buttons button {
             display: block;
             width: 100%;
             margin: 5px 0;
@@ -386,7 +386,7 @@
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px;
-            }
+        }
 
             .phone-btn {
             background-color: #28a745;
@@ -805,8 +805,22 @@
                     /* ==========================
                     PROPERTY IMAGES (RENDER)
                     =========================== */
-                    const images = property.images || [];
-                    imageList = images.map(img => `${BACKEND_URL}/${img}`);
+                    // 🔄 Updated: Filter out nulls/empty entries first
+                    const rawImages = property.images ? property.images.filter(img => img !== null && img !== '') : [];
+                    
+                    // 🔄 Updated: Construct proper Cloudinary absolute vs Backend legacy local paths
+                    imageList = rawImages.map(img => {
+                        if (img.startsWith('http://') || img.startsWith('https://')) {
+                            return img; // Return the Cloudinary absolute image URL directly
+                        }
+                        // Fallback handling if accessing a legacy local property path asset
+                        return `${BACKEND_URL}/${img.replace(/^\/+/, '')}`;
+                    });
+
+                    // If absolutely no images exist, supply a beautiful fallback image placeholder array
+                    if (imageList.length === 0) {
+                        imageList = ['https://placehold.co/600x400?text=No+Image'];
+                    }
 
                     if (imageList.length > 0) {
                         const mainImg = document.getElementById('mainImage');
