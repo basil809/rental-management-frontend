@@ -2287,9 +2287,33 @@
                         addPropertyBtn.textContent = 'Submitting...';
                     }
 
-                    const formData = new FormData(form);
+                    // 1. Initialize an empty FormData object instead of passing 'form' directly
+                    const formData = new FormData();
 
-                     // Generate unit names if Apartment
+                    // 2. Explicitly grab the file input element and append each selected file
+                    const fileInput = document.getElementById('images');
+                    if (fileInput && fileInput.files.length > 0) {
+                        for (let i = 0; i < fileInput.files.length; i++) {
+                            // This ensures Multer receives 'images' as a distinct stream array
+                            formData.append('images', fileInput.files[i]);
+                        }
+                    }
+
+                    // 3. Manually append all the other input values from the form
+                    formData.append('title', document.getElementById('title').value);
+                    formData.append('property_type', document.getElementById('property_type').value);
+                    formData.append('price', document.getElementById('price').value);
+                    formData.append('location', document.getElementById('location').value);
+                    formData.append('size', document.getElementById('size').value);
+                    formData.append('units', document.getElementById('units').value || 0);
+                    formData.append('bedrooms', document.getElementById('bedrooms').value || 0);
+                    formData.append('bathrooms', document.getElementById('bathrooms').value || 0);
+                    formData.append('landlord', document.getElementById('landlord').value);
+                    formData.append('email', document.getElementById('email').value);
+                    formData.append('phone', document.getElementById('phone').value);
+                    formData.append('description', document.getElementById('description').value);
+
+                    // Generate unit names if Apartment (Keep your existing apartment block intact)
                     const propertyType = document.getElementById('property_type').value;
                     if (propertyType === 'Apartment') {
                         const totalUnits = parseInt(document.getElementById('units').value);
