@@ -4263,12 +4263,12 @@
                                     }
                                 );
                                 
-                                const data = await response.json();
+                                const data = await res.json();
 
-                                console.log("Status:", response.status);
+                                console.log("Status:", res.status);
                                 console.log("Response:", data);
 
-                                if (!response.ok) {
+                                if (!res.ok) {
                                     throw new Error(data.message || "Delete failed");
                                 }
 
