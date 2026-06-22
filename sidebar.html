@@ -4255,38 +4255,29 @@
                             const tenantId = e.target.closest(".delete-btn").dataset.id;
                             
                             if (confirm("Are you sure you want to delete this tenant?")) {
-                                try {
-                                    // 1. Grab the token from storage (Adjust 'token' if your key is named differently, e.g., 'jwt')
-                                    const token = localStorage.getItem('token'); 
-
-                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, {
+                                try{
+                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, 
+                                    {
                                         method: "DELETE",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                            "Authorization": `Bearer ${token}` // 👈 2. Pass the token here
-                                        },
-                                        credentials: 'include' // Keep this if your backend uses session cookies alongside tokens
-                                    });
-                                    
-                                    const data = await res.json();
-
-                                    console.log("Status:", res.status);
-                                    console.log("Response:", data);
-
-                                    if (!res.ok) {
-                                        throw new Error(data.message || "Delete failed");
+                                        credentials: 'include'
                                     }
+                                );
+                                
+                                const data = await res.json();
 
-                                    alert("Tenant deleted successfully");
-                                    
-                                    // Optional: Reload or remove the element from the DOM here
-                                    // e.target.closest("tr").remove(); 
+                                console.log("Status:", res.status);
+                                console.log("Response:", data);
 
-                                } catch (error) {
-                                    console.error("Error deleting tenant:", error);
-                                    alert(error.message);
-                                }                            
-                            }
+                                if (!res.ok) {
+                                    throw new Error(data.message || "Delete failed");
+                                }
+
+                                alert("Tenant deleted successfully");
+
+                            } catch (error) {
+                                console.error("Error deleting tenant:", error);
+                                alert(error.message);
+                            }                            }
                         }
                     });
 
