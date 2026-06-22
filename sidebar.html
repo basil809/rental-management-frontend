@@ -4255,29 +4255,35 @@
                             const tenantId = e.target.closest(".delete-btn").dataset.id;
                             
                             if (confirm("Are you sure you want to delete this tenant?")) {
-                                try{
-                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, 
-                                    {
+                                try {
+                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, {
                                         method: "DELETE",
-                                        credentials: 'include'
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Content-Type": "application/json"
+                                        },
+                                        credentials: 'include' // Required to pass the HttpOnly cookie
+                                    });
+                                    
+                                    const data = await res.json();
+
+                                    console.log("Status:", res.status);
+                                    console.log("Response:", data);
+
+                                    if (!res.ok) {
+                                        throw new Error(data.message || "Delete failed");
                                     }
-                                );
-                                
-                                const data = await res.json();
 
-                                console.log("Status:", res.status);
-                                console.log("Response:", data);
+                                    alert("Tenant deleted successfully");
+                                    
+                                    // Refresh the tenant list or remove card from DOM
+                                    location.reload(); 
 
-                                if (!res.ok) {
-                                    throw new Error(data.message || "Delete failed");
-                                }
-
-                                alert("Tenant deleted successfully");
-
-                            } catch (error) {
-                                console.error("Error deleting tenant:", error);
-                                alert(error.message);
-                            }                            }
+                                } catch (error) {
+                                    console.error("Error deleting tenant:", error);
+                                    alert(error.message);
+                                }                            
+                            }
                         }
                     });
 
