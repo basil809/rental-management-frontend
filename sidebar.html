@@ -4256,13 +4256,14 @@
                             
                             if (confirm("Are you sure you want to delete this tenant?")) {
                                 try {
-                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/tenants/${tenantId}`, {
+                                    // Changed the URL route path to point to /api/admin/tenants/
+                                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/admin/tenants/${tenantId}`, {
                                         method: "DELETE",
                                         headers: {
                                             "Accept": "application/json",
                                             "Content-Type": "application/json"
                                         },
-                                        credentials: 'include' // Required to pass the HttpOnly cookie
+                                        credentials: 'include' 
                                     });
                                     
                                     const data = await res.json();
@@ -4275,9 +4276,7 @@
                                     }
 
                                     alert("Tenant deleted successfully");
-                                    
-                                    // Refresh the tenant list or remove card from DOM
-                                    location.reload(); 
+                                    location.reload(); // Refresh to update display grid
 
                                 } catch (error) {
                                     console.error("Error deleting tenant:", error);
