@@ -2428,7 +2428,8 @@
                 </div>
             `;
 
-            // Fetch and populate property dropdown
+           const propertyMap = {};
+
             fetch('https://rental-management-backend-ynbb.onrender.com/api/properties')
                 .then(res => res.json())
                 .then(properties => {
@@ -2436,11 +2437,7 @@
                     const rentInput = document.getElementById('rent');
                     const roomNumberSelect = document.getElementById('roomNumber');
 
-                    // Map to store property details by ID instead of title
-                    const propertyMap = {};
-
                     properties.forEach(prop => {
-                        // ✅ CHANGE: Key by prop._id instead of title string
                         propertyMap[prop._id] = {
                             title: prop.title,
                             price: prop.price,
@@ -2448,23 +2445,20 @@
                         };
 
                         const option = document.createElement('option');
-                        // ✅ CHANGE: option value is now the unique Database Object ID
-                        option.value = prop._id; 
+                        option.value = prop._id;
                         option.textContent = prop.title;
                         propertySelect.appendChild(option);
                     });
 
                     propertySelect.addEventListener('change', (e) => {
                         const selectedId = e.target.value;
-                        // Looks up properties via Object ID lookup key
-                        const propertyData = propertyMap[selectedId] || null;
+                        const propertyData = propertyMap[selectedId];
 
-                        // Set default base rent pricing automatically
                         rentInput.value = propertyData?.price || '';
 
-                        // Clear and dynamically fill active room spaces
                         roomNumberSelect.innerHTML = '<option value="">--Select Room/House Number--</option>';
-                        if(propertyData?.unitNames && propertyData.unitNames.length > 0) {
+
+                        if (propertyData?.unitNames?.length > 0) {
                             propertyData.unitNames.forEach(unit => {
                                 const option = document.createElement('option');
                                 option.value = unit;
