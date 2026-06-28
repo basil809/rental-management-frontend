@@ -2574,8 +2574,7 @@
                                 <label for="propValues">Property:</label><br>
                                 <select id="propValues" name="propValues" required>
                                     <option value="">Select property</option>
-                                    <!-- Options will be populated dynamically -->
-                                </select><br><br>
+                                    </select><br><br>
                             </div>
                         </div>
                         <div class="submitBtn">
@@ -2587,25 +2586,26 @@
             
             // Fetch and populate properties from backend
             const populateProperties = () => {
-            fetch('https://rental-management-backend-ynbb.onrender.com/api/properties')  // Replace with your actual endpoint
-                .then(response => response.json())
-                .then(data => {
-                const propertiesSelect = document.getElementById('propValues');
-                
-                // Clear existing options except the default one
-                propertiesSelect.innerHTML = '<option value="">Select property</option>';
-                
-                // Loop through the data and create options
-                data.forEach(property => {
-                    const option = document.createElement('option');
-                    option.value = property.title; // Adjust based on your data structure
-                    option.textContent = property.title; // Adjust based on your data structure
-                    propertiesSelect.appendChild(option);
-                });
-                })
-                .catch(error => {
-                console.error('Error fetching properties:', error);
-                });
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/properties')
+                    .then(response => response.json())
+                    .then(data => {
+                        const propertiesSelect = document.getElementById('propValues');
+                        
+                        // Clear existing options except the default one
+                        propertiesSelect.innerHTML = '<option value="">Select property</option>';
+                        
+                        // Loop through the data and create options
+                        data.forEach(property => {
+                            const option = document.createElement('option');
+                            // ✅ CHANGE: Use the unique _id for the data payload, but show the title
+                            option.value = property._id; 
+                            option.textContent = property.title; 
+                            propertiesSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching properties:', error);
+                    });
             };
 
             // Call the function to populate properties
@@ -2619,7 +2619,6 @@
                 submitBtn.textContent = 'Submitting...';
                 submitBtn.disabled = true;
 
-
                 // Collect form data
                 const formData = {
                     name: document.querySelector('#name').value,
@@ -2627,7 +2626,8 @@
                     phone: document.querySelector('#phone').value,
                     idNumber: document.querySelector('#idNumber').value,
                     address: document.querySelector('#address').value,
-                    property: document.querySelector('#propValues').value // assuming it holds property ID
+                    // ✅ CHANGE: Maps perfectly to req.body.propertyId on your updated backend
+                    propertyId: document.querySelector('#propValues').value 
                 };
 
                 // Send data to backend
@@ -2661,7 +2661,6 @@
                     submitBtn.disabled = false;
                 });
             });
-
         } else if (sectionId === 'addPayment') {
             mainContent.innerHTML = `
                 <div id="paymentForm">
