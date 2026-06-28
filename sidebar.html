@@ -2619,6 +2619,10 @@
                 submitBtn.textContent = 'Submitting...';
                 submitBtn.disabled = true;
 
+                const propertySelect = document.querySelector('#propValues');
+                const selectedPropertyTitle =
+                    propertySelect.options[propertySelect.selectedIndex].textContent;
+
                 // Collect form data
                 const formData = {
                     name: document.querySelector('#name').value,
@@ -2627,7 +2631,8 @@
                     idNumber: document.querySelector('#idNumber').value,
                     address: document.querySelector('#address').value,
                     // ✅ CHANGE: Maps perfectly to req.body.propertyId on your updated backend
-                    propertyId: document.querySelector('#propValues').value 
+                    propertyId: propertySelect.value,
+                    property: selectedPropertyTitle // Optional: Keep the title for display purposes
                 };
 
                 // Send data to backend
