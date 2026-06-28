@@ -2589,7 +2589,6 @@
                 fetch('https://rental-management-backend-ynbb.onrender.com/api/properties')
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Fetched properties:', data);
                         const propertiesSelect = document.getElementById('propValues');
                         
                         // Clear existing options except the default one
