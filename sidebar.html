@@ -2385,14 +2385,13 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="phone">Phone Number:</label><br>
-                                <input type="tel" id="phone" name="phone" pattern="07\\d{8}" title="Enter a valid phone number starting with 07" required><br><br>
+                                <input type="tel" id="phone" name="phone" pattern="07\\\\d{8}" title="Enter a valid phone number starting with 07" required><br><br>
                             </div>
                             <div class="col-md-4">
                                 <label for="property">Property:</label><br>
                                 <select id="property" name="property" required>
                                     <option value="">Select property</option>
-                                    <!-- Options will be populated dynamically -->
-                                </select><br><br>
+                                    </select><br><br>
                             </div>
                             <div class="col-md-4">
                                 <label for="lease_start">Lease Start Date:</label><br>
@@ -2400,7 +2399,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="idNumber">National ID Number:</label>
-                                <input type="text" id="idNumber" name="idNumber" pattern="\\d{8,}" title="Enter a valid ID Number (at least 8 digits)" required>
+                                <input type="text" id="idNumber" name="idNumber" pattern="\\\\d{8,}" title="Enter a valid ID Number (at least 8 digits)" required>
                             </div>
                             <div class="col-md-4">      
                                 <label for="gender">Gender:</label><br>
@@ -2419,8 +2418,7 @@
                                 <label for="roomNumber">Room/House Number:</label>
                                 <select  id="roomNumber" name="roomNumber" required>
                                     <option value="">--Select Room/House Number--</option>
-                                    <!-- Options will be populated dynamically -->
-                                </select>
+                                    </select>
                             </div>
                         </div>
                         <div class="submitBtn" style="text-align:center; margin-top: 20px;">
@@ -2438,30 +2436,33 @@
                     const rentInput = document.getElementById('rent');
                     const roomNumberSelect = document.getElementById('roomNumber');
 
-                    //Map to store property details by ID.
+                    // Map to store property details by ID instead of title
                     const propertyMap = {};
 
                     properties.forEach(prop => {
-                        //store price and unitNamed by title or _id
-                        propertyMap[prop.title] = {
+                        // ✅ CHANGE: Key by prop._id instead of title string
+                        propertyMap[prop._id] = {
+                            title: prop.title,
                             price: prop.price,
                             unitNames: prop.unitNames || []
                         };
 
                         const option = document.createElement('option');
-                        option.value = prop.title; // 👈 Use the MongoDB ObjectId here
+                        // ✅ CHANGE: option value is now the unique Database Object ID
+                        option.value = prop._id; 
                         option.textContent = prop.title;
                         propertySelect.appendChild(option);
                     });
 
                     propertySelect.addEventListener('change', (e) => {
                         const selectedId = e.target.value;
-                        const propertyData = propertyMap[selectedId] || '';
+                        // Looks up properties via Object ID lookup key
+                        const propertyData = propertyMap[selectedId] || null;
 
-                        //set rent 
+                        // Set default base rent pricing automatically
                         rentInput.value = propertyData?.price || '';
 
-                        //clear and populate room numbers
+                        // Clear and dynamically fill active room spaces
                         roomNumberSelect.innerHTML = '<option value="">--Select Room/House Number--</option>';
                         if(propertyData?.unitNames && propertyData.unitNames.length > 0) {
                             propertyData.unitNames.forEach(unit => {
@@ -2485,15 +2486,14 @@
             tenantForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
-                // Clear previous message
+                // Clear previous messages
                 formMessage.textContent = '';
                 formMessage.style.color = '';
 
-                // Disable button and show loading
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Submitting...';
 
-                // Build JSON payload form inputs
+                // Build structured relational payload
                 const data = {
                     name: document.getElementById('name').value,
                     email: document.getElementById('email').value,
@@ -2503,12 +2503,13 @@
                     roomNumber: document.getElementById('roomNumber').value,
                     rent: parseFloat(document.getElementById('rent').value),
                     lease_start: document.getElementById('lease_start').value,
-                    property: document.getElementById('property').value  // should be property._id
+                    // ✅ CHANGE: This extracts the selected Property's unique _id value
+                    property: document.getElementById('property').value  
                 };
 
                 try {
                     const response = await fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants', {
-                        credentials:'include',
+                        credentials: 'include',
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -2530,8 +2531,8 @@
                     formMessage.className = 'glass-toast';
 
                     setTimeout(() => {
-                    formMessage.textContent = '';
-                    formMessage.className = '';
+                        formMessage.textContent = '';
+                        formMessage.className = '';
                     }, 4000);
 
                 } catch (error) {
