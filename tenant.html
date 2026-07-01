@@ -729,7 +729,7 @@
             const container = document.getElementById('notification-container'); // one container for both
 
             // Fetch maintenance notifications
-            fetch('/api/maintenance/notifications', { credentials: 'include' })
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/maintenance/notifications', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success && Array.isArray(data.data)) {
@@ -741,7 +741,7 @@
                                 message: item.status === 'Resolved' 
                                     ? `✅ Your maintenance request has been completed.` 
                                     : `❌ Your maintenance request was rejected <br>Reason: "${item.rejectionReason || 'No reason provided'}"`,
-                                closeUrl: `/api/maintenance/notifications/${item._id}`
+                                closeUrl: `https://rental-management-backend-ynbb.onrender.com/api/maintenance/notifications/${item._id}`
                             });
                         });
                     }
@@ -763,7 +763,7 @@
                                 message: item.status === 'Approved' 
                                     ? `✅ Your Payment of Ksh. ${amount}<br>Paid on ${datePaid} has been approved!.` 
                                     : `❌ Your Payment of Ksh. ${amount}<br>Paid on ${datePaid} was rejected <br>Reason: "${item.rejectionReason || 'No reason provided'}"`,
-                                closeUrl: `/api/review-Payments/notification/${item._id}`
+                                closeUrl: `https://rental-management-backend-ynbb.onrender.com/api/review-Payments/notification/${item._id}`
                             });
                         });
                     }
@@ -1315,13 +1315,13 @@
             } else if (sectionId === 'my_property') {
                 mainContent.innerHTML = `<p>Loading property info...</p>`;
 
-                fetch('/api/tenants/profile', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', { credentials: 'include' })
                     .then(res => res.json())
                     .then(async tenantData => {
                         if (!tenantData.success) throw new Error('Failed to fetch tenant profile');
                         const tenant = tenantData.tenant;
 
-                        const propertyRes = await fetch(`/api/properties/by-title/${encodeURIComponent(tenant.property)}`, { credentials: 'include' });
+                        const propertyRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/properties/by-title/${encodeURIComponent(tenant.property)}`, { credentials: 'include' });
                         const propertyData = await propertyRes.json();
                         if (!propertyData.success) throw new Error('Property not found');
                         const property = propertyData.property;
@@ -1492,7 +1492,7 @@
                 loadMessagesSection();
 
                 // Get tenant profile and join socket room
-                fetch('/api/tenants/profile', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', { credentials: 'include' })
                     .then(res => res.json())
                     .then(data => {
                         if (data.success && data.tenant?._id) {
@@ -1540,7 +1540,7 @@
                     return;
                 }
 
-                fetch('/api/messages/tenant', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/tenant', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     //console.log(data);
@@ -1583,7 +1583,7 @@
                 const chatArea = document.getElementById('chatArea');
                 chatArea.innerHTML = `<p style="text-align:center;">Loading conversation...</p>`;
 
-                fetch(`/api/messages/conversation/${participantId}`, { credentials: 'include' })
+                fetch(`https://rental-management-backend-ynbb.onrender.com/api/messages/conversation/${participantId}`, { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     if (!data.success) throw new Error(data.message);
@@ -1628,7 +1628,7 @@
                         e.preventDefault();
                         const message = document.getElementById('messageText').value;
 
-                        fetch('/api/messages/reply', {
+                        fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/reply', {
                             method: 'POST',
                             credentials: 'include',
                             headers: { 'Content-Type': 'application/json' },
@@ -1706,7 +1706,7 @@
                     const recipient = document.getElementById('recipient').value;
                     const message = document.getElementById('message').value;
 
-                    fetch('/api/messages/send', {
+                    fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/send', {
                         method: 'POST',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
@@ -1790,7 +1790,7 @@
                             </div>
                         </div>
                     `;
-                    fetch('/api/tenants/profile', { method: 'GET', credentials: 'include' })
+                    fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', { method: 'GET', credentials: 'include' })
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
@@ -1818,7 +1818,7 @@
                             }
 
                             try {
-                                const res = await fetch('/api/maintenance/tenant', {
+                                const res = await fetch('https://rental-management-backend-ynbb.onrender.com/api/maintenance/tenant', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     credentials: 'include',
@@ -1892,7 +1892,7 @@
                 let currentPage = 1;
 
                 //Fetch Invoices
-                fetch('/api/tenants/invoices', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/invoices', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     console.log("💬 Fetched payments response:", data); // <-- Add this
@@ -2105,7 +2105,7 @@
                 `;
 
                 //code for feeding the modal with tenant data
-                fetch('/api/tenants/profile', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     if(data.success){
@@ -2131,7 +2131,7 @@
                 //show modal when clicking 'edit'
                 document.querySelector('.edit-btn').addEventListener('click', () => {
                     // fetch the tenant data first (if not already fetched)
-                    fetch('/api/tenants/profile', { credentials: 'include'})
+                    fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', { credentials: 'include'})
                      .then(res => res.json())
                      .then(data => {
                         console.log(data);
@@ -2186,7 +2186,7 @@
                     }
 
                     //send the updated data to the backend
-                    fetch('/api/tenants/profile/update', {
+                    fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile/update', {
                         method: 'POST',
                         credentials: 'include',
                         headers: {
@@ -2245,7 +2245,7 @@
                 const itemsPerPage = 6;
 
                 // Fetch payments
-                fetch('/api/tenants/payments', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/payments', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     console.log("💬 Fetched payments response:", data); // <-- Add this
@@ -2492,7 +2492,7 @@
                 }
 
                 // ✅ Fetch tenant details
-                fetch('/api/tenants/profile', {
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', {
                     method: 'GET',
                     credentials: 'include'
                 })
@@ -2508,7 +2508,7 @@
                         document.getElementById('phoneNumber').value = tenant.phone;
 
                         // Fetch invoices
-                        fetch('/api/invoices/tenant', {
+                        fetch('https://rental-management-backend-ynbb.onrender.com/api/invoices/tenant', {
                             method: 'GET',
                             credentials: 'include'
                         })
@@ -2587,7 +2587,7 @@
                                 });
 
                                 // Step 3: Initiate STK Push and get CheckoutRequestID
-                                const paymentResponse = await fetch('/api/mpesa/pay', {
+                                const paymentResponse = await fetch('https://rental-management-backend-ynbb.onrender.com/api/mpesa/pay', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
@@ -2614,7 +2614,7 @@
                                 // Step 4: Polling function to check payment status
                                 const pollPaymentStatus = async () => {
                                     try {
-                                        const response = await fetch(`/api/mpesa/status?CheckoutRequestID=${CheckoutRequestID}`);
+                                        const response = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/mpesa/status?CheckoutRequestID=${CheckoutRequestID}`);
                                         const result = await response.json();
 
                                         if (result.status === 'success') {
@@ -2669,7 +2669,7 @@
                     // ✅ BANK / CASH FLOW
                     if (paymentMethod === 'Bank Transfer' || paymentMethod === 'Cash') {
                         try {
-                            const res = await fetch('/api/review-payments/reviewPayments', {
+                            const res = await fetch('https://rental-management-backend-ynbb.onrender.com/api/review-payments/reviewPayments', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 credentials: 'include',
@@ -2781,7 +2781,7 @@
                 let tenantObjectId = null; // 🔑 Store actual MongoDB ObjectId
 
                 // ✅ Fetch tenant profile and prefill
-                fetch('/api/tenants/profile', {
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', {
                     method: 'GET',
                     credentials: 'include'
                 })
@@ -2854,7 +2854,7 @@
                         // 🔵 Toast: waiting for the callback response
 
                         // 1️⃣ Initiate STK Push
-                        const mpesaRes = await fetch('/api/mpesa/pay', {
+                        const mpesaRes = await fetch('https://rental-management-backend-ynbb.onrender.com/api/mpesa/pay', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -2913,7 +2913,7 @@
                 async function checkPaymentStatus(CheckoutRequestID) {
                     const interval = setInterval(async () => {
 
-                        const res = await fetch(`/api/mpesa/status?CheckoutRequestID=${CheckoutRequestID}`);
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/mpesa/status?CheckoutRequestID=${CheckoutRequestID}`);
                         const data = await res.json();
 
                         if (data.status === 'pending') return; // still waiting
@@ -2947,7 +2947,7 @@
 
             } else if( sectionId === 'logout') {
                 // Handle logout
-                fetch('/api/tenants/logout', {
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/logout', {
                     method: 'POST',
                     credentials: 'include'
                 })
@@ -2975,7 +2975,7 @@
     <script>
         // code for loading the tenant data
         document.addEventListener("DOMContentLoaded", () => {
-            fetch('/api/tenants/profile', { credentials: 'include' }) // Include cookies if using them
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/profile', { credentials: 'include' }) // Include cookies if using them
                 .then(res => res.json())
                 .then(data => {
                 if (data.success) {
@@ -3048,7 +3048,7 @@
 
     <script>
         // Function to update the balance card
-        fetch('/api/tenants/balance', { credentials: 'include' })
+        fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/balance', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -3076,7 +3076,7 @@
     </script>
     <script>
         // Fetch tenant balance info and update only the Amount Paid card
-        fetch('/api/tenants/balance', { credentials: 'include' })
+        fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/balance', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 console.log('Balance data:', data);
@@ -3099,7 +3099,7 @@
     </script>
     <script>
         // Fetch and display total billed amount (lifetime payments)
-        fetch('/api/tenants/billed/total', { credentials: 'include' })
+        fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/billed/total', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -3118,7 +3118,7 @@
     </script>
     <script>
         //code that feeds the invoice card
-        fetch('/api/tenants/invoices/count', { credentials: 'include' })
+        fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/invoices/count', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -3134,7 +3134,7 @@
     </script>
     <script>
         // code for updating the request card in the tenant dashboard
-        fetch('/api/maintenance/requests/count', { credentials: 'include' })
+        fetch('https://rental-management-backend-ynbb.onrender.com/api/maintenance/requests/count', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
@@ -3152,7 +3152,7 @@
     <script>
         //code for updating the table with the latest transactions
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/tenants/latest', { credentials: 'include' })
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/tenants/latest', { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
@@ -3193,7 +3193,7 @@
 
         // Open modal and populate form
         editBtn?.addEventListener("click", () => {
-            fetch("/api/tenants/profile", { credentials: "include" })
+            fetch("https://rental-management-backend-ynbb.onrender.com/api/tenants/profile", { credentials: "include" })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
@@ -3222,7 +3222,7 @@
                 e.preventDefault();
                 const formData = new FormData(this);
 
-                fetch("/api/tenants/profile/update", {
+                fetch("https://rental-management-backend-ynbb.onrender.com/api/tenants/profile/update", {
                     method: "POST",
                     body: formData,
                     credentials: "include"
