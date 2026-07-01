@@ -1083,7 +1083,7 @@
                                             <span id='rental_units'>0</span>
                                         </div>
                                         <div class="card-unit">(Units)</div>
-                                        <div class="card-label">Rentable Units</div>
+                                        <div class="card-label">Available Units</div>
                                     </div>
                                 </div>
                             </div>
@@ -2602,7 +2602,8 @@
 
             // 2. Load Inbox Sidebar
             function loadInbox() {
-                fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/landlord', { credentials: 'include' })
+                fetch('https://rental-management-backend-ynbb.onrender.com/api/messages/landlord', 
+                { credentials: 'include' })
                 .then(res => res.json())
                 .then(data => {
                     if (!data.success) throw new Error(data.message);
@@ -2616,11 +2617,11 @@
                     }
 
                     chatList.innerHTML = messages.map(msg => {
-                        const rawImg = msg.participantImage || '';
-                        const imgSrc = rawImg ? (rawImg.startsWith('http') ? rawImg : `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`) : 'images/system Images/user (1).png';
+                        //const rawImg = msg.participantImage || '';
+                        //const imgSrc = rawImg ? (rawImg.startsWith('http') ? rawImg : `https://rental-management-backend-ynbb.onrender.com/${rawImg.replace(/^\/+/, '')}`) : 'images/system Images/user (1).png';
                         return `
                         <div class="chat-item" data-id="${msg.participantId}" data-name="${msg.participantName}">
-                            <img src="${imgSrc}" class="sender-image" />
+                            <img src="${msg.participantImage || 'images/system Images/user (1).png'}" class="sender-image" />
                             <div class="chat-info">
                                 <!-- Display participant name and last message -->
                                 <!-- If the participant name is not available use his email else display "User"-->
@@ -3782,8 +3783,8 @@
         //count for updating the rental units on dashboard
         document.addEventListener('DOMContentLoaded', () => {
             fetch('https://rental-management-backend-ynbb.onrender.com/api/landlords/rentable-units', {
-            method: 'GET',
-            credentials: 'include'
+                method: 'GET',
+                credentials: 'include'
             })
             .then(res => res.json())
             .then(data => {
