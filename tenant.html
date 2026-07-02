@@ -1098,6 +1098,14 @@
         observeCounts();
     </script>
     <script>
+        const socket = typeof io === 'function'
+            ? io('https://rental-management-backend-ynbb.onrender.com', { withCredentials: true })
+            : null;
+
+        if (!socket) {
+            console.error('Socket.IO client is not loaded. Realtime messaging will be unavailable.');
+        }
+
         // display of content when the user clicks on the various links in the sidebar
         // when the user clicks dashbaord in the sidebar
         function showSection(event, sectionId){
@@ -1498,7 +1506,7 @@
                     .then(data => {
                         if (data.success && data.tenant?._id) {
                             loggedInUserId = data.tenant._id;
-                            socket.emit('join', loggedInUserId);
+                            socket?.emit('join', loggedInUserId);
                         }
                     });
             }
@@ -1654,19 +1662,21 @@
                     });
 
                     // ✅ Real-time listener for incoming messages
-                    socket.off('newMessage');
-                    socket.on('newMessage', (msg) => {
-                        if (msg.senderId === participantId) {
-                            const newMessage = document.createElement('div');
-                            newMessage.className = 'chat-message received';
-                            newMessage.innerHTML = `
-                                <p class="message-text">${msg.content}</p>
-                                <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</span>
-                            `;
-                            chatBox.appendChild(newMessage);
-                            chatBox.scrollTop = chatBox.scrollHeight;
-                        }
-                    });
+                    if (socket) {
+                        socket.off('newMessage');
+                        socket.on('newMessage', (msg) => {
+                            if (msg.senderId === participantId) {
+                                const newMessage = document.createElement('div');
+                                newMessage.className = 'chat-message received';
+                                newMessage.innerHTML = `
+                                    <p class="message-text">${msg.content}</p>
+                                    <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+                                `;
+                                chatBox.appendChild(newMessage);
+                                chatBox.scrollTop = chatBox.scrollHeight;
+                            }
+                        });
+                    }
                 })
                 .catch(err => {
                     document.getElementById('chatArea').innerHTML = `<p>Error: ${err.message}</p>`;
