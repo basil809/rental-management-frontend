@@ -986,48 +986,42 @@
 
         async function login(type, form) {
             const inputs = form.querySelectorAll("input");
-            const identifier = inputs[0].value;
+            const identifier = inputs[0].value.trim();
             const password = inputs[1].value;
 
             try {
-                let url = '';
-                let body = {};
-                
-                if (type === 'tenant') {
-                    url = `https://rental-management-backend-ynbb.onrender.com/api/auth/login/${type}`;
-                    body = { tenantID: identifier, password }; // tenantID instead of 'identifier'
-                } else {
-                    url = `https://rental-management-backend-ynbb.onrender.com/api/auth/login/${type}`;
-                    body = { identifier, password };
-                }
+                const url = `https://rental-management-backend-ynbb.onrender.com/api/auth/login/${type}`;
+                const body = { identifier, password };
 
                 const res = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include", // ⬅️ Important for sending the cookie
-                    body: JSON.stringify(body)
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(body)
                 });
 
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.message || "Login failed");
+
+                if (!res.ok) {
+                console.error("Login failed:", data);
+                throw new Error(data.message || "Login failed");
+                }
 
                 alert("Login successful!");
 
-                // ✅ Redirect user to the appropriate dashboard
                 if (type === "admin") {
-                    window.location.href = "https://rental-management-frontend-beta.vercel.app/sidebar.html";
+                window.location.href = "https://rental-management-frontend-beta.vercel.app/sidebar.html";
                 } else if (type === "landlord") {
-                    window.location.href = "https://rental-management-frontend-beta.vercel.app/landlord.html";
+                window.location.href = "https://rental-management-frontend-beta.vercel.app/landlord.html";
                 } else if (type === "tenant") {
-                    window.location.href = "https://rental-management-frontend-beta.vercel.app/tenant.html";
+                window.location.href = "https://rental-management-frontend-beta.vercel.app/tenant.html";
                 }
             } catch (err) {
                 alert("Error: " + err.message);
             }
         }
-
     </script>
     <script>
         // code submittng the form carrying the user's questions 
