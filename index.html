@@ -994,7 +994,7 @@
                 let body = {};
                 
                 if (type === 'tenant') {
-                    url = 'https://rental-management-backend-ynbb.onrender.com/api/tenants/login';
+                    url = `https://rental-management-backend-ynbb.onrender.com/api/auth/login/${type}`;
                     body = { tenantID: identifier, password }; // tenantID instead of 'identifier'
                 } else {
                     url = `https://rental-management-backend-ynbb.onrender.com/api/auth/login/${type}`;
