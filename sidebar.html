@@ -2200,6 +2200,12 @@
                                 <option value="House">House</option>
                                 <option value="Condo">Condo</option>
                                 <option value="Land">Land</option>
+                                <option value="AirBnb">AirBnb</option>
+                                <option value="Bedsitter">Bedsitter</option>
+                                <option value="Single Room">Single Room</option>
+                                <option value="2-Bedroom">2-Bedroom</option>
+                                <option value="3-Bedroom">3-Bedroom</option>
+                                <option value="4+ Bedroom">4+ Bedroom</option>
                             </select><br><br>
                         </div>
                         <div class="col-md-4">
@@ -2258,16 +2264,32 @@
             // Function to toggle visibility based on selected property type
             function toggleFields() {
                 const selectedType = propertyTypeSelect.value;
-                const shouldHide = selectedType === 'Land';
+                
+                // Define which types hide units and bedrooms
+                const hideUnitsAndBedrooms = [
+                    'AirBnb', 'Bedsitter', 'Single Room', 
+                    '2-Bedroom', '3-Bedroom', '4+ Bedroom'
+                ];
 
-                unitsField.style.display = shouldHide ? 'none' : 'block';
-                bedroomsField.style.display = shouldHide ? 'none' : 'block';
-                bathroomsField.style.display = shouldHide ? 'none' : 'block';
+                // Determine flags based on selected type
+                const isLand = selectedType === 'Land';
+                const isHiddenType = hideUnitsAndBedrooms.includes(selectedType);
 
-                // Optionally remove required when hidden, and restore when shown
-                document.getElementById('units').required = !shouldHide;
-                document.getElementById('bedrooms').required = !shouldHide;
-                document.getElementById('bathrooms').required = !shouldHide;
+                // Units and Bedrooms are hidden for BOTH Land and the specified types
+                const hideUnitsAndBedroomsFlag = isLand || isHiddenType;
+                
+                // Bathrooms are ONLY hidden for Land
+                const hideBathroomsFlag = isLand;
+
+                // Update DOM elements visibility
+                unitsField.style.display = hideUnitsAndBedroomsFlag ? 'none' : 'block';
+                bedroomsField.style.display = hideUnitsAndBedroomsFlag ? 'none' : 'block';
+                bathroomsField.style.display = hideBathroomsFlag ? 'none' : 'block';
+
+                // Toggle the 'required' attributes dynamically so form validation doesn't block hidden fields
+                document.getElementById('units').required = !hideUnitsAndBedroomsFlag;
+                document.getElementById('bedrooms').required = !hideUnitsAndBedroomsFlag;
+                document.getElementById('bathrooms').required = !hideBathroomsFlag;
             }
 
             // Initial check in case the form is reloaded with a value
