@@ -330,6 +330,90 @@
     background: #0056b3;
   }
 
+  #loginModal button[type="submit"].is-loading,
+  #loginModal button[type="submit"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.86;
+    background: #0056b3;
+  }
+
+  #loginModal button[type="submit"].is-loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  #loginModal button[type="submit"].is-loading::before {
+    content: "";
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: loginSpin 0.75s linear infinite;
+  }
+
+  @keyframes loginSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .login-toast-container {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(360px, calc(100vw - 32px));
+    pointer-events: none;
+  }
+
+  .login-toast {
+    color: #fff;
+    padding: 15px 18px;
+    border-radius: 14px;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px) saturate(170%);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    transform: translateX(24px);
+    opacity: 0;
+    animation: toastSlideIn 0.28s ease forwards;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+  }
+
+  .login-toast.success {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.82), rgba(64, 169, 255, 0.66));
+  }
+
+  .login-toast.error {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.86), rgba(255, 107, 107, 0.68));
+  }
+
+  .login-toast.hide {
+    animation: toastSlideOut 0.24s ease forwards;
+  }
+
+  @keyframes toastSlideIn {
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes toastSlideOut {
+    to {
+      transform: translateX(24px);
+      opacity: 0;
+    }
+  }
+
     #loginModal button[type="submit"]:focus {
         outline: none;
         border: none;
@@ -620,6 +704,7 @@
                 </form>
             </div>
         </div>
+        <div class="login-toast-container" id="loginToastContainer" aria-live="polite" aria-atomic="true"></div>
     <!--End of tenant section-->
 
     <!--Blog Section-->
@@ -984,10 +1069,62 @@
             login("tenant", this);
         });
 
+        function showLoginToast(message, status = "success", duration = 3200) {
+            const toastContainer = document.getElementById("loginToastContainer");
+            if (!toastContainer) return;
+
+            toastContainer.innerHTML = "";
+            const toast = document.createElement("div");
+            toast.className = `login-toast ${status}`;
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+
+            window.setTimeout(() => {
+                toast.classList.add("hide");
+                toast.addEventListener("animationend", () => toast.remove(), { once: true });
+            }, duration);
+        }
+
+        function setLoginLoading(form, isLoading) {
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (!submitButton) return;
+            const loginModal = document.getElementById("loginModal");
+            const allLoginButtons = document.querySelectorAll("#loginModal button");
+
+            if (!submitButton.dataset.defaultText) {
+                submitButton.dataset.defaultText = submitButton.textContent;
+            }
+
+            form.dataset.loading = isLoading ? "true" : "false";
+            if (loginModal) {
+                loginModal.dataset.loading = isLoading ? "true" : "false";
+            }
+
+            allLoginButtons.forEach((button) => {
+                button.disabled = isLoading;
+            });
+            submitButton.classList.toggle("is-loading", isLoading);
+            submitButton.textContent = isLoading ? "Logging in..." : submitButton.dataset.defaultText;
+        }
+
+        function getDashboardUrl(type) {
+            const dashboards = {
+                admin: "https://rental-management-frontend-beta.vercel.app/sidebar.html",
+                landlord: "https://rental-management-frontend-beta.vercel.app/landlord.html",
+                tenant: "https://rental-management-frontend-beta.vercel.app/tenant.html"
+            };
+
+            return dashboards[type];
+        }
+
         async function login(type, form) {
+            const loginModal = document.getElementById("loginModal");
+            if (loginModal?.dataset.loading === "true") return;
+
             const inputs = form.querySelectorAll("input");
             const identifier = inputs[0].value.trim();
             const password = inputs[1].value;
+            setLoginLoading(form, true);
 
             try {
                 const url = `https://rental-management-backend-ynbb.onrender.com/api/auth/login/${type}`;
@@ -1002,24 +1139,20 @@
                     body: JSON.stringify(body)
                 });
 
-                const data = await res.json();
+                const data = await res.json().catch(() => ({}));
 
                 if (!res.ok) {
                     console.error("Login failed:", data);
                     throw new Error(data.message || "Login failed");
                 }
 
-                alert("Login successful!");
-
-                if (type === "admin") {
-                 window.location.href = "https://rental-management-frontend-beta.vercel.app/sidebar.html";
-                } else if (type === "landlord") {
-                 window.location.href = "https://rental-management-frontend-beta.vercel.app/landlord.html";
-                } else if (type === "tenant") {
-                 window.location.href = "https://rental-management-frontend-beta.vercel.app/tenant.html";
-                }
+                showLoginToast("Login successful. Redirecting to your dashboard...", "success", 2400);
+                window.setTimeout(() => {
+                    window.location.href = getDashboardUrl(type);
+                }, 2400);
             } catch (err) {
-                alert("Error: " + err.message);
+                setLoginLoading(form, false);
+                showLoginToast(`Error: ${err.message}`, "error", 4200);
             }
         }
     </script>
