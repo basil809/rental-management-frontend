@@ -994,29 +994,29 @@
                 const body = { identifier, password };
 
                 const res = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
                 },
-                credentials: "include",
-                body: JSON.stringify(body)
+                    credentials: "include",
+                    body: JSON.stringify(body)
                 });
 
                 const data = await res.json();
 
                 if (!res.ok) {
-                console.error("Login failed:", data);
-                throw new Error(data.message || "Login failed");
+                    console.error("Login failed:", data);
+                    throw new Error(data.message || "Login failed");
                 }
 
                 alert("Login successful!");
 
                 if (type === "admin") {
-                window.location.href = "https://rental-management-frontend-beta.vercel.app/sidebar.html";
+                 window.location.href = "https://rental-management-frontend-beta.vercel.app/sidebar.html";
                 } else if (type === "landlord") {
-                window.location.href = "https://rental-management-frontend-beta.vercel.app/landlord.html";
+                 window.location.href = "https://rental-management-frontend-beta.vercel.app/landlord.html";
                 } else if (type === "tenant") {
-                window.location.href = "https://rental-management-frontend-beta.vercel.app/tenant.html";
+                 window.location.href = "https://rental-management-frontend-beta.vercel.app/tenant.html";
                 }
             } catch (err) {
                 alert("Error: " + err.message);
@@ -1250,8 +1250,5 @@
             fetchRecentProperties();
         });
     </script>
-
-
-
 </body>
 </html>
