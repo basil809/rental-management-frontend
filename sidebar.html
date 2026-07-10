@@ -4087,10 +4087,10 @@
 
                     <!-- Tabs -->
                     <div class="tabs" style="display: flex; align-items: center;">
-                        <button class="tab-button active" onclick="filterStatus('all', this)">All</button>
-                        <button class="tab-button" onclick="filterStatus('Houses', this)">Houses</button>
-                        <button class="tab-button" onclick="filterStatus('Apartments', this)">Apartments</button>
-                        <button class="tab-button" onclick="filterStatus('Land', this)">Land</button>
+                        <div class="tab-button active" onclick="filterStatus('all', this)">All</div>
+                        <div class="tab-button" onclick="filterStatus('Houses', this)">Houses</div>
+                        <div class="tab-button" onclick="filterStatus('Apartments', this)">Apartments</div>
+                        <div class="tab-button" onclick="filterStatus('Land', this)">Land</div>
 
                         <!-- Export Button -->
                         <div class="export-btn-container" style="margin-left: auto; position: relative;">
@@ -4178,11 +4178,12 @@
                             <td>${listing.property_type}</td>
                             <td>${listing.location}</td>
                             <td>Ksh ${listing.price.toLocaleString()}</td>
-                            <td>${listing.tenantName || 'N/A'}</td>
-                            <td>${listing.tenantPhone || 'N/A'}</td>
+                            <td>${listing.Name || 'N/A'}</td>
+                            <td>${listing.Phone || 'N/A'}</td>
                             <td>
-                                <button class="view-btn" data-id="${listing._id}">View</button>
-                                <button class="delete-btn" data-id="${listing._id}">Delete</button>
+                                <i class="bx bx-eye icon" data-id="${listing._id}"></i>
+                                <i class="bx bx-checks icon" data-id="${listing._id}"></i>
+                                <i class="bx bx-trash icon delete-btn" data-id="${listing._id}"></i>
                             </td>
                         `;
                         tableBody.appendChild(row);
