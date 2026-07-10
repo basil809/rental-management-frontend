@@ -509,7 +509,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="images">Upload Images:</label><br>
-                    <input style="border: none;" type="file" id="images" name="images" multiple accept="image/*"><br><br>
+                    <input style="border: none;" type="file" id="images" name="images" multiple accept="image/*" required><br><br>
                 </div>
                 <div class="col-md-4">
                     <label for="title">Property Title:</label><br>
@@ -779,7 +779,7 @@
             const formData = new FormData(this); // Create FormData object from the form
     
             // Send the form data to the server using fetch API
-            fetch('https://rental-management-backend-ynbb.onrender.com/api/Quiz/submit-advertise', { // Adjust endpoint as necessary
+            fetch('https://rental-management-backend-ynbb.onrender.com/api/listings/submit-advertise', { // Adjust endpoint as necessary
                 method: 'POST',
                 body: formData
             })
