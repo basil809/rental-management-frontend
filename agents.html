@@ -486,38 +486,54 @@
           </div>
       </div>
 
-      <!--FORM FOR USER ADVERTISE REGISTRATION-->
-      <div id="advertiseForm">
-        <form id="advertForm" enctype="multipart/form-data" style="width: 100%;">
-          <!-- Hidden input field to capture the auto-selected package dynamically -->
-          <input type="hidden" id="selectedPackage" name="package" value="">
-          
-          <h2 style="text-align: center; font-weight: bold; color: #00a5fd; padding-bottom: 20px;">ADVERTISE WITH US <span id="pkgBadge" class="badge badge-primary style='display:none;'"></span ></h2> 
+     <!-- FORM FOR USER ADVERTISE REGISTRATION -->
+    <div id="advertiseForm">
+        <form id="advertForm" enctype="multipart/form-data" style="width:100%;">
+
+            <input type="hidden" id="selectedPackage" name="package">
+
+            <h2 style="text-align:center;font-weight:bold;color:#00a5fd;padding-bottom:20px;">
+                ADVERTISE WITH US
+                <span id="pkgBadge" class="badge badge-primary" style="display:none;"></span>
+            </h2>
 
             <div class="row">
+
                 <div class="col-md-4">
                     <label for="Name">Name:</label>
                     <input type="text" id="Name" name="Name" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
                     <label for="Email">Email:</label>
                     <input type="email" id="Email" name="email" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
                     <label for="Phone">Phone:</label>
                     <input type="tel" id="Phone" name="phone" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="images">Upload Images:</label><br>
-                    <input style="border: none;" type="file" id="images" name="images" multiple accept="image/*" required><br><br>
+                    <label for="images">Upload Images:</label>
+                    <input
+                        style="border:none;"
+                        type="file"
+                        id="images"
+                        name="images"
+                        multiple
+                        accept="image/*"
+                        required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="title">Property Title:</label><br>
-                    <input type="text" id="title" name="title" required><br><br>
+                    <label for="title">Property Title:</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="property_type">Property Type:</label><br>
-                    <select id="property_type" name="property_type" required>
+                    <label for="property_type">Property Type:</label>
+                    <select id="property_type" name="property_type" class="form-control" required>
                         <option value="">Select type</option>
                         <option value="Apartment">Apartment</option>
                         <option value="House">House</option>
@@ -530,42 +546,58 @@
                         <option value="2-Bedroom">2-Bedroom</option>
                         <option value="3-Bedroom">3-Bedroom</option>
                         <option value="4+ Bedroom">4+ Bedroom</option>
-                    </select><br><br>
+                    </select>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="price">Price (Ksh):</label><br>
-                    <input type="number" id="price" name="price" min="0" step="0.01" required><br><br>
+                    <label for="price">Price (Ksh):</label>
+                    <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="location">Location:</label><br>
-                    <input type="text" id="location" name="location" required><br><br>
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="size">Size (sq ft):</label><br>
-                    <input type="number" id="size" name="size" min="0" required>
+                    <label for="size">Size (sq ft):</label>
+                    <input type="number" id="size" name="size" class="form-control" min="0" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="units">Units:</label><br>
-                    <input type="number" id="units" name="units" min="0" required>
+                    <label for="units">Units:</label>
+                    <input type="number" id="units" name="units" class="form-control" min="0" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="bedrooms">Bedrooms:</label><br>
-                    <input type="number" id="bedrooms" name="bedrooms" min="0" required>
+                    <label for="bedrooms">Bedrooms:</label>
+                    <input type="number" id="bedrooms" name="bedrooms" class="form-control" min="0" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="bathrooms">Bathrooms:</label><br>
-                    <input type="number" id="bathrooms" name="bathrooms" min="0" required>
+                    <label for="bathrooms">Bathrooms:</label>
+                    <input type="number" id="bathrooms" name="bathrooms" class="form-control" min="0" required>
                 </div>
+
             </div>
-            <div class="description">
-              <label for="description">Description:</label><br>
-              <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+            <div class="description mt-3">
+                <label for="description">Description:</label>
+                <textarea id="description"
+                    name="description"
+                    class="form-control"
+                    rows="5"
+                    required></textarea>
             </div>
-            <div class="submitBtn">
-              <button type="submit" class="btn btn-primary">Submit Listing</button>
+
+            <div class="submitBtn mt-3">
+                <button type="submit" class="btn btn-primary">
+                    Submit Listing
+                </button>
             </div>
+
         </form>
-      </div>
+    </div>
     </Section>
     <!--End of Main Content--->
 
@@ -732,51 +764,138 @@
         }
     </script>
     <script>
-        // Function to toggle visibility based on the selected property type
-        document.getElementById('property_type').addEventListener('change', function() {
-            const selectedType = this.value;
-            const sizeField = document.getElementById('size');
-            const unitsField = document.getElementById('units');
-            const bedroomsField = document.getElementById('bedrooms');
-            const bathroomsField = document.getElementById('bathrooms');
+        document.addEventListener("DOMContentLoaded", () => {
 
-            // Reset all fields to visible and required by default
-            sizeField.parentElement.style.display = 'block';
-            sizeField.required = true;
+            const form = document.getElementById("advertForm");
+            const propertyType = document.getElementById("property_type");
 
-            unitsField.parentElement.style.display = 'block';
-            unitsField.required = true;
+            const sizeField = document.getElementById("size");
+            const unitsField = document.getElementById("units");
+            const bedroomsField = document.getElementById("bedrooms");
+            const bathroomsField = document.getElementById("bathrooms");
 
-            bedroomsField.parentElement.style.display = 'block';
-            bedroomsField.required = true;
+            function showField(field) {
+                const container = field.closest(".col-md-4");
 
-            bathroomsField.parentElement.style.display = 'block';
-            bathroomsField.required = true;
+                container.style.display = "block";
+                field.disabled = false;
+                field.required = true;
+            }
 
-            // Adjust visibility and validation requirements based on property type
-            if (selectedType === 'Land') {
-                unitsField.parentElement.style.display = 'none';
-                unitsField.required = false;
+            function hideField(field) {
+                const container = field.closest(".col-md-4");
 
-                bedroomsField.parentElement.style.display = 'none';
-                bedroomsField.required = false;
+                container.style.display = "none";
+                field.required = false;
+                field.disabled = true;
+                field.value = "";
+            }
 
-                bathroomsField.parentElement.style.display = 'none';
-                bathroomsField.required = false;
-            } else if (selectedType === 'Bedsitter' || selectedType === 'Single Room') {
-                unitsField.parentElement.style.display = 'none';
-                unitsField.required = false;
+            propertyType.addEventListener("change", function () {
 
-                bedroomsField.parentElement.style.display = 'none';
-                bedroomsField.required = false;
+                const type = this.value;
 
-                bathroomsField.parentElement.style.display = 'none';
-                bathroomsField.required = false;
-            } else if (selectedType === '2-Bedroom' || selectedType === '3-Bedroom' || selectedType === '4+ Bedroom') {
-                unitsField.parentElement.style.display = 'none';
-                unitsField.required = false;
-            } 
-            // "Else" case for Apartment, House, Condo, AirBnb is already handled by the defaults reset above
+                // Reset everything first
+                showField(sizeField);
+                showField(unitsField);
+                showField(bedroomsField);
+                showField(bathroomsField);
+
+                switch(type){
+
+                    case "Land":
+                        hideField(unitsField);
+                        hideField(bedroomsField);
+                        hideField(bathroomsField);
+                        break;
+
+                    case "Bedsitter":
+                    case "Single Room":
+                        hideField(unitsField);
+                        hideField(bedroomsField);
+                        hideField(bathroomsField);
+                        break;
+
+                    case "1-Bedroom":
+                        hideField(unitsField);
+                        break;
+
+                    case "2-Bedroom":
+                    case "3-Bedroom":
+                    case "4+ Bedroom":
+                        hideField(unitsField);
+                        break;
+
+                    default:
+                        // Apartment, House, Condo, AirBnb
+                        break;
+                }
+
+            });
+
+            form.addEventListener("submit", async function(event){
+
+                event.preventDefault();
+
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                const submitBtn = form.querySelector("button[type='submit']");
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Submitting...";
+
+                try {
+
+                    const formData = new FormData(form);
+
+                    const response = await fetch(
+                        "https://rental-management-backend-ynbb.onrender.com/api/listings/submit-advertise",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Server error.");
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+
+                        alert("Your listing has been submitted successfully.");
+
+                        form.reset();
+
+                        document.getElementById("pkgBadge").style.display = "none";
+
+                        // Reset hidden fields after form reset
+                        propertyType.dispatchEvent(new Event("change"));
+
+                    } else {
+
+                        alert(data.message || "Submission failed.");
+
+                    }
+
+                } catch(err) {
+
+                    console.error(err);
+
+                    alert("An unexpected error occurred. Please try again.");
+
+                } finally {
+
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Submit Listing";
+
+                }
+
+            });
+
         });
     </script>
     
