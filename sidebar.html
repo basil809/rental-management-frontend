@@ -1813,6 +1813,83 @@
                 <span id="notificationMessage"><img src="images/social_logos/hi emoji.png" style="height: 30px; width: 30px;" alt="hi_emoji">Welcome back, Admin</span>
                 <button id="notification-close" class="notification-close" onclick="closepopup()">×</button>
             </div>
+
+            <!--Edit Property Listing form-->
+            <div id="editPropertyListingModal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <button class="modal-close" onclick="closeEditPropertyModal()">×</button>
+                    <h2>Edit Property Listing</h2>
+                    <form id="editPropertyListingForm">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="Name">Name:</label>
+                                <input type="text" id="EditName" name="Name" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Email">Email:</label>
+                                <input type="email" id="EditEmail" name="email" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Phone">Phone:</label>
+                                <input type="tel" id="EditPhone" name="phone" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="images">Upload Images:</label><br>
+                                <input style="border: none;" type="file" id="EditImages" name="images" multiple accept="image/*" required><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="title">Property Title:</label><br>
+                                <input type="text" id="EditTitle" name="title" required><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="property_type">Property Type:</label><br>
+                                <select id="EditPropertyType" name="property_type" required>
+                                    <option value="">Select type</option>
+                                    <option value="Apartment">Apartment</option>
+                                    <option value="House">House</option>
+                                    <option value="Condo">Condo</option>
+                                    <option value="Land">Land</option>
+                                    <option value="AirBnb">AirBnb</option>
+                                    <option value="Bedsitter">Bedsitter</option>
+                                    <option value="Single Room">Single Room</option>
+                                    <option value="1-Bedroom">1-Bedroom</option>
+                                    <option value="2-Bedroom">2-Bedroom</option>
+                                    <option value="3-Bedroom">3-Bedroom</option>
+                                    <option value="4+ Bedroom">4+ Bedroom</option>
+                                </select><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="price">Price (Ksh):</label><br>
+                                <input type="number" id="EditPrice" name="price" min="0" step="0.01" required><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="location">Location:</label><br>
+                                <input type="text" id="EditLocation" name="location" required><br><br>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="size">Size (sq ft):</label><br>
+                                <input type="number" id="EditSize" name="size" min="0" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="units">Units:</label><br>
+                                <input type="number" id="EditUnits" name="units" min="0" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="bedrooms">Bedrooms:</label><br>
+                                <input type="number" id="EditBedrooms" name="bedrooms" min="0" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="bathrooms">Bathrooms:</label><br>
+                                <input type="number" id="EditBathrooms" name="bathrooms" min="0" required>
+                            </div>
+                        </div>
+                        <div class="description">
+                            <label for="description">Description:</label><br>
+                            <textarea id="EditDescription" name="description" rows="4" cols="50" required></textarea><br><br>
+                        </div>
+                        <button type="submit">Save Changes</button>
+                    </form>
+                </div>
         </section>
     </main>
     <script src="js/sidebar.js"></script>
@@ -4183,6 +4260,7 @@
                             <td>
                                 <i style="font-size: 20px; cursor: pointer; color: #00a5fd;" class="bx bx-eye icon" title="View Details" data-id="${listing._id}"></i>
                                 <i style="font-size: 20px; cursor: pointer; color: #28a745;" class="bx bx-checks icon" title="Approve" data-id="${listing._id}"></i>
+                                <i style="font-size: 20px; cursor: pointer; color: #ffc107;" class="bx bx-edit icon" title="Edit" data-id="${listing._id}"></i>
                                 <i style="font-size: 20px; cursor: pointer; color: #dc3545; background color: none;" class="bx bx-trash icon" title="Delete" data-id="${listing._id}"></i>
                             </td>
                         `;
@@ -4281,6 +4359,65 @@
 
             //Load initial listings
             fetchListings();
+
+            // Event delegation for action buttons
+            document.getElementById('listingsTableBody').addEventListener('click', async (e) => {
+                const listingId = e.target.getAttribute('data-id');
+                if (!listingId) return;
+
+                if (e.target.classList.contains('bx-eye')) {
+                    window.location.href = `/propView.html?id=${listingId}`;
+                } else if (e.target.classList.contains('bx-checks')) {
+                    if (confirm('Are you sure you want to approve this listing?')) {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/approve/${listingId}`, {
+                            method: 'PUT',
+                            credentials: 'include'
+                        });
+                        if (res.ok) {
+                            alert('Listing approved successfully.');
+                            fetchListings(currentPage);
+                        } else {
+                            alert('Failed to approve listing.');
+                        }
+                    }
+                } else if (e.target.classList.contains('bx-edit')) {
+                    // Update the specific property Listing using the editPropertyModal
+                    // The Admin clicks on the edit button, and the modal pops up with the current details of the listing pre-filled. The Admin can then make changes and submit the form to update the listing.
+                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/${listingId}`, { credentials: 'include' });
+                    if (res.ok) {
+                        const data = await res.json();
+                        // Populate the edit modal with the listing data
+                        document.getElementById('EditName').value = data.Name;
+                        document.getElementById('EditPhone').value = data.phone;
+                        document.getElementById('EditEmail').value = data.email;
+                        document.getElementById('EditTitle').value = data.title;
+                        document.getElementById('EditType').value = data.property_type;
+                        document.getElementById('EditPrice').value = data.price;
+                        document.getElementById('EditLocation').value = data.location;
+                        document.getElementById('EditSize').value = data.size;
+                        document.getElementById('EditUnits').value = data.units;
+                        document.getElementById('EditBathrooms').value = data.bathrooms;
+                        document.getElementById('EditBedrooms').value = data.bedrooms;
+                        document.getElementById('EditDescription').value = data.description;
+                        $('#editPropertyModal').modal('show');
+                    } else {
+                        alert('Failed to fetch listing details.');
+                    }
+                } else if (e.target.classList.contains('bx-trash')) {
+                    if (confirm('Are you sure you want to delete this listing?')) {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/${listingId}`, {
+                            method: 'DELETE',
+                            credentials: 'include'
+                        });
+                        if (res.ok) {
+                            alert('Listing deleted successfully.');
+                            fetchListings(currentPage);
+                        } else {
+                            alert('Failed to delete listing.');
+                        }
+                    }
+                }
+            });
         } else if (sectionId === 'showTenants') {
             mainContent.innerHTML = `
                 <div id="showTenants">
