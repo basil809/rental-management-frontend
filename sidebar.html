@@ -1908,6 +1908,11 @@
                             <span class="material-icons" style="font-size: 14px;">add_circle</span>
                             <span style="margin-right: 5px;">Add</span>
                         </a>
+                        <!--Show Listings-->
+                        <a href="#" onclick="showSection(event, 'showListings')">
+                            <i class='bx bx-list-ul icon'></i>
+                            <span class="text nav-link">Show Listings</span>
+                        </a>
                     </div>
                 </div>
 
@@ -2208,6 +2213,7 @@
                                 <option value="AirBnb">AirBnb</option>
                                 <option value="Bedsitter">Bedsitter</option>
                                 <option value="Single Room">Single Room</option>
+                                <option value="1-Bedroom">1-Bedroom</option>
                                 <option value="2-Bedroom">2-Bedroom</option>
                                 <option value="3-Bedroom">3-Bedroom</option>
                                 <option value="4+ Bedroom">4+ Bedroom</option>
@@ -4078,6 +4084,206 @@
                 .catch(error => {
                     console.error('Error fetching properties:', error);
                 });
+        } else if (sectionId === 'showListings') {
+            mainContent.innerHTML = `
+                <div class="table-container">
+                    <h2> Property Listings</h2>
+
+                    <!-- Tabs -->
+                    <div class="tabs" style="display: flex; align-items: center;">
+                        <button class="tab-button active" onclick="filterStatus('all', this)">All</button>
+                        <button class="tab-button" onclick="filterStatus('Houses', this)">Houses</button>
+                        <button class="tab-button" onclick="filterStatus('Apartments', this)">Apartments</button>
+                        <button class="tab-button" onclick="filterStatus('Land', this)">Land</button>
+
+                        <!-- Export Button -->
+                        <div class="export-btn-container" style="margin-left: auto; position: relative;">
+                            <button class="export-btn" id="exportBtn">
+                                <span class="material-icons" style="margin-right: 5px;">download</span> Export
+                            </button>
+                            <div id="exportOptions" class="export-options hidden">
+                                <span id="exportCSV" title="Export to CSV">📄</span>
+                                <span id="exportXLSX" title="Export to Excel">📊</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-box">
+                        <span class="material-icons search-icon">search</span>
+                        <input type="text" id="searchInput" onkeyup="searchTenant()" placeholder="Search">
+                    </div>
+
+                    <!-- Table -->
+                    <table id="listingsTable">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Property</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listingsTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div id="pagination" class="pagination"></div>
+                </div>
+            `;
+
+            //  Global State
+            let currentStatus = 'all';
+            let currentPage = 1;
+            let listings = [];
+            let paginationMetaList = [];
+
+            // Fetch Listings
+            async function fetchListings(Page = 1) {
+                try {
+                    const response = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/Quiz/listings?page=${Page}`, { credentials: 'include' });
+                    const data = await response.json();
+                    listings = data.listings;
+                    paginationMetaList = data.paginationMeta;
+                    renderListings(listings);
+                    renderPagination(paginationMetaList);
+                } catch (error) {
+                    console.error('Error fetching listings:', error);
+                }
+            }
+
+            // Render rows
+            function renderListings() {
+                const tableBody = document.getElementById('listingsTableBody');
+                tableBody.innerHTML = '';
+
+                const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+
+                listings.forEach(listing => {
+                    const matchStatus = currentStatus === 'all' || listing.property_type === currentStatus;
+                    const matchSearch = 
+                    !q || 
+                    (listing.title && listing.title.toLowerCase().includes(q)) ||
+                    (listing.location && listing.location.toLowerCase().includes(q)) ||
+                    (listing.property_type && listing.property_type.toLowerCase().includes(q));
+
+                    if (matchStatus && matchSearch) {
+                        const row = document.createElement('tr');
+                        row.setAttribute('data-id', listing._id);
+
+                        row.innerHTML = `
+                            <td><img src="${listing.images?.[0] ? (listing.images[0].startsWith('http') ? listing.images[0] : `https://rental-management-backend-ynbb.onrender.com/${listing.images[0].replace(/^\/+/, '')}`) : 'default.jpg'}" alt="${listing.title}" style="width: 80px; height: 60px; object-fit: cover;"></td>
+                            <td>${listing.title}</td>
+                            <td>${listing.property_type}</td>
+                            <td>${listing.location}</td>
+                            <td>Ksh ${listing.price.toLocaleString()}</td>
+                            <td>${listing.tenantName || 'N/A'}</td>
+                            <td>${listing.tenantPhone || 'N/A'}</td>
+                            <td>
+                                <button class="view-btn" data-id="${listing._id}">View</button>
+                                <button class="delete-btn" data-id="${listing._id}">Delete</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    }
+                });
+                
+            }
+
+            // Pagination rendering
+            function renderPagination() {
+                const paginationContainer = document.getElementById('pagination');
+                paginationContainer.innerHTML = '';
+
+                const {currentPage, totalPages} = paginationMetaList;
+                if (totalPages <= 1) return;
+
+                const prevButton = document.createElement('button');
+                prevButton.textContent = 'Previous';
+                prevButton.disabled = currentPage === 1;
+                prevButton.onclick = () => fetchListings(currentPage - 1);
+                paginationContainer.appendChild(prevButton);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageButton = document.createElement('button');
+                    pageButton.textContent = i;
+                    pageButton.disabled = i === currentPage ? "active" : "";
+                    pageButton.onclick = () => fetchListings(i);
+                    paginationContainer.appendChild(pageButton);
+                }
+
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Next';
+                nextButton.disabled = currentPage === totalPages;
+                nextButton.onclick = () => fetchListings(currentPage + 1);
+                paginationContainer.appendChild(nextButton);
+            }
+
+            // Filter by status
+            window.filterStatus = function(status, button) {
+                currentStatus = status;
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                renderListings();
+            };
+
+            // Search functionality
+            window.searchListing = function() {
+                renderListings();
+            };
+
+            //Export Logic
+            const exportBtn = document.getElementById('exportBtn');
+            const exportOptions = document.getElementById('exportOptions');
+            exportBtn.addEventListener('click', () => {
+                exportOptions.classList.toggle('hidden');
+            });
+
+            // Hide menu when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('.export-btn-container')) {
+                    exportOptions.classList.add('hidden');
+                }
+            });
+
+            // Export to CSV
+            function exportTableToCSV(filename) {
+                let csv = [];
+                const rows = document.querySelectorAll("#listingsTable tr");
+
+                rows.forEach(row => {
+                    const cols = row.querySelectorAll("td, th");
+                    const rowData = [];
+                    cols.forEach(col => rowData.push(col.innerText));
+                    csv.push(rowData.join(","));
+                });
+
+                let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(csvFile);
+                link.download = filename;
+                link.click();
+            }
+
+            document.getElementById('exportCSV').addEventListener('click', () => {
+                exportTableToCSV('property_listings.csv');
+                exportOptions.classList.add('hidden');
+            });
+
+            document.getElementById('exportXLSX').addEventListener('click', () => {
+                const table = document.getElementById('listingsTable');
+                const workbook = XLSX.utils.table_to_book(table, { sheet: "Listings" });
+                XLSX.writeFile(workbook, 'property_listings.xlsx');
+                exportOptions.classList.add('hidden');
+            });
+
+            //Load initial listings
+            fetchListings();
         } else if (sectionId === 'showTenants') {
             mainContent.innerHTML = `
                 <div id="showTenants">
