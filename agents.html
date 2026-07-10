@@ -900,34 +900,6 @@
     </script>
     
     <script>
-        // Form submission logic
-        document.getElementById('advertForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-    
-            const formData = new FormData(this); // Create FormData object from the form
-    
-            // Send the form data to the server using fetch API
-            fetch('https://rental-management-backend-ynbb.onrender.com/api/listings/submit-advertise', { // Adjust endpoint as necessary
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Your listing has been submitted successfully!');
-                    this.reset(); // Reset the form fields
-                    document.getElementById('pkgBadge').style.display = "none"; // Hide package badge
-                } else {
-                    alert('There was an error submitting your listing. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An unexpected error occurred. Please try again later.');
-            });
-        });
-    </script>
-    <script>
       const faders = document.querySelectorAll('.fade-in-section');
 
       const appearOnScroll = new IntersectionObserver(
