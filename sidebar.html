@@ -4087,10 +4087,10 @@
 
                     <!-- Tabs -->
                     <div class="tabs" style="display: flex; align-items: center;">
-                        <div class="tab-button active" onclick="filterStatus('all', this)">All</div>
-                        <div class="tab-button" onclick="filterStatus('Houses', this)">Houses</div>
-                        <div class="tab-button" onclick="filterStatus('Apartments', this)">Apartments</div>
-                        <div class="tab-button" onclick="filterStatus('Land', this)">Land</div>
+                        <div class="tab active" onclick="filterStatus('all', this)">All</div>
+                        <div class="tab" onclick="filterStatus('Houses', this)">Houses</div>
+                        <div class="tab" onclick="filterStatus('Apartments', this)">Apartments</div>
+                        <div class="tab" onclick="filterStatus('Land', this)">Land</div>
 
                         <!-- Export Button -->
                         <div class="export-btn-container" style="margin-left: auto; position: relative;">
@@ -4179,7 +4179,7 @@
                             <td>${listing.location}</td>
                             <td>Ksh ${listing.price.toLocaleString()}</td>
                             <td>${listing.Name || 'N/A'}</td>
-                            <td>${listing.Phone || 'N/A'}</td>
+                            <td>${listing.phone || 'N/A'}</td>
                             <td>
                                 <i class="bx bx-eye icon" data-id="${listing._id}"></i>
                                 <i class="bx bx-checks icon" data-id="${listing._id}"></i>
@@ -4224,7 +4224,7 @@
             // Filter by status
             window.filterStatus = function(status, button) {
                 currentStatus = status;
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tabs .tab').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 renderListings();
             };
