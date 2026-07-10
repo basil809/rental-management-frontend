@@ -4369,7 +4369,7 @@
                     window.location.href = `/propView.html?id=${listingId}`;
                 } else if (e.target.classList.contains('bx-checks')) {
                     if (confirm('Are you sure you want to approve this listing?')) {
-                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/approve/${listingId}`, {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/approve-listing/${listingId}`, {
                             method: 'PUT',
                             credentials: 'include'
                         });
@@ -4383,7 +4383,7 @@
                 } else if (e.target.classList.contains('bx-edit')) {
                     // Update the specific property Listing using the editPropertyModal
                     // The Admin clicks on the edit button, and the modal pops up with the current details of the listing pre-filled. The Admin can then make changes and submit the form to update the listing.
-                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/${listingId}`, { credentials: 'include' });
+                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, { credentials: 'include' });
                     if (res.ok) {
                         const data = await res.json();
                         // Populate the edit modal with the listing data
