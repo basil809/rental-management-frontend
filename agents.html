@@ -732,7 +732,7 @@
         }
     </script>
     <script>
-        //Function to toggle visibility based on the selected property type
+        // Function to toggle visibility based on the selected property type
         document.getElementById('property_type').addEventListener('change', function() {
             const selectedType = this.value;
             const sizeField = document.getElementById('size');
@@ -740,37 +740,46 @@
             const bedroomsField = document.getElementById('bedrooms');
             const bathroomsField = document.getElementById('bathrooms');
 
-            // Reset all fields to visible by default
+            // Reset all fields to visible and required by default
             sizeField.parentElement.style.display = 'block';
-            unitsField.parentElement.style.display = 'block';
-            bedroomsField.parentElement.style.display = 'block';
-            bathroomsField.parentElement.style.display = 'block';
+            sizeField.required = true;
 
-            // Adjust visibility based on property type
+            unitsField.parentElement.style.display = 'block';
+            unitsField.required = true;
+
+            bedroomsField.parentElement.style.display = 'block';
+            bedroomsField.required = true;
+
+            bathroomsField.parentElement.style.display = 'block';
+            bathroomsField.required = true;
+
+            // Adjust visibility and validation requirements based on property type
             if (selectedType === 'Land') {
-                sizeField.parentElement.style.display = 'block';
                 unitsField.parentElement.style.display = 'none';
+                unitsField.required = false;
+
                 bedroomsField.parentElement.style.display = 'none';
+                bedroomsField.required = false;
+
                 bathroomsField.parentElement.style.display = 'none';
+                bathroomsField.required = false;
             } else if (selectedType === 'Bedsitter' || selectedType === 'Single Room') {
-                sizeField.parentElement.style.display = 'block';
                 unitsField.parentElement.style.display = 'none';
+                unitsField.required = false;
+
                 bedroomsField.parentElement.style.display = 'none';
+                bedroomsField.required = false;
+
                 bathroomsField.parentElement.style.display = 'none';
+                bathroomsField.required = false;
             } else if (selectedType === '2-Bedroom' || selectedType === '3-Bedroom' || selectedType === '4+ Bedroom') {
-                sizeField.parentElement.style.display = 'block';
                 unitsField.parentElement.style.display = 'none';
-                bedroomsField.parentElement.style.display = 'block';
-                bathroomsField.parentElement.style.display = 'block';
-            } else {
-                // For Apartment, House, Condo, AirBnb
-                sizeField.parentElement.style.display = 'block';
-                unitsField.parentElement.style.display = 'block';
-                bedroomsField.parentElement.style.display = 'block';
-                bathroomsField.parentElement.style.display = 'block';
-            }
+                unitsField.required = false;
+            } 
+            // "Else" case for Apartment, House, Condo, AirBnb is already handled by the defaults reset above
         });
     </script>
+    
     <script>
         // Form submission logic
         document.getElementById('advertForm').addEventListener('submit', function(event) {
