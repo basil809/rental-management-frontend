@@ -4181,9 +4181,9 @@
                             <td>${listing.Name || 'N/A'}</td>
                             <td>${listing.phone || 'N/A'}</td>
                             <td>
-                                <i class="bx bx-eye icon" data-id="${listing._id}"></i>
-                                <i class="bx bx-checks icon" data-id="${listing._id}"></i>
-                                <i class="bx bx-trash icon delete-btn" data-id="${listing._id}"></i>
+                                <i style="font-size: 20px; cursor: pointer; color: #00a5fd;" class="bx bx-eye icon" data-id="${listing._id}"></i>
+                                <i style="font-size: 20px; cursor: pointer; color: #28a745;" class="bx bx-checks icon" data-id="${listing._id}"></i>
+                                <i style="font-size: 20px; cursor: pointer; color: #dc3545; background color: none;" class="bx bx-trash icon delete-btn" data-id="${listing._id}"></i>
                             </td>
                         `;
                         tableBody.appendChild(row);
