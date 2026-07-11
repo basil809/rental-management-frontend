@@ -4399,7 +4399,8 @@
                         document.getElementById('EditBathrooms').value = data.bathrooms;
                         document.getElementById('EditBedrooms').value = data.bedrooms;
                         document.getElementById('EditDescription').value = data.description;
-                        $('#editPropertyListingModal').modal('show');
+                        
+                        document.getElementById('editPropertyListingModal').style.display = "block";
                     } else {
                         alert('Failed to fetch listing details.');
                     }
