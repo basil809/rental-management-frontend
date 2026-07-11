@@ -1818,7 +1818,7 @@
             <div id="editPropertyListingModal" class="modal-overlay" style="display: none; overflow-y: scroll;">
                 <div class="modal-content" style="width: 100%;">
                     <button class="modal-close" onclick="closeEditPropertyModal()">×</button>
-                    <h2>Edit Property Listing</h2>
+                    <h2 style="text-align: center; padding-bottom: 15px;">Edit Property Listing</h2>
                     <form id="editPropertyListingForm">
                         <div class="row">
                             <div class="col-md-4">
@@ -1831,7 +1831,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="property_type">Property Type:</label><br>
-                                <select id="EditPropertyType" name="property_type" required>
+                                <select id="EditPropertyType" name="property_type" style="width: 100%; margin-bottom: 10px; padding: 8px;" required>
                                     <option value="">Select type</option>
                                     <option value="Apartment">Apartment</option>
                                     <option value="House">House</option>
@@ -4403,8 +4403,22 @@
                         document.getElementById('EditBedrooms').value = data.bedrooms;
                         document.getElementById('EditDescription').value = data.description;
 
-                        
+                        //Show the modal
                         document.getElementById('editPropertyListingModal').style.display = "block";
+
+                        //Hide the modal when clicking outside of it
+                        window.onclick = function(event) {
+                            const modal = document.getElementById('editPropertyListingModal');
+                            if (event.target === modal) {
+                                modal.style.display = "none";
+                            }
+                        };
+
+                        // Hide the modal when the user clicks the close button
+                        document.querySelector('.modal-close').addEventListener('click', () => {
+                            document.getElementById('editPropertyListingModal').style.display = "none";
+                        });
+
                     } else {
                         alert('Failed to fetch listing details.');
                     }
