@@ -4451,6 +4451,8 @@
                         document.getElementById('editPropertyListingForm').onsubmit = async function (event) {
                             event.preventDefault();
                             const updatedListing = {
+                                //Adding new Images if any are selected
+                                images: document.getElementById('EditImages').files,
                                 Name: document.getElementById('EditName').value,
                                 phone: document.getElementById('EditPhone').value,
                                 email: document.getElementById('EditEmail').value,
