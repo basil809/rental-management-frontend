@@ -4452,7 +4452,7 @@
                     }
                 } else if (e.target.classList.contains('bx-trash')) {
                     if (confirm('Are you sure you want to delete this listing?')) {
-                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/delete-listing/${listingId}`, {
                             method: 'DELETE',
                             credentials: 'include'
                         });
