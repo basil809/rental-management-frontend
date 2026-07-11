@@ -4383,9 +4383,12 @@
                 } else if (e.target.classList.contains('bx-edit')) {
                     // Update the specific property Listing using the editPropertyModal
                     // The Admin clicks on the edit button, and the modal pops up with the current details of the listing pre-filled. The Admin can then make changes and submit the form to update the listing.
-                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, { credentials: 'include' });
+                    const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, 
+                        { credentials: 'include' 
+                    });
                     if (res.ok) {
                         const data = await res.json();
+                        console.log('Fetched listing data for editing:', data);
                         // Populate the edit modal with the listing data
                         document.getElementById('EditName').value = data.Name;
                         document.getElementById('EditPhone').value = data.phone;
