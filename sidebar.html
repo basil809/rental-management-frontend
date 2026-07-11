@@ -1821,9 +1821,13 @@
                     <h2 style="text-align: center; padding-bottom: 15px;">Edit Property Listing</h2>
                     <form id="editPropertyListingForm">
                         <div class="row">
+                            <!-- dynamically loaded with image thumbnails fetch from the server -->
+                            <div class="thumbnails" id="EditThumbnails" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                               <!-- Thumbnails will be dynamically inserted here -->
+                            </div>
                             <div class="col-md-4">
                                 <label for="images">Upload Images:</label><br>
-                                <input style="border: none;" type="file" id="EditImages" name="images" multiple accept="image/*" required><br><br>
+                                <input style="border: none;" type="file" id="EditImages" name="images" multiple accept="image/*" ><br><br>
                             </div>
                             <div class="col-md-4">
                                 <label for="title">Property Title:</label><br>
@@ -4409,6 +4413,23 @@
                         document.getElementById('EditBathrooms').value = listing.bathrooms;
                         document.getElementById('EditBedrooms').value = listing.bedrooms;
                         document.getElementById('EditDescription').value = listing.description;
+
+                        //Handle the loading of images into the modal as thumbnails
+                        const thumbnailsContainer = document.getElementById('EditThumbnails');
+                        thumbnailsContainer.innerHTML = '';
+                        if (listing.images && listing.images.length > 0) {
+                            listing.images.forEach(imgPath => {
+                                const imgElement = document.createElement('img');
+                                imgElement.src = imgPath.startsWith('http') ? imgPath : `https://rental-management-backend-ynbb.onrender.com/${imgPath.replace(/^\/+/, '')}`;
+                                imgElement.style.width = '80px';
+                                imgElement.style.height = '60px';
+                                imgElement.style.objectFit = 'cover';
+                                imgElement.style.marginRight = '10px';
+                                thumbnailsContainer.appendChild(imgElement);
+                            });
+                        } else {
+                            thumbnailsContainer.innerHTML = '<p>No images available.</p>';
+                        }
 
                         // Show the modal
                         document.getElementById('editPropertyListingModal').style.display = "block";
