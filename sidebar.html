@@ -1822,18 +1822,6 @@
                     <form id="editPropertyListingForm">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="Name">Name:</label>
-                                <input type="text" id="EditName" name="Name" class="form-control" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="Email">Email:</label>
-                                <input type="email" id="EditEmail" name="email" class="form-control" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="Phone">Phone:</label>
-                                <input type="tel" id="EditPhone" name="phone" class="form-control" required>
-                            </div>
-                            <div class="col-md-4">
                                 <label for="images">Upload Images:</label><br>
                                 <input style="border: none;" type="file" id="EditImages" name="images" multiple accept="image/*" required><br><br>
                             </div>
@@ -1881,6 +1869,18 @@
                             <div class="col-md-4">
                                 <label for="bathrooms">Bathrooms:</label><br>
                                 <input type="number" id="EditBathrooms" name="bathrooms" min="0" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Name">Name:</label>
+                                <input type="text" id="EditName" name="Name" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Email">Email:</label>
+                                <input type="email" id="EditEmail" name="email" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Phone">Phone:</label>
+                                <input type="tel" id="EditPhone" name="phone" class="form-control" required>
                             </div>
                         </div>
                         <div class="description">
@@ -4402,6 +4402,7 @@
                         document.getElementById('EditBathrooms').value = data.bathrooms;
                         document.getElementById('EditBedrooms').value = data.bedrooms;
                         document.getElementById('EditDescription').value = data.description;
+                        
                         
                         document.getElementById('editPropertyListingModal').style.display = "block";
                     } else {
