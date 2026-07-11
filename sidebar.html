@@ -1816,7 +1816,7 @@
 
             <!--Edit Property Listing form-->
             <div id="editPropertyListingModal" class="modal-overlay" style="display: none; overflow-y: scroll;">
-                <div class="modal-content" style="width: 100%;">
+                <div class="modal-content" style="width: 85%;">
                     <button class="modal-close">×</button>
                     <h2 style="text-align: center; padding-bottom: 15px;">Edit Property Listing</h2>
                     <form id="editPropertyListingForm">
@@ -4384,26 +4384,33 @@
                     // Update the specific property Listing using the editPropertyModal
                     // The Admin clicks on the edit button, and the modal pops up with the current details of the listing pre-filled. The Admin can then make changes and submit the form to update the listing.
                     const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, 
-                        { credentials: 'include' 
-                    });
+                        { 
+                            method: 'GET', 
+                            credentials: 'include' 
+                        }
+                        );
                     if (res.ok) {
                         const data = await res.json();
                         console.log('Fetched listing data for editing:', data);
-                        // Populate the edit modal with the listing data
-                        document.getElementById('EditName').value = data.Name;
-                        document.getElementById('EditPhone').value = data.phone;
-                        document.getElementById('EditEmail').value = data.email;
-                        document.getElementById('EditTitle').value = data.title;
-                        document.getElementById('EditPropertyType').value = data.property_type;
-                        document.getElementById('EditPrice').value = data.price;
-                        document.getElementById('EditLocation').value = data.location;
-                        document.getElementById('EditSize').value = data.size;
-                        document.getElementById('EditUnits').value = data.units;
-                        document.getElementById('EditBathrooms').value = data.bathrooms;
-                        document.getElementById('EditBedrooms').value = data.bedrooms;
-                        document.getElementById('EditDescription').value = data.description;
+                        
+                        // EXTRACT THE NESTED LISTING OBJECT HERE
+                        const listing = data.listing; 
 
-                        //Show the modal
+                        // Populate the edit modal using the nested 'listing' object
+                        document.getElementById('EditName').value = listing.Name;
+                        document.getElementById('EditPhone').value = listing.phone;
+                        document.getElementById('EditEmail').value = listing.email;
+                        document.getElementById('EditTitle').value = listing.title;
+                        document.getElementById('EditPropertyType').value = listing.property_type;
+                        document.getElementById('EditPrice').value = listing.price;
+                        document.getElementById('EditLocation').value = listing.location;
+                        document.getElementById('EditSize').value = listing.size;
+                        document.getElementById('EditUnits').value = listing.units;
+                        document.getElementById('EditBathrooms').value = listing.bathrooms;
+                        document.getElementById('EditBedrooms').value = listing.bedrooms;
+                        document.getElementById('EditDescription').value = listing.description;
+
+                        // Show the modal
                         document.getElementById('editPropertyListingModal').style.display = "block";
 
                         //Hide the modal when clicking outside of it
