@@ -4414,6 +4414,40 @@
                         document.getElementById('EditBedrooms').value = listing.bedrooms;
                         document.getElementById('EditDescription').value = listing.description;
 
+                        //Submitting the form to update the listing
+                        document.getElementById('EditListingForm').onsubmit = async function (event) {
+                            event.preventDefault();
+                            const updatedListing = {
+                                Name: document.getElementById('EditName').value,
+                                phone: document.getElementById('EditPhone').value,
+                                email: document.getElementById('EditEmail').value,
+                                title: document.getElementById('EditTitle').value,
+                                property_type: document.getElementById('EditPropertyType').value,
+                                price: document.getElementById('EditPrice').value,
+                                location: document.getElementById('EditLocation').value,
+                                size: document.getElementById('EditSize').value,
+                                units: document.getElementById('EditUnits').value,
+                                bathrooms: document.getElementById('EditBathrooms').value,
+                                bedrooms: document.getElementById('EditBedrooms').value,
+                                description: document.getElementById('EditDescription').value
+                            };
+
+                            const updateRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/update-listing/${listingId}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(updatedListing),
+                                credentials: 'include'
+                            });
+
+                            if (updateRes.ok) {
+                                alert('Listing updated successfully.');
+                                document.getElementById('editPropertyListingModal').style.display = 'none';
+                                fetchListings(currentPage);
+                            } else {
+                                alert('Failed to update listing.');
+                            }
+                        };
+
                         //Handle the loading of images into the modal as thumbnails
                         const thumbnailsContainer = document.getElementById('EditThumbnails');
                         thumbnailsContainer.innerHTML = '';
