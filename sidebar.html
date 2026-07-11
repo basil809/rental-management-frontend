@@ -1815,8 +1815,8 @@
             </div>
 
             <!--Edit Property Listing form-->
-            <div id="editPropertyListingModal" class="modal-overlay" style="display: none;">
-                <div class="modal-content">
+            <div id="editPropertyListingModal" class="modal-overlay" style="display: none; overflow-y: scroll;">
+                <div class="modal-content" style="width: 100%;">
                     <button class="modal-close" onclick="closeEditPropertyModal()">×</button>
                     <h2>Edit Property Listing</h2>
                     <form id="editPropertyListingForm">
@@ -4402,7 +4402,7 @@
                         document.getElementById('EditBathrooms').value = data.bathrooms;
                         document.getElementById('EditBedrooms').value = data.bedrooms;
                         document.getElementById('EditDescription').value = data.description;
-                        
+
                         
                         document.getElementById('editPropertyListingModal').style.display = "block";
                     } else {
