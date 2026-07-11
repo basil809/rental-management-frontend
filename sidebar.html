@@ -1822,7 +1822,7 @@
                     <form id="editPropertyListingForm">
                         <div class="row">
                             <!-- dynamically loaded with image thumbnails fetch from the server -->
-                            <div class="thumbnails" id="EditThumbnails" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                            <div class="thumbnails" id="EditThumbnails" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; width: 100%; justify-content: center;">
                                <!-- Thumbnails will be dynamically inserted here -->
                             </div>
                             <br><br>
@@ -4396,7 +4396,6 @@
                         );
                     if (res.ok) {
                         const data = await res.json();
-                        console.log('Fetched listing data for editing:', data);
                         
                         // EXTRACT THE NESTED LISTING OBJECT HERE
                         const listing = data.listing; 
@@ -4453,7 +4452,7 @@
                     }
                 } else if (e.target.classList.contains('bx-trash')) {
                     if (confirm('Are you sure you want to delete this listing?')) {
-                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/${listingId}`, {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, {
                             method: 'DELETE',
                             credentials: 'include'
                         });
