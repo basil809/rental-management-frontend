@@ -4447,44 +4447,52 @@
                             document.getElementById('editPropertyListingModal').style.display = "none";
                         });
                         
-                        //Submitting the form to update the listing
-                        document.getElementById('editPropertyListingForm').onsubmit = async function (event) {
-                            event.preventDefault();
-                            const updatedListing = {
-                                //Adding new Images if any are selected
-                                images: document.getElementById('EditImages').files,
-                                Name: document.getElementById('EditName').value,
-                                phone: document.getElementById('EditPhone').value,
-                                email: document.getElementById('EditEmail').value,
-                                title: document.getElementById('EditTitle').value,
-                                property_type: document.getElementById('EditPropertyType').value,
-                                price: document.getElementById('EditPrice').value,
-                                location: document.getElementById('EditLocation').value,
-                                size: document.getElementById('EditSize').value,
-                                units: document.getElementById('EditUnits').value,
-                                bathrooms: document.getElementById('EditBathrooms').value,
-                                bedrooms: document.getElementById('EditBedrooms').value,
-                                description: document.getElementById('EditDescription').value
-                            };
+                       // Submitting the form to update the listing
+                    document.getElementById('editPropertyListingForm').onsubmit = async function (event) {
+                        event.preventDefault();
 
-                            const updateRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/update-listing/${listingId}`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(updatedListing),
-                                credentials: 'include'
-                            });
+                        // 1. Initialize a FormData instance from the form element
+                        const formData = new FormData();
 
-                            if (updateRes.ok) {
-                                alert('Listing updated successfully.');
-                                document.getElementById('editPropertyListingModal').style.display = 'none';
-                                fetchListings(currentPage);
-                            } else {
-                                alert('Failed to update listing.');
+                        // 2. Append the text and number fields
+                        formData.append('Name', document.getElementById('EditName').value);
+                        formData.append('phone', document.getElementById('EditPhone').value);
+                        formData.append('email', document.getElementById('EditEmail').value);
+                        formData.append('title', document.getElementById('EditTitle').value);
+                        formData.append('property_type', document.getElementById('EditPropertyType').value);
+                        formData.append('price', document.getElementById('EditPrice').value);
+                        formData.append('location', document.getElementById('EditLocation').value);
+                        formData.append('size', document.getElementById('EditSize').value);
+                        formData.append('units', document.getElementById('EditUnits').value);
+                        formData.append('bathrooms', document.getElementById('EditBathrooms').value);
+                        formData.append('bedrooms', document.getElementById('EditBedrooms').value);
+                        formData.append('description', document.getElementById('EditDescription').value);
+
+                        // 3. Append the files (if any are selected)
+                        const fileInput = document.getElementById('EditImages');
+                        if (fileInput.files.length > 0) {
+                            for (let i = 0; i < fileInput.files.length; i++) {
+                                // Use 'images' as the key to match your backend's file parsing array configuration (e.g., multer)
+                                formData.append('images', fileInput.files[i]);
                             }
-                        };
-                    } else {
-                        alert('Failed to fetch listing details.');
-                    }
+                        }
+
+                        // 4. Send the request without setting explicit Content-Type headers
+                        const updateRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/update-listing/${listingId}`, {
+                            method: 'PUT',
+                            body: formData, // Send FormData object directly
+                            credentials: 'include'
+                            // NOTE: Do not include headers: { 'Content-Type': 'application/json' } here!
+                        });
+
+                        if (updateRes.ok) {
+                            alert('Listing updated successfully.');
+                            document.getElementById('editPropertyListingModal').style.display = 'none';
+                            fetchListings(currentPage);
+                        } else {
+                            alert('Failed to update listing.');
+                        }
+                    };
                 } else if (e.target.classList.contains('bx-trash')) {
                     if (confirm('Are you sure you want to delete this listing?')) {
                         const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/delete-listing/${listingId}`, {
