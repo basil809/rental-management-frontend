@@ -4449,15 +4449,16 @@
                     window.location.href = `/propView.html?id=${listingId}`;
                 } else if (e.target.classList.contains('bx-checks')) {
                     if (confirm('Are you sure you want to approve this listing?')) {
-                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/approveListing/${listingId}`, {
-                            method: 'PUT',
+                        // Post the approval request to the backend
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/approve-listing/${listingId}`, {
+                            method: 'POST',
                             credentials: 'include'
                         });
                         if (res.ok) {
-                            alert('Listing approved successfully.');
+                            showToast('Listing approved successfully.');
                             fetchListings(currentPage);
                         } else {
-                            alert('Failed to approve listing.');
+                            showToast('Failed to approve listing.');
                         }
                     }
                 } else if (e.target.classList.contains('bx-edit')) {
