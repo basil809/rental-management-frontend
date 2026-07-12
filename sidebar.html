@@ -4483,7 +4483,7 @@
                                 <!-- Header with Back Button -->
                                 <div style="display: flex; align-items: center; margin-bottom: 25px; margin-left: 40px;">
                                     <button id="backToListingsBtn" style="background: white; border: 2px solid #00a5fd; cursor: pointer; display: flex; align-items: center; font-size: 16px; color: #00a5fd; padding: 5px 10px; border-radius: 5px; transition: background 0.2s;">
-                                        <i class='bx bx-arrow-back' style="font-size: 24px; margin-right: 8px;"></i> Back to Listings
+                                        <i class='bx bx-arrow-back' style="font-size: 24px; margin-right: 8px; color: #00a5fd;"></i> Back to Listings
                                     </button>
                                 </div>
 
@@ -4516,6 +4516,8 @@
                                             <p style="margin: 5px 0;"><strong>Name:</strong> ${listing.Name}</p>
                                             <p style="margin: 5px 0;"><strong>Phone:</strong> <a href="tel:${listing.phone}" style="color: #007bff; text-decoration: none;">${listing.phone}</a></p>
                                             <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${listing.email}" style="color: #007bff; text-decoration: none;">${listing.email}</a></p>
+                                            <p style="margin: 5px 0;"><strong>Posted On:</strong> ${new Date(listing.createdAt).toLocaleDateString()}</p>
+                                            <p style="margin: 5px 0;"><strong>Package:</strong> ${listing.package}</p>
                                         </div>
 
                                         <!-- Description Column -->
