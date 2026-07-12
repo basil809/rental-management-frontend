@@ -1631,6 +1631,54 @@
                 background: #ccc;
                 cursor: not-allowed;
             }
+
+            /* Styling the toast notification */
+            /* Toast Container */
+            #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            }
+
+            /* Base Toast Styling */
+            .custom-toast {
+                min-width: 280px;
+                padding: 14px 20px;
+                color: #fff;
+                font-family: 'Poppins', sans-serif;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                opacity: 0;
+                transform: translateX(50px);
+                animation: slideIn 0.3s ease forwards;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+
+            /* Success Toast Gradient */
+            .custom-toast.toast-success {
+                background: linear-gradient(135deg, rgba(0, 123, 255, 0.82), rgba(64, 169, 255, 0.66));
+            }
+
+            /* Error Toast Gradient */
+            .custom-toast.toast-error {
+                background: linear-gradient(135deg, rgba(220, 53, 69, 0.86), rgba(255, 107, 107, 0.68));
+            }
+
+            /* Entry Animation */
+            @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            }
     </style>
 </head>
 <body>
@@ -1922,6 +1970,33 @@
             window.addEventListener('load', ()=> {
                 shownotification();
          });    
+    </script>
+    <script>
+        // Helper utility to show custom toasts
+        function showToast(message, type = 'success') {
+            // Check if the container exists, if not, create it dynamically
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+
+            // Create the toast element
+            const toast = document.createElement('div');
+            toast.className = `custom-toast toast-${type}`;
+            toast.innerText = message;
+
+            // Append to container
+            container.appendChild(toast);
+
+            // Automatically remove after 4 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'scale(0.9) translateX(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
     </script>
     <script>
       //code to make the arrow icons in the sidebar rotate
@@ -4451,10 +4526,16 @@
                         document.getElementById('editPropertyListingForm').onsubmit = async function (event) {
                             event.preventDefault();
 
-                            // 1. Initialize a FormData instance from the form element
-                            const formData = new FormData();
+                            // Target the save button inside the form to toggle loading state
+                            const submitBtn = this.querySelector('button[type="submit"]');
+                            const originalBtnText = submitBtn.innerHTML;
+                            
+                            // Trigger Loading Visual Effect on Button
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Saving Changes...';
 
-                            // 2. Append the text and number fields
+                            // Build the FormData object
+                            const formData = new FormData();
                             formData.append('Name', document.getElementById('EditName').value);
                             formData.append('phone', document.getElementById('EditPhone').value);
                             formData.append('email', document.getElementById('EditEmail').value);
@@ -4468,29 +4549,35 @@
                             formData.append('bedrooms', document.getElementById('EditBedrooms').value);
                             formData.append('description', document.getElementById('EditDescription').value);
 
-                            // 3. Append the files (if any are selected)
+                            // Process image attachments
                             const fileInput = document.getElementById('EditImages');
                             if (fileInput.files.length > 0) {
                                 for (let i = 0; i < fileInput.files.length; i++) {
-                                    // Use 'images' as the key to match your backend's file parsing array configuration (e.g., multer)
                                     formData.append('images', fileInput.files[i]);
                                 }
                             }
 
-                            // 4. Send the request without setting explicit Content-Type headers
-                            const updateRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/update-listing/${listingId}`, {
-                                method: 'PUT',
-                                body: formData, // Send FormData object directly
-                                credentials: 'include'
-                                // NOTE: Do not include headers: { 'Content-Type': 'application/json' } here!
-                            });
+                            try {
+                                const updateRes = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/update-listing/${listingId}`, {
+                                    method: 'PUT',
+                                    body: formData,
+                                    credentials: 'include'
+                                });
 
-                            if (updateRes.ok) {
-                                alert('Listing updated successfully.');
-                                document.getElementById('editPropertyListingModal').style.display = 'none';
-                                fetchListings(currentPage);
-                            } else {
-                                alert('Failed to update listing.');
+                                if (updateRes.ok) {
+                                    showToast('Listing updated successfully.', 'success');
+                                    document.getElementById('editPropertyListingModal').style.display = 'none';
+                                    fetchListings(currentPage);
+                                } else {
+                                    showToast('Failed to update listing.', 'error');
+                                }
+                            } catch (error) {
+                                console.error('Update Request Error:', error);
+                                showToast('A network connection error occurred.', 'error');
+                            } finally {
+                                // Restore Button State regardless of whether the request passes or fails
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = originalBtnText;
                             }
                         };
                     } else {
