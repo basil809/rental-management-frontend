@@ -4446,7 +4446,113 @@
                 if (!listingId) return;
 
                 if (e.target.classList.contains('bx-eye')) {
-                    window.location.href = `/propView.html?id=${listingId}`;
+                    // 1. Locate the main table container so we can hide it (preserving search/pagination state)
+                    const tableContainer = document.querySelector('.table-container');
+
+                    try {
+                        const res = await fetch(`https://rental-management-backend-ynbb.onrender.com/api/listings/listing/${listingId}`, { 
+                            method: 'GET', 
+                            credentials: 'include' 
+                        });
+
+                        if (res.ok) {
+                            const data = await res.json();
+                            const listing = data.listing;
+
+                            // 2. Hide the table container
+                            if (tableContainer) {
+                                tableContainer.style.display = 'none';
+                            }
+
+                            // 3. Create the new property display container
+                            const detailsContainer = document.createElement('div');
+                            detailsContainer.className = 'property-details-container';
+                            detailsContainer.style.animation = 'fadeIn 0.3s ease-in-out'; // Optional smooth entry
+
+                            // 4. Generate the HTML for the images
+                            let imagesHtml = '<p style="color: #666;">No images available for this property.</p>';
+                            if (listing.images && listing.images.length > 0) {
+                                imagesHtml = listing.images.map(imgPath => {
+                                    const src = imgPath.startsWith('http') ? imgPath : `https://rental-management-backend-ynbb.onrender.com/${imgPath.replace(/^\/+/, '')}`;
+                                    return `<img src="${src}" alt="Property Image" style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">`;
+                                }).join('');
+                            }
+
+                            // 5. Populate the details container
+                            detailsContainer.innerHTML = `
+                                <!-- Header with Back Button -->
+                                <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                                    <button id="backToListingsBtn" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; font-size: 16px; color: #333; padding: 5px 10px; border-radius: 5px; transition: background 0.2s;">
+                                        <i class='bx bx-arrow-back' style="font-size: 24px; margin-right: 8px;"></i> Back to Listings
+                                    </button>
+                                </div>
+
+                                <!-- Property Details Card -->
+                                <div style="background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                                    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+                                        
+                                        <!-- Main Info Column -->
+                                        <div style="flex: 1; min-width: 300px;">
+                                            <h2 style="margin-top: 0; color: #222;">${listing.title || 'Untitled Property'}</h2>
+                                            <p style="font-size: 16px; color: #555;"><i class='bx bx-map'></i> ${listing.location}</p>
+                                            
+                                            <div style="display: flex; gap: 15px; margin: 20px 0;">
+                                                <span style="background: #e9ecef; padding: 5px 10px; border-radius: 5px; font-weight: 500;">${listing.property_type}</span>
+                                                <span style="background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-weight: 600;">Ksh ${listing.price.toLocaleString()}</span>
+                                            </div>
+
+                                            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                                            
+                                            <div style="display: flex; gap: 20px; color: #444;">
+                                                <span><i class='bx bx-bed'></i> ${listing.bedrooms} Beds</span>
+                                                <span><i class='bx bx-bath'></i> ${listing.bathrooms} Baths</span>
+                                                <span><i class='bx bx-area'></i> ${listing.size} sq ft</span>
+                                                <span><i class='bx bx-building-house'></i> ${listing.units} Units</span>
+                                            </div>
+
+                                            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+
+                                            <h4 style="margin-bottom: 10px; color: #333;">Contact Details</h4>
+                                            <p style="margin: 5px 0;"><strong>Name:</strong> ${listing.Name}</p>
+                                            <p style="margin: 5px 0;"><strong>Phone:</strong> <a href="tel:${listing.phone}" style="color: #007bff; text-decoration: none;">${listing.phone}</a></p>
+                                            <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${listing.email}" style="color: #007bff; text-decoration: none;">${listing.email}</a></p>
+                                        </div>
+
+                                        <!-- Description Column -->
+                                        <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                            <h4 style="margin-top: 0; color: #333;">Description</h4>
+                                            <p style="white-space: pre-wrap; line-height: 1.6; color: #555;">${listing.description}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Images Section -->
+                                    <div style="margin-top: 30px;">
+                                        <h4 style="margin-bottom: 15px; color: #333;">Property Gallery</h4>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                                            ${imagesHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                            // 6. Append the new view to the main content area (using the parent of tableContainer)
+                            tableContainer.parentNode.appendChild(detailsContainer);
+
+                            // 7. Add functionality to the "Back" button
+                            document.getElementById('backToListingsBtn').addEventListener('click', () => {
+                                // Destroy the details container to free up DOM memory
+                                detailsContainer.remove();
+                                // Reveal the table again
+                                tableContainer.style.display = 'block';
+                            });
+
+                        } else {
+                            showToast('Failed to fetch listing details.', 'error'); // Using your new toast system
+                        }
+                    } catch (error) {
+                        console.error("Fetch listing error:", error);
+                        showToast('A network error occurred while loading details.', 'error');
+                    }
                 } else if (e.target.classList.contains('bx-checks')) {
                     if (confirm('Are you sure you want to approve this listing?')) {
                         // Post the approval request to the backend
